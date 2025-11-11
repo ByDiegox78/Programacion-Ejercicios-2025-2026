@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Diego\\RiderProjects\\Forest-Fire-Mode\\Forest-Fire-Mode\\Forest-Fire-Mode.csproj",
+      "projectUniqueName": "C:\\Users\\Diego\\Desktop\\Programacion-Ejercicios-2025-2026\\Ejercicios\\FMM\\Forest-Fire-Mode\\Forest-Fire-Mode\\Forest-Fire-Mode.csproj",
       "projectName": "Forest-Fire-Mode",
-      "projectPath": "C:\\Users\\Diego\\RiderProjects\\Forest-Fire-Mode\\Forest-Fire-Mode\\Forest-Fire-Mode.csproj",
+      "projectPath": "C:\\Users\\Diego\\Desktop\\Programacion-Ejercicios-2025-2026\\Ejercicios\\FMM\\Forest-Fire-Mode\\Forest-Fire-Mode\\Forest-Fire-Mode.csproj",
       "packagesPath": "C:\\Users\\Diego\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Diego\\RiderProjects\\Forest-Fire-Mode\\Forest-Fire-Mode\\obj\\",
+      "outputPath": "C:\\Users\\Diego\\Desktop\\Programacion-Ejercicios-2025-2026\\Ejercicios\\FMM\\Forest-Fire-Mode\\Forest-Fire-Mode\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Diego\\AppData\\Roaming\\NuGet\\NuGet.Config"
