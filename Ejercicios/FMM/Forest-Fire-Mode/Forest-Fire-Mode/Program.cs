@@ -17,10 +17,10 @@ const int Filas = 20;
 const int Columnas = 20;
 Console.OutputEncoding = Encoding.UTF8;
 
-/*
- * Start Main
- */
-Configuracion config;
+Main(args);
+
+void Main(string[] args) {
+   Configuracion config;
 config.Filas = Filas;
 config.Columnas = Columnas;
 
@@ -42,8 +42,7 @@ var backBuffer = CloneMatrix(frontBuffer, config.Filas, config.Columnas);
 
 //Variable del tiempo
 var tiempoRestante = TiempoMaximo;
-var a = 1;
-Sum();
+
 //Metemos los arboles en el frontBuffer para la simulacion
 InitForest(frontBuffer, config.Filas, config.Columnas);
 
@@ -83,7 +82,13 @@ Console.WriteLine($"La cantidad de celdas ardidas es de: {celdasArdidas}");
 Console.WriteLine($"La cantidad de celdas nacidas es de: {arbolesNacidos}");
 Console.WriteLine($"La cantidad de celdas final arbol es de: {celdasFinalArbol}");
 Console.WriteLine($"La cantidad de celdas final ardiendo es de: {celdasFinalArdiendo}");
-Console.WriteLine($"La cantidad de celdas final vacias es de: {celdasFinalVacia}");
+Console.WriteLine($"La cantidad de celdas final vacias es de: {celdasFinalVacia}"); 
+}
+
+/*
+ * Start Main
+ */
+
 /*
 * Funcion de clonacion para el backbuffer con copia profunda O(n2)
 */
@@ -104,9 +109,7 @@ int[,] CloneMatrix(int[,] matrix, int filas, int columnas) {
  * Procedimiento de iniciañizacion de inicializacion del frontbuffer
  */
 
-void Sum() {
-    a = a + 1;
-}
+
 void InitForest(int[,] matrix, int filas, int columnas) {
     var porcentaje = rand.Next(30,81);
     var totalCeldas = filas * columnas;

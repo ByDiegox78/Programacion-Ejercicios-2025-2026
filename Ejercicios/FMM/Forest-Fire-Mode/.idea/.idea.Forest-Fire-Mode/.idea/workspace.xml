@@ -7,7 +7,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e946145-cfbd-4b71-a2b0-ffe4df4fb070" name="Changes" comment="" />
+    <list default="true" id="8e946145-cfbd-4b71-a2b0-ffe4df4fb070" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Forest-Fire-Mode/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Forest-Fire-Mode/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Forest-Fire-Mode.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Forest-Fire-Mode.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Forest-Fire-Mode.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Forest-Fire-Mode.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/rider.project.restore.info" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,6 +28,9 @@
   </component>
   <component name="DpaMonitoringSettings">
     <option name="firstShow" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Forest-Fire-Mode/Configueracion.cs" root0="FORCE_HIGHLIGHTING" />
@@ -27,20 +43,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Project.Forest-Fire-Mode.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Project.Forest-Fire-Mode.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Forest-Fire-Mode" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -77,6 +95,7 @@
       <workItem from="1762874818723" duration="388000" />
       <workItem from="1762875532480" duration="2679000" />
       <workItem from="1762901920225" duration="8000" />
+      <workItem from="1762902582138" duration="624000" />
     </task>
     <servers />
   </component>

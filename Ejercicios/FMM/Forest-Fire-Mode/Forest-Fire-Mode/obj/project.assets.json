@@ -8,19 +8,19 @@
     "net9.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Diego\\.nuget\\packages\\": {}
+    "C:\\Users\\oms04\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Diego\\RiderProjects\\Forest-Fire-Mode\\Forest-Fire-Mode\\Forest-Fire-Mode.csproj",
+      "projectUniqueName": "C:\\Users\\oms04\\Desktop\\Programacion-Ejercicios-2025-2026\\Ejercicios\\FMM\\Forest-Fire-Mode\\Forest-Fire-Mode\\Forest-Fire-Mode.csproj",
       "projectName": "Forest-Fire-Mode",
-      "projectPath": "C:\\Users\\Diego\\RiderProjects\\Forest-Fire-Mode\\Forest-Fire-Mode\\Forest-Fire-Mode.csproj",
-      "packagesPath": "C:\\Users\\Diego\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Diego\\RiderProjects\\Forest-Fire-Mode\\Forest-Fire-Mode\\obj\\",
+      "projectPath": "C:\\Users\\oms04\\Desktop\\Programacion-Ejercicios-2025-2026\\Ejercicios\\FMM\\Forest-Fire-Mode\\Forest-Fire-Mode\\Forest-Fire-Mode.csproj",
+      "packagesPath": "C:\\Users\\oms04\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\oms04\\Desktop\\Programacion-Ejercicios-2025-2026\\Ejercicios\\FMM\\Forest-Fire-Mode\\Forest-Fire-Mode\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Diego\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\oms04\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -65,7 +65,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Users\\Diego\\.dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
