@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Forest-Fire-Mode")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a5f47fd1325d729bf06ecafad4f468a2357dfbd7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+df9e1905d0dc444c11576ec207429ede518fe11f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Forest-Fire-Mode")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Forest-Fire-Mode")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
