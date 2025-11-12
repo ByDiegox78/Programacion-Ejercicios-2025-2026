@@ -9,6 +9,33 @@
   <component name="ChangeListManager">
     <list default="true" id="8e946145-cfbd-4b71-a2b0-ffe4df4fb070" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Forest-Fire-Mode/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Forest-Fire-Mode/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/Forest-Fire-Mode.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/Forest-Fire-Mode.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/bin/Debug/net9.0/Forest-Fire-Mode.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/bin/Debug/net9.0/Forest-Fire-Mode.deps.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/bin/Debug/net9.0/Forest-Fire-Mode.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/bin/Debug/net9.0/Forest-Fire-Mode.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/bin/Debug/net9.0/Forest-Fire-Mode.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/bin/Debug/net9.0/Forest-Fire-Mode.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/bin/Debug/net9.0/Forest-Fire-Mode.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/bin/Debug/net9.0/Forest-Fire-Mode.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.genruntimeconfig.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/Forest-Fire-Mode.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/ref/Forest-Fire-Mode.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/ref/Forest-Fire-Mode.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/refint/Forest-Fire-Mode.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Debug/net9.0/refint/Forest-Fire-Mode.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Forest-Fire-Mode.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Forest-Fire-Mode.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Forest-Fire-Mode.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Forest-Fire-Mode.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Forest-Fire-Mode.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/Forest-Fire-Mode.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forest-Fire-Mode/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/Forest-Fire-Mode/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,22 +59,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Project.Forest-Fire-Mode.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Project.Forest-Fire-Mode.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Forest-Fire-Mode" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -86,6 +114,7 @@
       <workItem from="1762901920225" duration="8000" />
       <workItem from="1762902582138" duration="1700000" />
       <workItem from="1762905854901" duration="81000" />
+      <workItem from="1762945422796" duration="8829000" />
     </task>
     <servers />
   </component>
@@ -113,26 +142,26 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Forest-Fire-Mode/Program.cs</url>
-          <line>184</line>
+          <line>215</line>
           <properties documentPath="C:\Users\Diego\RiderProjects\Forest-Fire-Mode\Forest-Fire-Mode\Program.cs" containingFunctionPresentation="Local function 'Step'">
             <startOffsets>
-              <option value="6118" />
+              <option value="7101" />
             </startOffsets>
             <endOffsets>
-              <option value="6134" />
+              <option value="7117" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Forest-Fire-Mode/Program.cs</url>
-          <line>204</line>
+          <line>235</line>
           <properties documentPath="C:\Users\Diego\RiderProjects\Forest-Fire-Mode\Forest-Fire-Mode\Program.cs" containingFunctionPresentation="Local function 'Step'">
             <startOffsets>
-              <option value="7181" />
+              <option value="8164" />
             </startOffsets>
             <endOffsets>
-              <option value="7197" />
+              <option value="8180" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="5" />

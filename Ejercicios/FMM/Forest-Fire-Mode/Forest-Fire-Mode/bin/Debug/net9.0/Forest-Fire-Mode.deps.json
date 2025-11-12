@@ -7,8 +7,40 @@
   "targets": {
     ".NETCoreApp,Version=v9.0": {
       "Forest-Fire-Mode/1.0.0": {
+        "dependencies": {
+          "Serilog": "4.3.0",
+          "Serilog.Sinks.Console": "6.1.1",
+          "Spectre.Console": "0.53.0"
+        },
         "runtime": {
           "Forest-Fire-Mode.dll": {}
+        }
+      },
+      "Serilog/4.3.0": {
+        "runtime": {
+          "lib/net9.0/Serilog.dll": {
+            "assemblyVersion": "4.3.0.0",
+            "fileVersion": "4.3.0.0"
+          }
+        }
+      },
+      "Serilog.Sinks.Console/6.1.1": {
+        "dependencies": {
+          "Serilog": "4.3.0"
+        },
+        "runtime": {
+          "lib/net8.0/Serilog.Sinks.Console.dll": {
+            "assemblyVersion": "6.1.1.0",
+            "fileVersion": "6.1.1.0"
+          }
+        }
+      },
+      "Spectre.Console/0.53.0": {
+        "runtime": {
+          "lib/net9.0/Spectre.Console.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.53.0.0"
+          }
         }
       }
     }
@@ -18,6 +50,27 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Serilog/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+cDryFR0GRhsGOnZSKwaDzRRl4MupvJ42FhCE4zhQRVanX0Jpg6WuCBk59OVhVDPmab1bB+nRykAnykYELA9qQ==",
+      "path": "serilog/4.3.0",
+      "hashPath": "serilog.4.3.0.nupkg.sha512"
+    },
+    "Serilog.Sinks.Console/6.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8jbqgjUyZlfCuSTaJk6lOca465OndqOz3KZP6Cryt/IqZYybyBu7GP0fE/AXBzrrQB3EBmQntBFAvMVz1COvAA==",
+      "path": "serilog.sinks.console/6.1.1",
+      "hashPath": "serilog.sinks.console.6.1.1.nupkg.sha512"
+    },
+    "Spectre.Console/0.53.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-m2iv8Egfywp7FaNLKCmCFHbSf36D4ctzZKvlAK9NXMyGLh6L+CnrZWK8o+LOYsoAS1jtoHn0W1BT0W8vuq/FUw==",
+      "path": "spectre.console/0.53.0",
+      "hashPath": "spectre.console.0.53.0.nupkg.sha512"
     }
   }
 }

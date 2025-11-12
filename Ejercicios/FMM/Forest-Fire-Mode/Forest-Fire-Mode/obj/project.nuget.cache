@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "hw/slguCchs=",
+  "dgSpecHash": "SDXCqZ5FGog=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Diego\\Desktop\\Programacion-Ejercicios-2025-2026\\Ejercicios\\FMM\\Forest-Fire-Mode\\Forest-Fire-Mode\\Forest-Fire-Mode.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\oms04\\Desktop\\Programacion-Ejercicios-2025-2026\\Ejercicios\\FMM\\Forest-Fire-Mode\\Forest-Fire-Mode\\Forest-Fire-Mode.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\oms04\\.nuget\\packages\\serilog\\4.3.0\\serilog.4.3.0.nupkg.sha512",
+    "C:\\Users\\oms04\\.nuget\\packages\\serilog.sinks.console\\6.1.1\\serilog.sinks.console.6.1.1.nupkg.sha512",
+    "C:\\Users\\oms04\\.nuget\\packages\\spectre.console\\0.53.0\\spectre.console.0.53.0.nupkg.sha512"
+  ],
   "logs": []
 }
