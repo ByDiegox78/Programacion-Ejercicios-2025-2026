@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("Forest-Fire-Mode")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("Test")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1447c5f50e912dd5e3a9bb9389877b427a7d9b10")]
-[assembly: System.Reflection.AssemblyProductAttribute("Forest-Fire-Mode")]
-[assembly: System.Reflection.AssemblyTitleAttribute("Forest-Fire-Mode")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0ca5047f623213d48bdf98389022394dc75edee5")]
+[assembly: System.Reflection.AssemblyProductAttribute("Test")]
+[assembly: System.Reflection.AssemblyTitleAttribute("Test")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Generado por la clase WriteCodeFragment de MSBuild.
