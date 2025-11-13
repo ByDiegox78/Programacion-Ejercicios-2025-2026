@@ -66,9 +66,16 @@ while(tiempoRestante > 0) {
     //y el backbuffer coge los datos del frontBuffer
     log.Information("Realizando el SWAP de matrix...");
     
+    
+    // var temp = frontBuffer;
+    // frontBuffer = backBuffer;
+    // backBuffer = temp;
+    
+    //Corazon del doble buffer con tupla
+    // O(1)
     (frontBuffer, backBuffer) = (backBuffer, frontBuffer);
-
-    // Thread.Sleep(1000);
+    
+   // Thread.Sleep(1000);
     tiempoRestante--;
 }
 log.Information("Saliendo del bucle de simulacion...");
@@ -116,7 +123,6 @@ int[,] CloneMatrix(int[,] matrix, int filas, int columnas) {
 /*
  * Procedimiento de iniciañizacion de inicializacion del frontbuffer
  */
-
 
 void InitForest(int[,] matrix, int filas, int columnas) {
     log.Information("Entrando en funcion InitForest()");
