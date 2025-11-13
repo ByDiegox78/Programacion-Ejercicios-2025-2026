@@ -13,7 +13,6 @@ const int Ardiendo = 2;
 
 const double Parder = 0.0006;
 const double PCrecer = 0.01;
-
 const int TiempoMaximo = 60;
 const int Filas = 20;
 const int Columnas = 20;
@@ -25,23 +24,7 @@ Serilog.ILogger log = new LoggerConfiguration()
     .CreateLogger();
 
 log.Information("Aplicación iniciada.");
-
-try
-{
-    // 2. Llama a la función principal de la simulación
-    Main(args);
-}
-catch (Exception ex)
-{
-    log.Error(ex, "Ocurrió un error inesperado.");
-}
-finally
-{
-    log.Information("Aplicación finalizada.");
-    // 3. (Opcional) Desechar el logger al final
-    (log as IDisposable)?.Dispose(); 
-}
-
+Main(args);
 
 void Main(string[] args) { 
     Configuracion config;
@@ -82,11 +65,10 @@ while(tiempoRestante > 0) {
     //El corazon del doble buffer donde cambiamos el backbuffer modificado al frontbuffer
     //y el backbuffer coge los datos del frontBuffer
     log.Information("Realizando el SWAP de matrix...");
-    var temp = frontBuffer;
-    frontBuffer = backBuffer;
-    backBuffer = temp;
     
-   // Thread.Sleep(1000);
+    (frontBuffer, backBuffer) = (backBuffer, frontBuffer);
+
+    // Thread.Sleep(1000);
     tiempoRestante--;
 }
 log.Information("Saliendo del bucle de simulacion...");
@@ -103,8 +85,8 @@ for (int i = 0; i < config.Filas; i++) {
     }
 }
 
-log.Information("🌲 Estado final del bosque:");
-log.Information("📊 Resultados finales de la simulación:");
+log.Information("Estado final del bosque:");
+log.Information("Resultados finales de la simulación:");
 log.Information("Celdas ardidas: {CeldasArdidas}", celdasArdidas);
 log.Information("Celdas nacidas: {ArbolesNacidos}", arbolesNacidos);
 log.Information("Celdas finales — Árboles: {CeldasFinalArbol}", celdasFinalArbol);
@@ -250,9 +232,9 @@ void DibujarBarraProgreso(int tiempoRestante, int tiempoMaximo)
     var porcentaje = (int)(tiempoRestante / (double)tiempoMaximo * 100);
     int llenado = (porcentaje * largo / 100);
     var color = porcentaje switch {
-        < 40 => Color.Green,
+        < 40 => Color.Red,
         < 75 => Color.Yellow,
-        _ => Color.Red
+        _ => Color.Green
     };
     var barra = new string('■', llenado).PadRight(largo, '─');
     AnsiConsole.Write(new Markup(barra, color));
@@ -261,8 +243,6 @@ void DibujarBarraProgreso(int tiempoRestante, int tiempoMaximo)
 /*
  * El porque se usa el SWAP O(1) es porque se intercambian los punteros de ambas matrizes. Y como son
  * 60 ciclos solo se cambian 3 referencias por ciclo y no copiamos el valor celda a celda que seria completamente ineficiente
- *
- * 
  *
  * Mientras que en la clonacion usamos la otra O(n2) porque necesitamos copiar el valor
  * de cada de la matriz y como solo se hace 1 vez es una buena practica
