@@ -16,6 +16,7 @@ const double PCrecer = 0.01;
 const int TiempoMaximo = 60;
 const int Filas = 20;
 const int Columnas = 20;
+
 Console.OutputEncoding = Encoding.UTF8;
 
 
@@ -173,13 +174,13 @@ void PrintMatrix(int[,] matrix, int filas, int columnas) {
 bool HasBurningNeighbour(int[,] matrix, int i, int j, int filas, int columnas) {
     //log.Information("Entrando en funcion HasBurningNeighbour()");
     var isBurning = (
-        (i > 0 && j > 0 && matrix[i-1,j-1] == Ardiendo) ||
-        (i > 0 && matrix[i-1,j] == Ardiendo) || 
-        (i > 0 && j < columnas - 1 && matrix[i-1,j+1] == Ardiendo) ||
-        (j > 0 && matrix[i,j-1] == Ardiendo) ||
-        (j < columnas - 1 && matrix[i,j+1] == Ardiendo) ||
-        (i < filas - 1 && j > 0 && matrix[i+1,j-1] == Ardiendo) ||
-        (i < filas - 1 && matrix[i+1,j] == Ardiendo) ||
+        (i > 0 && j > 0 && matrix[i-1,j-1] == Ardiendo) || //Arriba izquierda
+        (i > 0 && matrix[i-1,j] == Ardiendo) || // Arriba
+        (i > 0 && j < columnas - 1 && matrix[i-1,j+1] == Ardiendo) || //Arriba derecha
+        (j > 0 && matrix[i,j-1] == Ardiendo) || // Izquierda
+        (j < columnas - 1 && matrix[i,j+1] == Ardiendo) || // Derecha
+        (i < filas - 1 && j > 0 && matrix[i+1,j-1] == Ardiendo) || // Obajo izquierda
+        (i < filas - 1 && matrix[i+1,j] == Ardiendo) || //
         (i < filas - 1 && j < columnas - 1 && matrix[i+1,j+1] == Ardiendo)
     );
     
