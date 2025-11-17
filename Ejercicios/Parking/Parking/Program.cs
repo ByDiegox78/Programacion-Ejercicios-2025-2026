@@ -32,6 +32,7 @@ void Main(string[] args) {
        opcionElegida = VerificarOpcion("Selecciones una opcion: ");
        switch (opcionElegida) {
            case (int)MenuOpcion.EntradaParkin:
+               EntradaParking(parking, pos);
                break;
            case (int)MenuOpcion.AñadirVehiculo:
                break;
@@ -119,4 +120,9 @@ void PrintMatrix(Vehiculo?[,] matrix, Posicion pos) {
         }
         Console.WriteLine();
     }
+}
+
+void EntradaParking(Vehiculo?[,] matrix, Posicion pos) {
+    Log.Information("Añadiendo un vehiculo al parking...");
+    
 }
