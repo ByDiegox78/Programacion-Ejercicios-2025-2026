@@ -1,4 +1,4 @@
-﻿namespace Forest_Fire_Mode;
+﻿namespace Forest_Fire_Mode.Struct;
 
 internal struct Configuracion {
     public int Filas;

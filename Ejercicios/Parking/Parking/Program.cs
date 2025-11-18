@@ -45,8 +45,10 @@ void Main(string[] args) {
            case (int)MenuOpcion.InfPlaza:
                break;
            case (int)MenuOpcion.BusqiedaNip:
+               BuscarPorId(parking, ref pos);
                break;
            case (int)MenuOpcion.BusquedaMatricula:
+               BuscarPorMatricula(parking,ref pos);
                break;
            case (int)MenuOpcion.ListaMatricula:
                break;
@@ -265,4 +267,48 @@ void ImprimirMenu() {
     Console.WriteLine($"{(int)MenuOpcion.BorrarVehiculo}.- Borrar vehículo.");
     Console.WriteLine($"{(int)MenuOpcion.Salir}.- Salir.");
     Console.WriteLine("------------------------------------");
+}
+
+void BuscarPorId(Vehiculo?[,] arr, ref Posicion pos) {
+    var idBuscado = ValidarId("Indique el id del profesor que desea buscar");
+    Profesor? profesor;
+    Vehiculo? vehiculo;
+    for (int i = 0; i < pos.Fila; i++) {
+        for (int j = 0; j < pos.Columna; j++) {
+            if (arr[i, j]?.Profesor.Id == idBuscado) {
+                Log.Information("Profesor encontrado correctamente");
+                profesor = arr[i, j]?.Profesor;
+                vehiculo = arr[i, j];
+                Console.WriteLine($"El nombre del profesor es con id {idBuscado} es: {profesor?.Nombre}");
+                Console.WriteLine($"El apellido del profesor con id {idBuscado} es: {profesor?.Email}");
+                Console.WriteLine($"La marca del vehiculo del profesor {profesor?.Nombre} es: {vehiculo?.Marca}");
+                Console.WriteLine($"El modelo del vehiculo del profesor {profesor?.Nombre} es: {vehiculo?.Modelo}");
+                Console.WriteLine($"La matricula del vehiculo del profesor {profesor?.Nombre} es: {vehiculo?.Matricula}");
+            }
+            else {
+                Console.WriteLine($"El nombre del profesor no existe");
+            }
+        }
+    }
+}
+void BuscarPorMatricula(Vehiculo?[,] arr, ref Posicion pos) {
+    var matricula = ValidarMatricula("Indique la maricula que desea buscar");
+    Profesor? profesor;
+    Vehiculo? vehiculo;
+    for (int i = 0; i < pos.Fila; i++) {
+        for (int j = 0; j < pos.Columna; j++) {
+            if (arr[i, j]?.Matricula == matricula) {
+                Log.Information("Profesor encontrado correctamente");
+                profesor = arr[i, j]?.Profesor;
+                vehiculo = arr[i, j];
+                Console.WriteLine($"El nombre del profesor es con matricula {matricula} es: {profesor?.Nombre}");
+                Console.WriteLine($"El apellido del profesor con matricula {matricula} es: {profesor?.Email}");
+                Console.WriteLine($"La marca del vehiculo de la matricula {matricula} es: {vehiculo?.Marca}");
+                Console.WriteLine($"El modelo del vehiculo de la matricula {matricula} es: {vehiculo?.Modelo}");
+            }
+            else {
+                Console.WriteLine($"El nombre del profesor no existe");
+            }
+        }
+    }
 }

@@ -2,14 +2,16 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Forest_Fire_Mode;
+using Forest_Fire_Mode.Enum;
+using Forest_Fire_Mode.Struct;
 using Serilog;
 using Serilog.Core;
 using Spectre.Console;
 
 var rand = new Random();
-const int Vacio = 0;
-const int Arbol = 1;
-const int Ardiendo = 2;
+// const int Vacio = 0;
+// const int Arbol = 1;
+// const int Ardiendo = 2;
 
 const double Parder = 0.0006;
 const double PCrecer = 0.01;
@@ -40,7 +42,7 @@ int celdasFinalArdiendo = 0;
 
 
 //Inicializamos el frontBuffer
-var frontBuffer = new int[config.Filas, config.Columnas];
+Tipo[,] frontBuffer = new Tipo[config.Filas, config.Columnas];
 //Inicializamos el backbuffer con el CloneMatrix que nos da una nueva matriz
 //Con el contenido del frontbuffer
 var backBuffer = CloneMatrix(frontBuffer, config.Filas, config.Columnas);
@@ -84,9 +86,9 @@ log.Information("Saliendo del bucle de simulacion...");
 for (int i = 0; i < config.Filas; i++) {
     for (int j = 0; j < config.Columnas; j++) {
         switch (backBuffer[i, j]) {
-            case Vacio: celdasFinalVacia++; break;
-            case Arbol: celdasFinalArbol++; break;
-            case Ardiendo: celdasFinalArdiendo++; break;
+            case Tipo.Vacio: celdasFinalVacia++; break;
+            case Tipo.Arbol: celdasFinalArbol++; break;
+            case Tipo.Ardiendo: celdasFinalArdiendo++; break;
             
             
         }
@@ -107,10 +109,10 @@ log.Information("Celdas finales — Vacías: {CeldasFinalVacia}", celdasFinalVac
 /*
 * Funcion de clonacion para el backbuffer con copia profunda O(n2)
 */
-int[,] CloneMatrix(int[,] matrix, int filas, int columnas) {
+Tipo[,] CloneMatrix(Tipo[,] matrix, int filas, int columnas) {
     log.Information("Entrando en funcion CloneMatrix()");
     //Creo una matriz nueva del mismo tamaño
-    var newMatrix = new int[filas, columnas]; 
+    Tipo[,] newMatrix = new Tipo[filas, columnas]; 
     
     for (int i = 0; i < filas; i++) {
         for (int j = 0; j < columnas; j++) {
@@ -125,7 +127,7 @@ int[,] CloneMatrix(int[,] matrix, int filas, int columnas) {
  * Procedimiento de iniciañizacion de inicializacion del frontbuffer
  */
 
-void InitForest(int[,] matrix, int filas, int columnas) {
+void InitForest(Tipo[,] matrix, int filas, int columnas) {
     log.Information("Entrando en funcion InitForest()");
     var porcentaje = rand.Next(30,81);
     var totalCeldas = filas * columnas;
@@ -141,8 +143,8 @@ void InitForest(int[,] matrix, int filas, int columnas) {
             var f = rand.Next(0,filas);
             var c = rand.Next(0,columnas);
 
-            if(matrix[f,c] == Vacio) {
-                matrix[f, c] = Arbol;
+            if(matrix[f,c] == Tipo.Vacio) {
+                matrix[f, c] = Tipo.Arbol;
                 colocado = true;
             }
         }
@@ -151,15 +153,15 @@ void InitForest(int[,] matrix, int filas, int columnas) {
 /*
  * Procedimiento que imprime la matriz con los iconos con un switch
  */
-void PrintMatrix(int[,] matrix, int filas, int columnas) {
+void PrintMatrix(Tipo[,] matrix, int filas, int columnas) {
     
     log.Information("Entrando en funcion PrintMatrix()");
     for (int i = 0; i < filas; i++) {
         for (int j = 0; j < columnas; j++) {
             switch (matrix[i,j]) {
-                case Arbol: Console.Write("[🌳]"); break;
-                case Vacio: Console.Write("[  ]"); break;
-                case Ardiendo: Console.Write("[🔥]"); break;
+                case Tipo.Arbol: Console.Write("[🌳]"); break;
+                case Tipo.Vacio: Console.Write("[  ]"); break;
+                case Tipo.Ardiendo: Console.Write("[🔥]"); break;
             }
         }
         Console.WriteLine(""); 
@@ -171,17 +173,17 @@ void PrintMatrix(int[,] matrix, int filas, int columnas) {
  * Funcion que devuelve un boleano si encuentra un vecino que esta ardiendo
  * En cualquier direccion sin salirse de los limites
  */
-bool HasBurningNeighbour(int[,] matrix, int i, int j, int filas, int columnas) {
+bool HasBurningNeighbour(Tipo[,] matrix, int i, int j, int filas, int columnas) {
     //log.Information("Entrando en funcion HasBurningNeighbour()");
     var isBurning = (
-        (i > 0 && j > 0 && matrix[i-1,j-1] == Ardiendo) || //Arriba izquierda
-        (i > 0 && matrix[i-1,j] == Ardiendo) || // Arriba
-        (i > 0 && j < columnas - 1 && matrix[i-1,j+1] == Ardiendo) || //Arriba derecha
-        (j > 0 && matrix[i,j-1] == Ardiendo) || // Izquierda
-        (j < columnas - 1 && matrix[i,j+1] == Ardiendo) || // Derecha
-        (i < filas - 1 && j > 0 && matrix[i+1,j-1] == Ardiendo) || // Obajo izquierda
-        (i < filas - 1 && matrix[i+1,j] == Ardiendo) || //
-        (i < filas - 1 && j < columnas - 1 && matrix[i+1,j+1] == Ardiendo)
+        (i > 0 && j > 0 && matrix[i-1,j-1] == Tipo.Ardiendo) || //Arriba izquierda
+        (i > 0 && matrix[i-1,j] == Tipo.Ardiendo) || // Arriba
+        (i > 0 && j < columnas - 1 && matrix[i-1,j+1] == Tipo.Ardiendo) || //Arriba derecha
+        (j > 0 && matrix[i,j-1] == Tipo.Ardiendo) || // Izquierda
+        (j < columnas - 1 && matrix[i,j+1] == Tipo.Ardiendo) || // Derecha
+        (i < filas - 1 && j > 0 && matrix[i+1,j-1] == Tipo.Ardiendo) || // Obajo izquierda
+        (i < filas - 1 && matrix[i+1,j] == Tipo.Ardiendo) || //
+        (i < filas - 1 && j < columnas - 1 && matrix[i+1,j+1] == Tipo.Ardiendo)
     );
     
     return isBurning;
@@ -189,19 +191,19 @@ bool HasBurningNeighbour(int[,] matrix, int i, int j, int filas, int columnas) {
 /*
  * Procedimiento que añade estados nuevos al backbuffer segun las 4 reglas que se pide en el enunciado
 */
-void Step(int[,] frontMatrix, int[,] backMatrix, int filas, int columnas, ref int celdasBurning, ref int celdasHasGrow) {
+void Step(Tipo[,] frontMatrix, Tipo[,] backMatrix, int filas, int columnas, ref int celdasBurning, ref int celdasHasGrow) {
     log.Information("Entrando en funcion Step()");
     for (int i = 0; i < filas; i++) {
         for (int j = 0; j < columnas; j++) {
             
             // 1. Ardiendo --> Vacía: Una celda que está ardiendo se convierte en un espacio vacío en el siguiente paso.
-            if (frontMatrix[i, j] == Ardiendo) {
-                backMatrix[i, j] = Vacio; 
+            if (frontMatrix[i, j] == Tipo.Ardiendo) {
+                backMatrix[i, j] = Tipo.Vacio; 
                 // 2. Árbol --> Ardiendo (Contagio): Un árbol arderá si al menos uno de sus vecinos adyacentes (8 direcciones) está ardiendo.    
                 
-            } else if (frontMatrix[i, j] == Arbol) {
+            } else if (frontMatrix[i, j] == Tipo.Arbol) {
                 if (HasBurningNeighbour(frontMatrix, i, j, filas, columnas)) {
-                    backMatrix[i, j] = Ardiendo;
+                    backMatrix[i, j] = Tipo.Ardiendo;
                     celdasBurning++;
                     
                     // 3. Árbol --> Ardiendo (Espontáneo): Un árbol comienza a arder con una probabilidad incluso si no tiene ningún vecino ardiendo.
@@ -209,25 +211,25 @@ void Step(int[,] frontMatrix, int[,] backMatrix, int filas, int columnas, ref in
                 } else {
                     
                     if (rand.NextDouble() < Parder) {
-                        backMatrix[i, j] = Ardiendo;
+                        backMatrix[i, j] = Tipo.Ardiendo;
                         
                     // Si no se da ninguna opcion debemos actualizar el estado en el backBuffer 
                     } else {
-                        backMatrix[i, j] = Arbol;
+                        backMatrix[i, j] = Tipo.Arbol;
                     }
                 }
                 // 4. Vacía --> Árbol: Un árbol brota en un espacio vacío con una probabilidad PCRECER
                 
-            } else if (frontMatrix[i, j] == Vacio) {
+            } else if (frontMatrix[i, j] == Tipo.Vacio) {
                 double randomValue = rand.NextDouble();
                 if (randomValue < PCrecer) {
-                    backMatrix[i, j] = Arbol;
+                    backMatrix[i, j] = Tipo.Arbol;
                     celdasHasGrow++;
 
                 }
                 //Si no se da la probabilidad actualizamos elbackBuffer
                 else {
-                    backMatrix[i, j] = Vacio;
+                    backMatrix[i, j] = Tipo.Vacio;
                 }
             }
         }
