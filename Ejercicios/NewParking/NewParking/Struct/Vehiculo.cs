@@ -1,9 +1,9 @@
 ﻿namespace NewParking.Struct;
 
 public struct Vehiculo {
-    public string matricula;
-    public string marca;
-    public DateTime fechaMatriculacion;
+    public string Matricula;
+    public string Marca;
+    public string FechaMatriculacion;
     
 
 }
