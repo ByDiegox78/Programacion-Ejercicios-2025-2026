@@ -3,5 +3,5 @@
 public enum Recurso {
     Madera,
     Trigo,
-    Cargon
+    Carbon
 }
