@@ -35,8 +35,8 @@ void Main(string[] args) {
 
 void InitTablero(Casilla[,] matrix) {
     int random;
-    for (int i = 0; i < matrix.GetLength(0); i++) {
-        for (int j = 0; j < matrix.GetLength(1); j++) {
+    for (var i = 0; i < matrix.GetLength(0); i++) {
+        for (var j = 0; j < matrix.GetLength(1); j++) {
             matrix[i, j] = new Casilla();
             random = rnd.Next(1,7);
             matrix[i, j].Valor = random;
@@ -49,13 +49,13 @@ void InitTablero(Casilla[,] matrix) {
 
 void PrintMatrix(Casilla[,] matrix) {
     Write("   "); 
-    for (int j = 0; j < matrix.GetLength(1); j++) {
+    for (var j = 0; j < matrix.GetLength(1); j++) {
         Write($"[{j + 1, 2}]"); 
     }
     WriteLine("");
-    for (int i = 0; i < matrix.GetLength(0); i++) {
+    for (var i = 0; i < matrix.GetLength(0); i++) {
         Write($"[{i+1}]");
-        for (int j = 0; j < matrix.GetLength(1); j++) {
+        for (var j = 0; j < matrix.GetLength(1); j++) {
             if (matrix[i, j] is not { } call) continue;
             switch (call.Recurso) {
                 case Recurso.Carbon:
@@ -74,7 +74,7 @@ void PrintMatrix(Casilla[,] matrix) {
 }
 
 void AsignacionDeCasillas(Casilla[,] matrix,ref Posicion posicion) {  
-     for (int i = 0; i < CantidadDeCasillas; i++) {
+     for (var i = 0; i < CantidadDeCasillas; i++) {
          if (i % 2 == 0) {
              WriteLine("===============================================");
              log.Information($"Turno {i + 1} del humano:");
@@ -94,8 +94,8 @@ void AsignacionDeCasillas(Casilla[,] matrix,ref Posicion posicion) {
 
 void AsignarCasillaRider(Casilla[,] matrix) {
     var seleccionado = false;
-    int fila = 0;
-    int columna = 0;
+    var fila = 0;
+    var columna = 0;
     while (!seleccionado) {
         fila = rnd.Next(0, matrix.GetLength(0));
         columna = rnd.Next(0, matrix.GetLength(1));
@@ -158,34 +158,36 @@ void Juego(Casilla[,] matrix) {
     } while (!((j1.AlmacenMadera >= Meta && j1.AlmacenTrigo >= Meta && j1.AlmacenCarbon >= Meta) || (j2.AlmacenMadera >= Meta && j2.AlmacenTrigo >= Meta && j2.AlmacenCarbon >= Meta)));
 }
 void AsignarRecurso(Casilla[,] matrix, int rndm, Jugador j1, Jugador j2) {
-    for (int i = 0; i < matrix.GetLength(0); i++) {
-        for (int j = 0; j < matrix.GetLength(1); j++) {
+    for (var i = 0; i < matrix.GetLength(0); i++) {
+        for (var j = 0; j < matrix.GetLength(1); j++) {
             if (matrix[i,j].Valor == rndm) {
-                if (matrix[i,j].Duenio == Duenio.Humano) {
-                    switch (matrix[i,j].Recurso) {
-                        case Recurso.Carbon:
-                            j1.AlmacenCarbon += matrix[i, j].Valor;
-                            break;
-                        case Recurso.Madera:
-                            j1.AlmacenMadera += matrix[i, j].Valor;
-                            break;
-                        case Recurso.Trigo:
-                            j1.AlmacenTrigo += matrix[i, j].Valor;
-                            break;
-                    }
-                }
-                else if (matrix[i,j].Duenio == Duenio.Rider) {
-                    switch (matrix[i,j].Recurso) {
-                        case Recurso.Carbon:
-                            j2.AlmacenCarbon += matrix[i, j].Valor;
-                            break;
-                        case Recurso.Madera:
-                            j2.AlmacenMadera += matrix[i, j].Valor;
-                            break;
-                        case Recurso.Trigo:
-                            j2.AlmacenTrigo += matrix[i, j].Valor;
-                            break;
-                    }
+                switch (matrix[i,j].Duenio) {
+                    case Duenio.Humano:
+                        switch (matrix[i,j].Recurso) {
+                            case Recurso.Carbon:
+                                j1.AlmacenCarbon += matrix[i, j].Valor;
+                                break;
+                            case Recurso.Madera:
+                                j1.AlmacenMadera += matrix[i, j].Valor;
+                                break;
+                            case Recurso.Trigo:
+                                j1.AlmacenTrigo += matrix[i, j].Valor;
+                                break;
+                        }
+                        break;
+                    case Duenio.Rider:
+                        switch (matrix[i,j].Recurso) {
+                            case Recurso.Carbon:
+                                j2.AlmacenCarbon += matrix[i, j].Valor;
+                                break;
+                            case Recurso.Madera:
+                                j2.AlmacenMadera += matrix[i, j].Valor;
+                                break;
+                            case Recurso.Trigo:
+                                j2.AlmacenTrigo += matrix[i, j].Valor;
+                                break;
+                        }
+                        break;
                 }
             }
         }
@@ -197,19 +199,22 @@ void MostrarAlmacenes(Jugador j1, Jugador j2) {
     WriteLine($"🤖 Rider | Carbón: {j2.AlmacenCarbon}, Madera: {j2.AlmacenMadera}, Trigo: {j2.AlmacenTrigo}");
 }
 void PrintMatrixAux(Casilla[,] matrix) {
-    for (int i = 0; i < matrix.GetLength(0); i++) {
-        for (int j = 0; j < matrix.GetLength(1); j++) {
-            if (matrix[i, j].Duenio == Duenio.Humano) {
-                Write("[🤵]");
-            }
-            else if (matrix[i, j].Duenio == Duenio.Rider) {
-                Write("[🤖]");
-            }
-            else {
-                Write("[  ]");
+    for (var i = 0; i < matrix.GetLength(0); i++) {
+        for (var j = 0; j < matrix.GetLength(1); j++) {
+            switch (matrix[i, j].Duenio) {
+                case Duenio.Humano:
+                    Write("[🤵]");
+                    break;
+                case Duenio.Rider:
+                    Write("[🤖]");
+                    break;
+                default:
+                    Write("[  ]");
+                    break;
             }
         }
         WriteLine();
     }
 }
+
 

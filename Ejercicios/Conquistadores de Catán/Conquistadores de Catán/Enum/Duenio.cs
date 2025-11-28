@@ -2,6 +2,5 @@
 
 public enum Duenio {
     Humano,
-    Rider,
-    SinDueño
+    Rider
 }
