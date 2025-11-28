@@ -9,7 +9,7 @@ Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
 Log.Information("Serilog iniciado y configurado para consola.");
 
 // 2. INICIO (Top-level Execution)
-Title = "Puerto de Carga de Nevarro";
+Title = "Conquistadores De Catan";
 OutputEncoding = Encoding.UTF8;
 Clear();
 
