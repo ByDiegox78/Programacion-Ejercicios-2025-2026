@@ -31,12 +31,12 @@ public class Titular
     }
     
     private static bool IsNombreValido(string nombre) {
-        var regex = new Regex("^[a-zA-Z]{3,}$"); // Por ahora solo se verifica el patron: NNNNNNNNL
+        var regex = new Regex("^[a-zA-Z]{3,}$"); 
         return regex.IsMatch(nombre); 
     }
     private static bool IsNumaroEspañolValido(int numero) {
         var numeroString = Convert.ToString(numero);
-        var regex = new Regex("^[6]{1}[0-9]{8}$"); // Por ahora solo se verifica el patron: NNNNNNNNL
+        var regex = new Regex("^[6]{1}[0-9]{8}$"); 
         return regex.IsMatch(numeroString); 
     }
 }

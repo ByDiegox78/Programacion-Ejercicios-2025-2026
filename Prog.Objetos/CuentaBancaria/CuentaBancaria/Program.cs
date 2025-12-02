@@ -18,11 +18,11 @@ Main(args);
 return;
 
 void Main(string[] args) {
-    var patan = new ServiceCuenta();
-    
+    var cuenta = new ServiceCuenta();
+    MenuBanco(cuenta);
 }
 
-void menuBanco() {
+void MenuBanco(ServiceCuenta servicioCuenta) {
     Log.Debug("Entrando en la funcion MenuBanco...");
     MenuOpcion opcion = 0;
     do {
@@ -39,7 +39,7 @@ void menuBanco() {
         switch (opcion) {
             case MenuOpcion.CrearCuenta:
                 WriteLine("Has elegido: Crear cuenta");
-                // Llama aquí al método correspondiente
+                servicioCuenta.CrearCuenta();
                 break;
 
             case MenuOpcion.IngresarDinero:
@@ -74,15 +74,15 @@ void menuBanco() {
     } while (opcion != MenuOpcion.Salir);
 }
 
-MenuOpcion ValidateOpcion(string msj, MenuOpcion opcion) {
+MenuOpcion ValidateOpcion(string msj, MenuOpcion opc) {
     var input = ReadLine()?.Trim() ?? "";
     if (!int.TryParse(input, out var inputOpcion) || inputOpcion < 1 || inputOpcion > 6) {
         Log.Error("Opcion del menu invalida {Input}", input);
-        opcion = 0;
+        opc = 0;
     }
     else {
-        opcion = (MenuOpcion)inputOpcion;
+        opc = (MenuOpcion)inputOpcion;
     }
 
-    return opcion;
+    return opc;
 }

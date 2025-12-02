@@ -3,7 +3,6 @@ using Conquistadores_de_Catán.Class;
 using Conquistadores_de_Catán.Enum;
 using Conquistadores_de_Catán.Structs;
 using Serilog;
-using Serilog.Core;
 using static System.Console;
 
 namespace Conquistadores_de_Catán.Service;
@@ -56,14 +55,13 @@ public class ServicioPatan {
     }
 
     private void InitTablero() {
-        int random;
         for (var i = 0; i < _tablero.GetLength(0); i++) {
             for (var j = 0; j < _tablero.GetLength(1); j++) {
                 _tablero[i, j] = new Casilla();
-                random = _rnd.Next(1,7);
+                var random = _rnd.Next(1,7);
                 _tablero[i, j].Valor = random;
                 random = _rnd.Next(0,3);
-                Recurso recursoAleatorio = (Recurso)random;
+                var recursoAleatorio = (Recurso)random;
                 _tablero[i, j].Recurso = recursoAleatorio;
             }
         }
@@ -71,8 +69,8 @@ public class ServicioPatan {
 
     private void AsignacionDeCasillas(ref Posicion posicion) {  
         for (var i = 0; i < CantidadDeCasillas; i++) {
+            WriteLine("===============================================");
             if (i % 2 == 0) {
-                WriteLine("===============================================");
                 Log.Information($"Turno {i + 1} del humano:");
                 if (i > 0) {
                     PrintMatrixAux();
@@ -80,7 +78,6 @@ public class ServicioPatan {
                 AsignarCasillaHumano(ref posicion);
             }
             else {
-                WriteLine("===============================================");
                 Log.Information($"Turno {i + 1} de Rider:");
                 AsignarCasillaRider();
              
