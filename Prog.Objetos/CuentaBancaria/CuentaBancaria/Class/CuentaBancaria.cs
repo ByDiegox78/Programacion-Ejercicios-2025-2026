@@ -9,28 +9,29 @@ public class CuentaBancaria {
             ? throw new ArgumentException("El Numero de Cuenta no es valido.")
             : value;
     }
-    public decimal Saldo {
+    public decimal 
+        Saldo {
         get; 
         set => field = value < 0.0m ? throw new ArgumentException("El Saldo de Cuenta no es valido.") : value ;
     }
 
-    public Titular[] _titular { get; private set; }
-
-    public CuentaBancaria(Titular[] titulares)
-    {
-        if (titulares == null)
-            throw new ArgumentException("El array no puede ser null.");
-
-        if (titulares.Length is < 1 or > 3)
-            throw new ArgumentException("La cuenta debe tener entre 1 y 3 titulares.");
-
-        // Validar que no vengan titulares nulos
-        foreach (var t in titulares)
-            if (t == null)
-                throw new ArgumentException("Los titulares no pueden ser null.");
-
-        _titular = titulares;
+    public required Titular?[] Titular { get;
+        set {
+            if (value is null)
+                throw new ArgumentException("El array de titulares no puede ser null.");
+            if (value.Length is < 1 or > 3)
+                throw new ArgumentException("Debe haber entre 1 y 3 titulares.");
+            field = value;
+        }
     }
+
+    // public CuentaBancaria(Titular[] titulares) {
+    //     if (titulares == null)
+    //         throw new ArgumentException("El array no puede ser null.");
+    //     if (titulares.Length is < 1 or > 3)
+    //         throw new ArgumentException("La cuenta debe tener entre 1 y 3 titulares.");
+    //     Titular = titulares;
+    // }
     
     private static bool IsCuentaValida(long cuenta) {
         var cuentaString = cuenta.ToString();
@@ -38,6 +39,6 @@ public class CuentaBancaria {
         return regex.IsMatch(cuentaString); 
     }
     public override string ToString() {
-        return $"NºCuentaBancaria: {NumeroDeCuentaBancaria}, Saldo: {Saldo}";
+        return $"NºCuentaBancaria: {NumeroDeCuentaBancaria}, Saldo: {Saldo}, Titular: {Titular}";
     }
 }

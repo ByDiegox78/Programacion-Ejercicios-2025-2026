@@ -39,6 +39,11 @@ public class Titular
         var regex = new Regex("^[6]{1}[0-9]{8}$"); 
         return regex.IsMatch(numeroString); 
     }
+
+    public override string ToString() {
+        return $"Nombre: {Nombre}, Apellido: {Apellido}, DNI: {Dni}, Telefono: {Telefono}";
+    }
+
 }
 
 

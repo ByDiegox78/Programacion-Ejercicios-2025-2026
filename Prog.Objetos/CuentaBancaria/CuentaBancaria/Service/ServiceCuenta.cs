@@ -6,7 +6,7 @@ using static Console;
 public class ServiceCuenta
 {
     private CuentaBancaria?[] _banco = new CuentaBancaria?[5];
-    private ValidatorCuenta _validate = new ValidatorCuenta();
+    private readonly ValidatorCuenta _validate = new ValidatorCuenta();
 
     public void CrearCuenta() {
         WriteLine("=== CREAR NUEVA CUENTA BANCARIA ===");
@@ -34,8 +34,16 @@ public class ServiceCuenta
         titular.Dni = dni;
         titular.Telefono = telefono;
 
-// Crear cuenta con array
-        var cuenta = new CuentaBancaria(titular);
+        var arrayTitular = new Titular?[3] { null,null,null };
+        var cuenta = new CuentaBancaria {
+            Titular = [
+                titular
+            ]
+        };
+        cuenta.NumeroDeCuentaBancaria = numeroCuenta;
+        cuenta.Saldo = saldo;
+        
+        
         
 
         WriteLine();
