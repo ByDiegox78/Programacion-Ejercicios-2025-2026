@@ -5,8 +5,16 @@ Este repositorio contiene todos mis ejercicios de programación para el curso 20
 ## Estructura del repositorio
 
 - `Ejercicios/`
-  - `Cine/` → Proyecto del cine
-  - `FMM/` → Simulación de fuego en un bosque.
+  - `Prog.Modular/`
+    - `Cine/` → Proyecto del cine
+    - `FMM/` → Simulación de fuego en un bosque.
+    - `NewParking/` → Parking sin composicion
+    - `TWD/` → Simulacion TWD (No acabado)
+  - `Prog.Estructurada/`
+    - `Conquistadores de Catan/` → Proyecto de Conquistadores de Catan
+    - `Cuenta Bancaria/` → Gestion de Banco
+
+ 
 
 
 ## Notas
