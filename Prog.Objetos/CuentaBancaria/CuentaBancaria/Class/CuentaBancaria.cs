@@ -5,7 +5,7 @@ namespace CuentaBancaria.Class;
 public class CuentaBancaria {
     public long NumeroDeCuentaBancaria {
         get;
-        set => field = !IsCuentaValida(value)
+        init => field = !IsCuentaValida(value)
             ? throw new ArgumentException("El Numero de Cuenta no es valido.")
             : value;
     }
@@ -39,6 +39,13 @@ public class CuentaBancaria {
         return regex.IsMatch(cuentaString); 
     }
     public override string ToString() {
-        return $"NºCuentaBancaria: {NumeroDeCuentaBancaria}, Saldo: {Saldo}, Titular: {Titular}";
+        var nombres = "";
+        foreach (var t in Titular) {
+            if (t != null) {
+                if (nombres != "") nombres += ", ";
+                nombres += $"{t.Nombre} {t.Apellido}";
+            }
+        }
+        return $"NºCuenta: {NumeroDeCuentaBancaria} | Saldo: {Saldo}€ | Titulares: [{nombres}]";
     }
 }

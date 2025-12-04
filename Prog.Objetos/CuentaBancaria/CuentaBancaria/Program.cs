@@ -44,22 +44,22 @@ void MenuBanco(ServiceCuenta servicioCuenta) {
 
             case MenuOpcion.IngresarDinero:
                 WriteLine("Has elegido: Ingresar dinero");
-                // Lógica para ingresar dinero
+                servicioCuenta.IngresarDinero();
                 break;
 
             case MenuOpcion.RetirarDinero:
                 WriteLine("Has elegido: Retirar dinero");
-                // Lógica para retirar dinero
+                servicioCuenta.RetirarDinero();
                 break;
 
             case MenuOpcion.AñadirTitular:
                 WriteLine("Has elegido: Añadir titular");
-                // Llamada a lógica de añadir titular
+                servicioCuenta.AñadirTitular();
                 break;
 
             case MenuOpcion.BorrarTitular:
                 WriteLine("Has elegido: Borrar titular");
-                // Lógica para borrar titular
+                servicioCuenta.EliminarTitular();
                 break;
 
             case MenuOpcion.Salir:
