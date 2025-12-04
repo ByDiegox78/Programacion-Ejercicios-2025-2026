@@ -1,7 +1,6 @@
 # Repositorio de Ejercicios 2025-2026
 
-Este repositorio contiene todos mis ejercicios de programación para el curso 2025-2026.
-
+Este repositorio tiene todos los ejercicios, prácticas y proyectos realizados durante el curso 2025–2026 en  Programacion.
 ## Estructura del repositorio
 
 - `Ejercicios/`
@@ -13,6 +12,11 @@ Este repositorio contiene todos mis ejercicios de programación para el curso 20
   - `Prog.Estructurada/`
     - `Conquistadores de Catan/` → Proyecto de Conquistadores de Catan
     - `Cuenta Bancaria/` → Gestion de Banco
+
+## Tecnologias Usadas
+- C# → Usado en ejercicios
+- .NET10
+- Rider 
 
  
 
