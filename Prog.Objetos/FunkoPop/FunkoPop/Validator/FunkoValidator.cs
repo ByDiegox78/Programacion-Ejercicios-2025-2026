@@ -6,7 +6,8 @@ using Serilog;
 namespace FunkoPop.Validator;
 
 public class FunkoValidator {
-    public static readonly string RegexMenu = @$"^[{(int)OpcionMenu.Salir}-{(int)OpcionMenu.Eliminar}]$";
+    public static readonly string RegexMenu = @$"^[{(int)OpcionMenu.Salir}-{(int)OpcionMenu.OrdenarPrecioDesc}]$";
+    public static readonly string RegexId = "^[1-9][0-9]*$";
     public Funko Validators(Funko funko) {
         Log.Debug("Entrando en validador de funko...");
         if (string.IsNullOrEmpty(funko.Nombre) || string.IsNullOrWhiteSpace(funko.Nombre) || funko.Nombre.Length < 3) {

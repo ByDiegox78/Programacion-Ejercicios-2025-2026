@@ -7,9 +7,8 @@ public enum OpcionMenu {
     Anadir = 3,
     Actualizar = 4,
     Eliminar = 5,
-    ListarNotas = 6,
-    OrdenarAscendenteByName = 7,
-    OrdenarDescendenteByName = 8,
-    OrdenarDescendenteByValue = 9,
-    OrdenarAscendenteByValue = 10,
+    OrdenarNombreAsc = 6,
+    OrdenarNombredesc = 7,
+    OrdenarPrecioAsc = 8,
+    OrdenarPrecioDesc = 9
 }

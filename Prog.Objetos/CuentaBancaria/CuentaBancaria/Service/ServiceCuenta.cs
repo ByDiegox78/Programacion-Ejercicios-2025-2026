@@ -4,8 +4,7 @@ using Serilog;
 namespace CuentaBancaria.Service;
 using Class;
 using static Console;
-public class ServiceCuenta
-{
+public class ServiceCuenta {
     private CuentaBancaria?[] _banco = new CuentaBancaria?[5];
     private readonly ValidatorCuenta _validate = new ValidatorCuenta();
 

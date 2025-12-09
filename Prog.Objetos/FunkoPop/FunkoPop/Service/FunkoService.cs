@@ -1,6 +1,7 @@
 ﻿using FunkoPop.Enums;
 using FunkoPop.Models;
 using FunkoPop.Repository;
+using FunkoPop.Utils;
 using FunkoPop.Validator;
 using Serilog;
 
@@ -8,9 +9,11 @@ namespace FunkoPop.Service;
 
 public class FunkoService(FunkoRepository repository, FunkoValidator validator) {
     private readonly ILogger _log = Log.ForContext<FunkoService>();
-    public Funko[] GetAllFunko(TipoOrdenamiento tipoOrdenamiento) {
+
+    public int TotalFunkos = repository.TotalFunkos;
+    public Funko[] GetAllFunko(/*TipoOrdenamiento tipoOrdenamiento*/) {
         var funkos = repository.GetAll();
-        ShellShort(funkos, tipoOrdenamiento);
+        //ShellShort(funkos, tipoOrdenamiento);
         return funkos;
     }
 
@@ -51,11 +54,15 @@ public class FunkoService(FunkoRepository repository, FunkoValidator validator) 
             $"Funko con id {funkoValido.Id} no encontrado para actualizar");
         
     }
+    public void Order(TipoOrdenamiento orden) {
+        var funkos = repository.GetAll();
+        ShellShort(funkos, orden);
+    }
     
     
     
     
-    public static void ShellShort(Funko[] arr, TipoOrdenamiento tipoOrdenamiento) {
+    private void ShellShort(Funko[] arr, TipoOrdenamiento tipoOrdenamiento) {
         var n = arr.Length;
 
         var gap = n / 2;
@@ -73,6 +80,7 @@ public class FunkoService(FunkoRepository repository, FunkoValidator validator) 
             }
             gap = gap / 2;
         }
+        Utilities.ImprimirListado(arr);
     }
     private static bool OrdenarPor(Funko a, Funko b, TipoOrdenamiento orden) {
         return orden switch {
