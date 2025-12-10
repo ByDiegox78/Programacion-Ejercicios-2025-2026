@@ -37,7 +37,7 @@ public class FunkoService(FunkoRepository repository, FunkoValidator validator) 
         }
         catch (KeyNotFoundException) {
         }
-        return funko;
+        return repository.Save(funkoValido);
     }
 
     public Funko? DeleteFunko(int idFunko) {

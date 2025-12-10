@@ -8,6 +8,10 @@ namespace FunkoPop.Validator;
 public class FunkoValidator {
     public static readonly string RegexMenu = @$"^[{(int)OpcionMenu.Salir}-{(int)OpcionMenu.OrdenarPrecioDesc}]$";
     public static readonly string RegexId = "^[1-9][0-9]*$";
+    public static readonly string RegexNombreApellido = "^[A-Z]{1}[a-z]{2,}$";
+    public static readonly string RegexTipo = @"^(Anime|Superheroe|Disney)$";
+    public static readonly string RegexCambio = @$"^[{(int)Cambio.Nombre}-{(int)Cambio.Salir}]$";
+    
     public Funko Validators(Funko funko) {
         Log.Debug("Entrando en validador de funko...");
         if (string.IsNullOrEmpty(funko.Nombre) || string.IsNullOrWhiteSpace(funko.Nombre) || funko.Nombre.Length < 3) {
