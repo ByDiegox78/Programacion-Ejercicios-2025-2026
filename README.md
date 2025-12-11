@@ -12,6 +12,8 @@ Este repositorio tiene todos los ejercicios, prácticas y proyectos realizados d
   - `Prog.Estructurada/`
     - `Conquistadores de Catan/` → Proyecto de Conquistadores de Catan
     - `Cuenta Bancaria/` → Gestion de Banco
+    - `Funkos/` → Gestion de Funkos
+    - `BandaRock/` → Gestion de Banda de Rock
 
 ## Tecnologias Usadas
 - C# → Usado en ejercicios
