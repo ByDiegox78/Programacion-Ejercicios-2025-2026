@@ -5,7 +5,7 @@ namespace CuentaBancaria.Service;
 using Class;
 using static Console;
 public class ServiceCuenta {
-    private CuentaBancaria?[] _banco = new CuentaBancaria?[5];
+    private readonly CuentaBancaria?[] _banco = new CuentaBancaria?[5];
     private readonly ValidatorCuenta _validate = new ValidatorCuenta();
 
     public void CrearCuenta() {
