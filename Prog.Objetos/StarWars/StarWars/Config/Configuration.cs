@@ -1,7 +1,7 @@
 ﻿namespace StarWars.Config;
 
 public static class Configuration {
-    public static int MapSize { get; private set; }
+    public static int MapSize { get; private set; } // public static readonly int mapSize
     public static int NumberOfEnemies { get; private set; }
     public static int Time { get; private set; }
 

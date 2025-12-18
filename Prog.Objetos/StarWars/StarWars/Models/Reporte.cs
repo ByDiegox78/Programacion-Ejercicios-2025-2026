@@ -6,5 +6,6 @@ public record Reporte(
     int TimeMax,
     int DisparosRealizados,
     int Aciertos,
-    int DroidesDestruidos
+    int DroidesDestruidos,
+    Droide[] OrdenPorEnergia
     );

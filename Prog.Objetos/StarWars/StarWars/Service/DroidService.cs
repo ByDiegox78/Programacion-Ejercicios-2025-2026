@@ -9,15 +9,14 @@ public class DroidService {
     private readonly Random _rand = new Random();
     private readonly Droide[] _enemies;
     private readonly Droide?[,] _droidMap;
-    private readonly int _mapSize; // Esta vez por constructor de la clase
-    private readonly int _totalEnemigos; // Esta vez por constructor de la clase
-    private readonly int _timeMax; // Esta vez por constructor de la clase
+    private readonly int _mapSize; 
+    private readonly int _totalEnemigos; 
+    private readonly int _timeMax;
     private int _disparosRealizados;
     private int _aciertos;
     private int _enemigosDestruidos;
-    
-    //private int _numberOfHits;
-    //private int _numberOfShots;
+    private Droide[] _enemigosOrdenados;
+   
     
     public DroidService(int mapSize, int totalEnemigos, int timeMax) {
         _mapSize = mapSize; //Configuration.MapSize (7)
@@ -27,6 +26,8 @@ public class DroidService {
         _enemies = new Droide[totalEnemigos]; //Vector de 10 ennegimos
         for (var i = 0; i < totalEnemigos; i++)
             _enemies[i] = DroidFactory.RandDroid();//Llenamos con los tipos, ahora ${_enemies} tiene droides
+        _enemigosOrdenados = _enemies;
+
     }
 
     public Reporte Report =>
@@ -36,18 +37,16 @@ public class DroidService {
         _timeMax,
         _disparosRealizados,
         _aciertos,
-        _enemigosDestruidos
+        _enemigosDestruidos,
+        _enemigosOrdenados
         );
 
     public void Simulation() {
         var time = 0;
         InitMap();
-        
-        int danio;
-        int danioRecibido;
+
         while (time < _timeMax * 1000 && IsAllDead()) {
             PrintMatrix();
-            danioRecibido = 0;
             if (time % 300 == 0) {
                 MoverDroides();
             }
@@ -55,17 +54,16 @@ public class DroidService {
             time += 100;
             var f = _rand.Next(0, _mapSize);
             var c = _rand.Next(0, _mapSize);
-            danio = Disparar();
+            var danio = Disparar();
             if (_droidMap[f, c] is { } nave) {
+                _aciertos++;
                 switch (nave.Tipo) {
                     case Droide.TipoDroide.Sw348:
-                        danioRecibido = Math.Min(danio, nave.DefensaPersonal);
-                        nave.EnergiaMaxima -= danioRecibido;
+                        nave.Defenderse(danio);
                         Console.WriteLine($"La Energia actual de Sw348 es de {nave.EnergiaMaxima}");
                         break;
                     case Droide.TipoDroide.Sw447:
-                        danioRecibido = danio - nave.Escudo;
-                        nave.EnergiaMaxima -= danioRecibido;
+                        nave.UsarEscudo(danio);
                         Console.WriteLine($"La Energia actual de Sw447 es de {nave.EnergiaMaxima}");
                         break;
                     case Droide.TipoDroide.Sw421:
@@ -78,8 +76,11 @@ public class DroidService {
                 
             }
         }
-        
-        
+        _enemigosOrdenados = ShellSort(_enemies);
+        _enemigosDestruidos = EnemigosDestruidos();
+
+
+
     }
 
     
@@ -89,9 +90,7 @@ public class DroidService {
                 _droidMap[i, j] = null;
             }
         }
-
         var droidesColocados = 0;
-
         while (droidesColocados < _totalEnemigos) {
             var f = _rand.Next(0, _mapSize);
             var c = _rand.Next(0, _mapSize);
@@ -149,7 +148,7 @@ public class DroidService {
         }
     }
     private int Disparar() {
-        _disparosRealizados + 1;
+        _disparosRealizados++;
         if (new Random().Next(0, 101) <= 15) {
             Console.WriteLine("¡Has conseguido un disparo crítico!");
             return 50;
@@ -167,6 +166,35 @@ public class DroidService {
         }
         return false;
     }
+
+    private int EnemigosDestruidos() {
+        var count = 0;
+        for (int i = 0; i < _enemies.GetLength(0); i++) {
+            if (!_enemies[i].IsAlive) {
+                count++;
+            }
+        }
+        return count;
+    }
+    private Droide[] ShellSort(Droide[] arr) {
+        
+        int n = arr.Length;
+        int gap = n / 2;
+        while (gap > 0) {
+            for (int i = gap; i < n; i++) {
+                Droide temp = arr[i];
+                int j = i;
+                while (j >= gap && arr[j - gap].EnergiaMaxima > temp.EnergiaMaxima) {
+                    arr[j] = arr[j - gap];
+                    j = j - gap;
+                }
+                arr[j] = temp;
+            }
+            gap = gap / 2;
+        }
+        return arr;
+    }
+   
 
 
 
