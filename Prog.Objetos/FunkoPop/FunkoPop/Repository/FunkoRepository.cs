@@ -11,12 +11,12 @@ public class FunkoRepository {
     private static int _idCounter;
     private readonly ILogger _log = Log.ForContext<FunkoRepository>();
     private Funko?[] _lista = new Funko?[Configuracion.TamanoInicial];
+    public int TotalFunkos { get; private set; }
 
     private FunkoRepository() {
         _log.Debug("Creando instancia unica del repositorio");
         InitFunKo();
     }
-    public int TotalFunkos { get; private set; }
     public static FunkoRepository GetInstance() {
         return _instance ??= new FunkoRepository();
     }
