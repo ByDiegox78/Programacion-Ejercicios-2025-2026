@@ -1,0 +1,13 @@
+﻿El sistema busca una posicion aleaotrea y dispara
+
+Sleep 100ms
+Posicion = droide / aciertos++
+Daño predeterminado 25 puntos
+Random(0,16) daño = 50
+
+Cada 300ms todos los droides cambian a una hubicacion aleatorea
+
+Si la energia es <= 0 se destruye
+
+Desaparece y aumenta el contador
+

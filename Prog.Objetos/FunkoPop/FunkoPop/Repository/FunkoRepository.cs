@@ -38,10 +38,10 @@ public class FunkoRepository {
     }
     
     public Funko? GetById(int id) {
-        _log.Information("Buscando alumno por ID: {Id}", id);
-        foreach (var alumno in _lista)
-            if (alumno?.Id == id)
-                return alumno;
+        _log.Information("Buscando Funko por ID: {Id}", id);
+        foreach (var funko in _lista)
+            if (funko?.Id == id)
+                return funko;
 
         return null;
     }
