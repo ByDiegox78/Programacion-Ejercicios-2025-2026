@@ -3,8 +3,8 @@ using Ficha.Repository.Common;
 
 namespace Ficha.Repository.Revista;
 
-public interface IRevistasRepository : ICrudRepository<Revistas, int>
+public interface IRevistasRepository : ICrudRepository<Models.Revista, int>
 {
-    public int TotalDvd { get; }
+    public int TotalRevista { get; }
 
 }

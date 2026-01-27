@@ -5,6 +5,6 @@ using Ficha.Models;
 
 public interface ILibrosRepository : ICrudRepository<Libro, int>
 {
-    public int TotalDvd { get; }
+    public int TotalLibro { get; }
 
 }

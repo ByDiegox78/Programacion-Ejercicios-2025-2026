@@ -7,20 +7,20 @@ using Ficha.Models;
 public class RevistaRepository : IRevistasRepository
 {
     private static int _idCounter;
-    private readonly ILista<Revistas> _listado = new Lista<Revistas>();
+    private readonly ILista<Revista> _listado = new Lista<Revista>();
 
-    public int TotalDvd => _listado.Contar();
+    public int TotalRevista => _listado.Contar();
 
     private static int GetNextId() {
         return _idCounter++;
     }
     
     
-    public ILista<Revistas> GetAll() {
+    public ILista<Revista> GetAll() {
         return _listado;
     }
 
-    public Revistas? GetById(int id) {
+    public Revista? GetById(int id) {
         foreach (var revistas in _listado) {
             if (revistas.Id == id) {
                 return revistas;
@@ -29,7 +29,7 @@ public class RevistaRepository : IRevistasRepository
         return null;
     }
 
-    public Revistas? Create(Revistas entity) {
+    public Revista? Create(Revista entity) {
         if (Existe(entity)) {
             return null;
         }
@@ -44,7 +44,7 @@ public class RevistaRepository : IRevistasRepository
         return salvado;
     }
 
-    public Revistas? Update(Revistas entity, int id) {
+    public Revista? Update(Revista entity, int id) {
         var index = IndexOf(id);
         if (index == -1) {
             return null;
@@ -59,7 +59,7 @@ public class RevistaRepository : IRevistasRepository
         return updated;
     }
 
-    public Revistas? Delete(int id) {
+    public Revista? Delete(int id) {
         var index = IndexOf(id);
         if (index == -1) {
             return null;
@@ -72,7 +72,7 @@ public class RevistaRepository : IRevistasRepository
         return alumnoDeleted;
     }
 
-    private bool Existe(Revistas revista) {
+    private bool Existe(Revista revista) {
         foreach (var revistas in _listado) {
             if (revistas.Equals(revista)) {
                 return false;

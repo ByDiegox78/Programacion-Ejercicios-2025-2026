@@ -9,7 +9,7 @@ public class LibroValidate : ILibroValidate
     public static readonly string AutorEditorialRegexValidate = @"^[A-Za-zñÑ]{3,}";
     
     
-    public Libro Vaidate(Libro libro) {
+    public Libro Validate(Libro libro) {
 
         if (string.IsNullOrWhiteSpace(libro.nombre)) {
             throw new ArgumentException("El nombre no puede estar vacio");
@@ -25,6 +25,7 @@ public class LibroValidate : ILibroValidate
         if (!NombreValidate(libro.nombre)) {
             throw new ArgumentException("El nombre correcto no es acorde al formato");
         }
+        
         
         if (string.IsNullOrWhiteSpace(libro.Editorial)) {
             throw new ArgumentException("La editorial no puede estar vacía.");

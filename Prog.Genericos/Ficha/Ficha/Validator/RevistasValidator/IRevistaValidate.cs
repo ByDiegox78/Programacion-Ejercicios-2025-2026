@@ -3,7 +3,7 @@ using Ficha.Validator.Common;
 
 namespace Ficha.Validator.RevistasValidator;
 
-public interface IRevistaValidate : IValidator<Revistas>
+public interface IRevistaValidate : IValidator<Revista>
 {
     
 }

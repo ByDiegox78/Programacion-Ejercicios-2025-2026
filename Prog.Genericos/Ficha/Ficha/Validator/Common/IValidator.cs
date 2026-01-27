@@ -2,5 +2,5 @@
 
 public interface IValidator<T>
 {
-    T Vaidate(T item);
+    T Validate(T item);
 }

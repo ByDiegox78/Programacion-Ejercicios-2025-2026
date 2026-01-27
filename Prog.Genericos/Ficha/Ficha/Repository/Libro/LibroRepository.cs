@@ -11,7 +11,7 @@ public class LibroRepository : ILibrosRepository
     private static int _idCounter;
     private readonly ILista<Libro> _listado = new Lista<Libro>();
 
-    public int TotalDvd => _listado.Contar();
+    public int TotalLibro => _listado.Contar();
 
     private static int GetNextId() {
         return _idCounter++;

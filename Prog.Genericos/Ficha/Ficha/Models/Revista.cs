@@ -1,6 +1,6 @@
 ﻿namespace Ficha.Models;
 
-public sealed record Revistas(int id, string nombre) : Ficha(id, nombre) 
+public sealed record Revista(int id, string nombre) : Ficha(id, nombre) 
 {
     public int NumeroLista { get; init; }
     public int AnioPublicacion { get; init; }
@@ -11,7 +11,7 @@ public sealed record Revistas(int id, string nombre) : Ficha(id, nombre)
     public bool IsDeleted { get; init; } = false;
 
     
-    public bool Equals(Revistas? other) {
+    public bool Equals(Revista? other) {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
 
