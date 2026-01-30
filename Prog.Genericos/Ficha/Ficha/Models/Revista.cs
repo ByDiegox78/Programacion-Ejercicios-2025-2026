@@ -1,6 +1,6 @@
 ﻿namespace Ficha.Models;
 
-public sealed record Revista(int id, string nombre) : Ficha(id, nombre) 
+public sealed record Revista: Ficha
 {
     public int NumeroLista { get; init; }
     public int AnioPublicacion { get; init; }

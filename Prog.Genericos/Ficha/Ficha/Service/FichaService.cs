@@ -28,7 +28,7 @@ public class FichaService(
     
     public Dvd GetByIdDvd(int id) {
         return dvdRepository.GetById(id) ??
-               throw new KeyNotFoundException("$\"No se encontró el dvd con ID: {id}\"");
+               throw new KeyNotFoundException($"No se encontró el dvd con ID: {id}");
     }
 
     public ILista<Dvd> GetAllDvd() {
@@ -39,15 +39,15 @@ public class FichaService(
         var dvdSaved = dvdValidate.Validate(dvd);
         return dvdRepository.Create(dvdSaved) ??
                throw new ArgumentException(
-                   $"No se pudo guardar el alumno con DNI {dvdSaved.id}, puede que ya exista");
+                   $"No se pudo guardar el alumno con DNI {dvdSaved.Id}, puede que ya exista");
     }
 
     
     public Dvd UpdateDvd(Dvd dvd) {
         var dvdSaved = dvdValidate.Validate(dvd);
 
-        return dvdRepository.Update(dvdSaved, dvdSaved.id) ??
-               throw new KeyNotFoundException($"Dvd con ID {dvdSaved.id} no encontrado para actualización.");
+        return dvdRepository.Update(dvdSaved, dvdSaved.Id) ??
+               throw new KeyNotFoundException($"Dvd con ID {dvdSaved.Id} no encontrado para actualización.");
     }
 
     
@@ -75,16 +75,16 @@ public class FichaService(
 
         return librosRepository.Create(libroSaved) ??
                throw new ArgumentException(
-                   $"No se pudo guardar el libro con ID {libroSaved.id}, puede que ya exista");
+                   $"No se pudo guardar el libro con ID {libroSaved.Id}, puede que ya exista");
     }
 
     public Libro UpdateLibro(Libro libro)
     {
         var libroSaved = libroValidate.Validate(libro);
 
-        return librosRepository.Update(libroSaved, libroSaved.id) ??
+        return librosRepository.Update(libroSaved, libroSaved.Id) ??
                throw new KeyNotFoundException(
-                   $"Libro con ID {libroSaved.id} no encontrado para actualización.");
+                   $"Libro con ID {libroSaved.Id} no encontrado para actualización.");
     }
 
     public Libro DeleteLibro(int id)
@@ -113,16 +113,16 @@ public class FichaService(
 
         return revistaRepository.Create(revistaSaved) ??
                throw new ArgumentException(
-                   $"No se pudo guardar la revista con ID {revistaSaved.id}, puede que ya exista");
+                   $"No se pudo guardar la revista con ID {revistaSaved.Id}, puede que ya exista");
     }
 
     public Revista UpdateRevista(Revista revista)
     {
         var revistaSaved = revistaValidate.Validate(revista);
 
-        return revistaRepository.Update(revistaSaved, revistaSaved.id) ??
+        return revistaRepository.Update(revistaSaved, revistaSaved.Id) ??
                throw new KeyNotFoundException(
-                   $"Revista con ID {revistaSaved.id} no encontrada para actualización.");
+                   $"Revista con ID {revistaSaved.Id} no encontrada para actualización.");
     }
 
     public Revista DeleteRevista(int id)

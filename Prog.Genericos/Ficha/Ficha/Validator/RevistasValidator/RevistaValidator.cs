@@ -12,18 +12,18 @@ public class RevistaValidator : IRevistaValidate
     public static readonly string NombreRegexValidate = @"^[A-Za-zñÑ]{3,}";
     
     public Revista Validate(Revista revista) {
-        if (string.IsNullOrWhiteSpace(revista.nombre)) {
+        if (string.IsNullOrWhiteSpace(revista.Nombre)) {
             throw new ArgumentException("El nombre no puede estar vacio");
         }
 
-        var nombreLongitud = revista.nombre.Length;
+        var nombreLongitud = revista.Nombre.Length;
 
         if (nombreLongitud < MinNombreLength) {
-            throw new ArgumentOutOfRangeException(nameof(revista.nombre),
+            throw new ArgumentOutOfRangeException(nameof(revista.Nombre),
                 $"El nombre no puede tener menos de ${MinNombreLength} letras.");
         }
 
-        if (!NombreValidate(revista.nombre)) {
+        if (!NombreValidate(revista.Nombre)) {
             throw new ArgumentException("El nombre correcto no es acorde al formato");
         }
 

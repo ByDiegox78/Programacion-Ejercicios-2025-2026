@@ -1,6 +1,6 @@
 ﻿namespace Ficha.Models;
 
-public sealed record Libro(int id, string nombre) : Ficha(id, nombre)
+public sealed record Libro : Ficha
 {
     public required string Editorial { get; init; }
     public required string Autor { get; init; }

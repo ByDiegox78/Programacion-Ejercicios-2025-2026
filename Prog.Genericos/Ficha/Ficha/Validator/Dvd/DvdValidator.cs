@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Ficha.Enums;
 
 namespace Ficha.Validator.Dvd;
 using Ficha.Models;
@@ -8,8 +9,8 @@ using Ficha.Models;
 public class DvdValidator : IDvdValidate
 {
     private const int MinStringLength = 3;
-    private const int MinAnio = 1975;
-    private const int MaxAnio = 2027;
+    public static readonly int MinAnio = 1975;
+    public static readonly int MaxAnio = 2027;
     public static readonly string NombreRegexValidate = @"^[A-Za-zñÑ]{3,}";
     public static readonly string DirectorRegexValidate = @"^[A-Za-zñÑ]{3,}";
 
@@ -17,18 +18,18 @@ public class DvdValidator : IDvdValidate
     
     public Dvd Validate(Dvd dvd) {
        //Nombre validate
-        if (string.IsNullOrWhiteSpace(dvd.nombre)) {
+        if (string.IsNullOrWhiteSpace(dvd.Nombre)) {
             throw new ArgumentException("El nombre no puede estar vacio");
         }
 
-        var nombreLongitud = dvd.nombre.Length;
+        var nombreLongitud = dvd.Nombre.Length;
 
         if (nombreLongitud < MinStringLength) {
-            throw new ArgumentOutOfRangeException(nameof(dvd.nombre),
+            throw new ArgumentOutOfRangeException(nameof(dvd.Nombre),
                 $"El nombre no puede tener menos de ${MinStringLength} letras.");
         }
 
-        if (!NombreValidate(dvd.nombre)) {
+        if (!NombreValidate(dvd.Nombre)) {
             throw new ArgumentException("El nombre correcto no es acorde al formato");
         }
         
@@ -43,7 +44,7 @@ public class DvdValidator : IDvdValidate
                 $"El director no puede tener menos de ${MinStringLength} letras.");
         }
 
-        if (!NombreValidate(dvd.nombre)) {
+        if (!NombreValidate(dvd.Nombre)) {
             throw new ArgumentException("El director correcto no es acorde al formato");
         }
         
@@ -52,9 +53,8 @@ public class DvdValidator : IDvdValidate
             throw new ArgumentOutOfRangeException(nameof(dvd),
                 $"El año de publicacion no puede ser antes de {MinAnio} o mayor a {MaxAnio}");
         }
-
-        return dvd;
-
+        
+        return !Enum.IsDefined(typeof(TipoDvd), dvd.Tipo) ? throw new ArgumentException("El tipo del DVD no es válido.") : dvd;
     }
     
     private bool NombreValidate(string nombre) {
@@ -66,4 +66,6 @@ public class DvdValidator : IDvdValidate
         bool isOk = Regex.IsMatch(director, DirectorRegexValidate);
         return isOk;
     }
+    
 }
+

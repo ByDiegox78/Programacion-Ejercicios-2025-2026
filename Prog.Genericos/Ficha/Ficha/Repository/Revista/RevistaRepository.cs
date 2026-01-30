@@ -37,7 +37,8 @@ public class RevistaRepository : IRevistasRepository
         var salvado = entity with {
             Id = GetNextId(),
             CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
+            UpdatedAt = DateTime.UtcNow,
+            IsDeleted = false
         };
         
         _listado.AgregarFinal(salvado);

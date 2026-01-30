@@ -11,18 +11,18 @@ public class LibroValidate : ILibroValidate
     
     public Libro Validate(Libro libro) {
 
-        if (string.IsNullOrWhiteSpace(libro.nombre)) {
+        if (string.IsNullOrWhiteSpace(libro.Nombre)) {
             throw new ArgumentException("El nombre no puede estar vacio");
         }
 
-        var nombreLongitud = libro.nombre.Length;
+        var nombreLongitud = libro.Nombre.Length;
 
         if (nombreLongitud < MinStringLength) {
-            throw new ArgumentOutOfRangeException(nameof(libro.nombre),
+            throw new ArgumentOutOfRangeException(nameof(libro.Nombre),
                 $"El nombre no puede tener menos de ${MinStringLength} letras.");
         }
 
-        if (!NombreValidate(libro.nombre)) {
+        if (!NombreValidate(libro.Nombre)) {
             throw new ArgumentException("El nombre correcto no es acorde al formato");
         }
         

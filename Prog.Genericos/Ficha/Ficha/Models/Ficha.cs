@@ -1,8 +1,8 @@
 ﻿namespace Ficha.Models;
 
-public abstract record Ficha(int Id, string Nombre)
+public abstract record Ficha
 {
-    public required int Id { get; init; } = Id;
-    public required string Nombre { get; set; } = Nombre;
+    public int Id { get; init; } = 0;
+    public required string Nombre { get; set; }
     
 }

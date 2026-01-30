@@ -10,6 +10,5 @@
 
     <ItemGroup>
       <Folder Include="Collections\" />
-      <Folder Include="Validator\RevistaValidate\" />
     </ItemGroup>
 </Project>

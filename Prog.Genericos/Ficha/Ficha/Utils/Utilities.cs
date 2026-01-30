@@ -92,6 +92,39 @@ public static class Utilities {
 
         Console.WriteLine("---------------------------------------------------------------");
     }
+    public static void ImprimirInfoDvd(Dvd dvd)
+    {
+        Console.WriteLine("-----------------------------------");
+        Console.WriteLine($"🎬 ID: {dvd.Id}");
+        Console.WriteLine($"🏷 Nombre: {dvd.Nombre}");
+        Console.WriteLine($"🎥 Director: {dvd.Director}");
+        Console.WriteLine($"📅 Año: {dvd.Anio}");
+        Console.WriteLine($"🎞 Tipo: {dvd.Tipo}");
+        Console.WriteLine("-----------------------------------");
+    }
+    
+    public static void ImprimirInfoLibro(Libro libro)
+    {
+        Console.WriteLine("-----------------------------------");
+        Console.WriteLine($"📖 ID: {libro.Id}");
+        Console.WriteLine($"🏷 Nombre: {libro.Nombre}");
+        Console.WriteLine($"✍ Autor: {libro.Autor}");
+        Console.WriteLine($"🏢 Editorial: {libro.Editorial}");
+        Console.WriteLine("-----------------------------------");
+    }
+    
+    public static void ImprimirInfoRevista(Revista revista)
+    {
+        Console.WriteLine("-----------------------------------");
+        Console.WriteLine($"📰 ID: {revista.Id}");
+        Console.WriteLine($"🏷 Nombre: {revista.Nombre}");
+        Console.WriteLine($"# Número: {revista.NumeroLista}");
+        Console.WriteLine($"📅 Año publicación: {revista.AnioPublicacion}");
+        Console.WriteLine("-----------------------------------");
+    }
+
+
+
 
 
 

@@ -2,5 +2,5 @@
 
 public enum TipoDvd
 {
-    Pelucula, Documental, Serie
+    Pelicula, Documental, Serie
 }

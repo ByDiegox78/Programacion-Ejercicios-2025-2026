@@ -2,7 +2,7 @@
 
 namespace Ficha.Models;
 
-public sealed record Dvd(int id, string nombre) : Ficha(id, nombre) 
+public sealed record Dvd : Ficha
 {
     public required string Director { get; init; }
     public int Anio { get; init; }

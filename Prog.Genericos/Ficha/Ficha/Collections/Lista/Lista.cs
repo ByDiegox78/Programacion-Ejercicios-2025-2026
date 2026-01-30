@@ -168,9 +168,6 @@ public class Lista<T> : ILista<T> {
         if (indice < 0 || indice >= _contador)
             throw new ArgumentOutOfRangeException(nameof(indice), "Índice fuera de rango");
         var actual = _cabeza;
-        // Con un bucle while
-        // while (actual != null && i < indice)
-        //     actual = actual.Siguiente;
 
         // Con un bucle for
         for (var i = 0; i < indice; i++)
