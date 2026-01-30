@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Ficha.Enums;
 using Ficha.Models;
 using Ficha.Repository.Dvd;
 using Ficha.Repository.Libro;
@@ -21,12 +22,72 @@ void Main() {
         new DvdValidator(),        
         new LibroValidate()         
     );
-    
-    
-    
-    
-    
-    
+    OpcionMenu opcion;
+    do {
+        Utilities.ImrimirMenuPrincipal(); //
+        var opcionStr = LeerCadenaValidada("Seleccione una categoría: ", Utilities.EntradaValidaRegexMenuPrincipal, "Opción no válida.");
+        opcion = (OpcionMenu)int.Parse(opcionStr); //
+
+        switch (opcion) {
+            case OpcionMenu.Dvd: MenuDvd(service); break;
+            case OpcionMenu.Revistas: MenuRevista(service); break;
+            case OpcionMenu.Libros: MenuLibro(service); break;
+            case OpcionMenu.Salir: Console.WriteLine("Saliendo del sistema..."); break;
+        }
+    } while (opcion != OpcionMenu.Salir);
+}
+
+// --- SUBMENÚ DVD ---
+void MenuDvd(IFichaService service) {
+    OpcionMenuDvd opcion;
+    do {
+        Utilities.ImprimirMenuDvd(); //
+        var opcStr = LeerCadenaValidada("Seleccione operación de DVD: ", "^[0-5]$", "Opción errónea.");
+        opcion = (OpcionMenuDvd)int.Parse(opcStr); //
+
+        switch (opcion) {
+            case OpcionMenuDvd.ListarTodos: ListarDvd(service); break;
+            case OpcionMenuDvd.InfoId: MostrarPorIdDvd(service); break;
+            case OpcionMenuDvd.Anadir: AñadirNuevoDvd(service); break;
+            case OpcionMenuDvd.Actualizar: ActualizarDvd(service); break;
+            case OpcionMenuDvd.Eliminar: EliminarDvd(service); break;
+        }
+    } while (opcion != OpcionMenuDvd.Salir);
+}
+
+// --- SUBMENÚ LIBROS ---
+void MenuLibro(IFichaService service) {
+    OpcionMenuLibro opcion;
+    do {
+        Utilities.ImprimirMenuLibro(); //
+        var opcStr = LeerCadenaValidada("Seleccione operación de Libro: ", "^[0-5]$", "Opción errónea.");
+        opcion = (OpcionMenuLibro)int.Parse(opcStr); //
+
+        switch (opcion) {
+            case OpcionMenuLibro.ListarTodos: ListarLibro(service); break;
+            case OpcionMenuLibro.InfoId: MostrarPorIdLibro(service); break;
+            case OpcionMenuLibro.Anadir: AñadirNuevoLibro(service); break;
+            case OpcionMenuLibro.Actualizar: ActualizarLibro(service); break;
+            case OpcionMenuLibro.Eliminar: EliminarLibro(service); break;
+        }
+    } while (opcion != OpcionMenuLibro.Salir);
+}
+
+// --- SUBMENÚ REVISTAS ---
+void MenuRevista(IFichaService service) {
+    OpcionMenuRevista opcion;
+    do {
+        Utilities.ImprimirMenuRevista(); //
+        var opcStr = LeerCadenaValidada("Seleccione operación de Revista: ", "^[0-5]$", "Opción errónea.");
+        opcion = (OpcionMenuRevista)int.Parse(opcStr); //
+        switch (opcion) {
+            case OpcionMenuRevista.ListarTodos: ListarRevista(service); break;
+            case OpcionMenuRevista.InfoId: MostrarPorIdRevista(service); break;
+            case OpcionMenuRevista.Anadir: AñadirNuevaRevista(service); break;
+            case OpcionMenuRevista.Actualizar: ActualizarRevista(service); break;
+            case OpcionMenuRevista.Eliminar: EliminarRevista(service); break;
+        }
+    } while (opcion != OpcionMenuRevista.Salir);
 }
 
 void ListarDvd(IFichaService service) {
@@ -39,7 +100,6 @@ void ListarDvd(IFichaService service) {
     Utilities.ImprimirListadoDvd(listado);
     
 }
-
 void ListarRevista(IFichaService service) {
     Console.WriteLine("\n--- LISTADO DE REVISTAS ---");
     if (service.TotalRevistas == 0) {
@@ -50,7 +110,6 @@ void ListarRevista(IFichaService service) {
     Utilities.ImprimirListadoRevistas(listado);
     
 }
-
 void ListarLibro(IFichaService service) {
     Console.WriteLine("\n--- LISTADO DE LIBRO ---");
     if (service.TotalLibros == 0) {
@@ -60,7 +119,6 @@ void ListarLibro(IFichaService service) {
     var listado = service.GetAllLibro();
     Utilities.ImprimirListadoLibro(listado);
 }
-
 void MostrarPorIdDvd(IFichaService service) {
     const string regexId = @"^\d+$";
 
@@ -78,7 +136,6 @@ void MostrarPorIdDvd(IFichaService service) {
         throw;
     }
 }
-
 void MostrarPorIdLibro(IFichaService service) {
     const string regexId = @"^\d+$";
 
@@ -96,8 +153,7 @@ void MostrarPorIdLibro(IFichaService service) {
         throw;
     }
 }
-
-void MostrarPorIdLibro(IFichaService service) {
+void MostrarPorIdRevista(IFichaService service) {
     const string regexId = @"^\d+$";
 
     Console.WriteLine("--- INFORMACIÓN DE REVISTA POR ID ---");
@@ -114,7 +170,6 @@ void MostrarPorIdLibro(IFichaService service) {
         throw;
     }
 }
-/*
 void AñadirNuevoDvd(IFichaService service) {
     Console.WriteLine("\n--- AÑADIR NUEVO DVD ---");
     Console.WriteLine("Introduzca los datos del nuevo DVD:");
@@ -125,9 +180,22 @@ void AñadirNuevoDvd(IFichaService service) {
         "Cadena invalida");
     var anio = LeerAnioValidado("Introduce un año valido", DvdValidator.MinAnio, DvdValidator.MaxAnio);
     
+    var tipo = LeerTipoDvd();
     
-}*/
-
+    var nuevoDvd = new Dvd {
+        Nombre = nombre,
+        Director = director,
+        Anio = anio,
+        Tipo = tipo
+    };
+    try {
+        var guardado = service.SaveDvd(nuevoDvd);
+        Console.WriteLine($"\n✅ INFO: DVD '{guardado.Nombre}' (ID: {guardado.Id}) añadido exitosamente.");
+    }
+    catch (Exception ex) {
+        Console.WriteLine($"\n❌ ERROR: No se pudo añadir el DVD. {ex.Message}");
+    }
+}
 void AñadirNuevoLibro(IFichaService service) {
     Console.WriteLine("\n--- AÑADIR NUEVO LIBRO ---");
     Console.WriteLine("Introduzca los datos del nuevo DVD:");
@@ -155,7 +223,6 @@ void AñadirNuevoLibro(IFichaService service) {
     }
     
 }
-
 void AñadirNuevaRevista(IFichaService service)
 {
     Console.WriteLine("\n--- AÑADIR NUEVA REVISTA ---");
@@ -206,8 +273,19 @@ string LeerCadenaValidada(string prompt, string regex, string error) {
         else
             Console.WriteLine($"❌ ERROR: {error}");
     } while (!valido);
-
     return input;
+}
+
+TipoDvd LeerTipoDvd() {
+    Console.WriteLine("Seleccione el tipo de DVD:");
+    Console.WriteLine($"{(int)TipoDvd.Pelicula}.- Película");
+    Console.WriteLine($"{(int)TipoDvd.Documental}.- Documental");
+    Console.WriteLine($"{(int)TipoDvd.Serie}.- Serie");
+    
+    // Reutilizamos tu método LeerAnioValidado para controlar el rango numérico (0 a 2)
+    int opcion = LeerAnioValidado("Elija una opción (0-2): ", 0, 2);
+    
+    return (TipoDvd)opcion;
 }
 
 bool ValidarEntrada(string patron, string input) {
@@ -231,14 +309,6 @@ int LeerAnioValidado(string prompt, int min, int max) {
 }
       
 
-    // Lambdas también funcionan
-    EjecutarOperacion(10, 5, (x, y) => x + y);  // 15
-    EjecutarOperacion(10, 5, (x, y) => x - y);  // 5
 
-    void EjecutarOperacion(int a, int b, Func<int, int, int> operacion)
-    {
-        int resultado = operacion(a, b);
-        Console.WriteLine($"Resultado: {resultado}");
-    }
 
 

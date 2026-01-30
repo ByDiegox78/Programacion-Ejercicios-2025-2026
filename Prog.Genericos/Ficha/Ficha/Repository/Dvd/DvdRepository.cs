@@ -13,6 +13,11 @@ public class DvdRepository : IDvdRepository {
         var findDirector = _listado.Find(d => d.Director == director);
         return findDirector;
     } 
+    public Dvd? GetById(int id) {
+        var findDvd = _listado.Find(d => d.Id == id);
+        return findDvd;
+    }
+    
     private static int GetNextId() {
         return _idCounter++;
     }
@@ -20,10 +25,7 @@ public class DvdRepository : IDvdRepository {
         return _listado;
     }
 
-    public Dvd? GetById(int id) {
-        var findDvd = _listado.Find(d => d.Id == id);
-        return findDvd;
-    }
+    
 
     public Dvd? Create(Dvd entity) {
         if (Existe(entity)) return null;

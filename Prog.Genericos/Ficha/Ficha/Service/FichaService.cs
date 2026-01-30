@@ -23,9 +23,11 @@ public class FichaService(
 
     //Service de Dvd
     public int TotalDvd { get; } = dvdRepository.TotalDvd;
-    
-    
-    
+
+    public Dvd GetDvdByDirector(string director) {
+        return dvdRepository.GetDvdByDirector(director) ?? 
+               throw new KeyNotFoundException($"No se encontró el dvd con Director: {director}");
+    }
     public Dvd GetByIdDvd(int id) {
         return dvdRepository.GetById(id) ??
                throw new KeyNotFoundException($"No se encontró el dvd con ID: {id}");
@@ -56,7 +58,12 @@ public class FichaService(
                throw new KeyNotFoundException($"Dvd con ID {id} no encontrado para eliminar.");
     }
     
+    //Libro Service
     
+    public Libro GetLibroByAutor(string autor) {
+        return librosRepository.GetLibroByAutor(autor) ?? 
+               throw new KeyNotFoundException($"No se encontró el libro con Autor: {autor}");
+    }
     public int TotalLibros { get; } = librosRepository.TotalLibro;
     
     public ILista<Libro> GetAllLibro() {
@@ -94,6 +101,7 @@ public class FichaService(
                    $"Libro con ID {id} no encontrado para eliminar.");
     }
     
+    //Service Resvistas
     
     public int TotalRevistas { get; } = revistaRepository.TotalRevista;
     
@@ -101,14 +109,17 @@ public class FichaService(
         return revistaRepository.GetAll();
     }
 
-    public Revista GetByIdRevista(int id)
-    {
+    public Revista GetrevistaByNumber(int number) {
+        return revistaRepository.GetRevistaByNumber(number) ?? 
+               throw new KeyNotFoundException($"No se encontró la revista con numero: {number}");
+    }
+    
+    public Revista GetByIdRevista(int id) {
         return revistaRepository.GetById(id) ??
                throw new KeyNotFoundException($"No se encontró la revista con ID: {id}");
     }
 
-    public Revista SaveRevista(Revista revista)
-    {
+    public Revista SaveRevista(Revista revista) {
         var revistaSaved = revistaValidate.Validate(revista);
 
         return revistaRepository.Create(revistaSaved) ??
@@ -116,8 +127,7 @@ public class FichaService(
                    $"No se pudo guardar la revista con ID {revistaSaved.Id}, puede que ya exista");
     }
 
-    public Revista UpdateRevista(Revista revista)
-    {
+    public Revista UpdateRevista(Revista revista) {
         var revistaSaved = revistaValidate.Validate(revista);
 
         return revistaRepository.Update(revistaSaved, revistaSaved.Id) ??
@@ -125,8 +135,7 @@ public class FichaService(
                    $"Revista con ID {revistaSaved.Id} no encontrada para actualización.");
     }
 
-    public Revista DeleteRevista(int id)
-    {
+    public Revista DeleteRevista(int id) {
         return revistaRepository.Delete(id) ??
                throw new KeyNotFoundException(
                    $"Revista con ID {id} no encontrada para eliminar.");

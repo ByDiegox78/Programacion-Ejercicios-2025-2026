@@ -44,7 +44,7 @@ public class DvdValidator : IDvdValidate
                 $"El director no puede tener menos de ${MinStringLength} letras.");
         }
 
-        if (!NombreValidate(dvd.Nombre)) {
+        if (!DirectorValidate(dvd.Director)) {
             throw new ArgumentException("El director correcto no es acorde al formato");
         }
         

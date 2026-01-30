@@ -20,13 +20,14 @@ public class RevistaRepository : IRevistasRepository
         return _listado;
     }
 
+    public Revista? GetRevistaByNumber(int number) {
+        var findNumero = _listado.Find(r => r.NumeroLista == number);
+        return findNumero;
+    }
+
     public Revista? GetById(int id) {
-        foreach (var revistas in _listado) {
-            if (revistas.Id == id) {
-                return revistas;
-            }
-        }
-        return null;
+        var revistaFind = _listado.Find(r => r.Id == id);
+        return revistaFind;
     }
 
     public Revista? Create(Revista entity) {
@@ -83,13 +84,5 @@ public class RevistaRepository : IRevistasRepository
         return true;
     }
 
-    private int IndexOf(int id) {
-        for (int i = 0; i < _listado.Contar(); i++) {
-            if (_listado.Obtener(i).Id == id) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
+    private int IndexOf(int id) => _listado.FindIndex(d => d.Id == id);
 }

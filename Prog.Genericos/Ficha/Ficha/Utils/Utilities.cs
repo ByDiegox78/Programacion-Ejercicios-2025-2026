@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Ficha.Collections.Lista;
 using Ficha.Enums;
 using Ficha.Models;
@@ -5,6 +6,11 @@ using Ficha.Models;
 namespace Ficha.Utils;
 
 public static class Utilities {
+
+    public static string EntradaValidaRegexMenuPrincipal = "^[0-3]$";
+    public static string EntradaValidaRegexMenuDvd = "^[0-3]$";
+    public static string EntradaValidaRegexMenuLibro = "^[0-3]$";
+    public static string EntradaValidaRegexMenuRevista = "^[0-3]$";
     public static void ImrimirMenuPrincipal() {
         Console.WriteLine("\n--- 📚 MENU PRINCIPAL 📚 ---");
         Console.WriteLine($"{(int)OpcionMenu.Dvd}.-  Ver Menu de Dvd.");

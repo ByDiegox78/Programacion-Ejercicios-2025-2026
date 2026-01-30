@@ -17,19 +17,17 @@ public class LibroRepository : ILibrosRepository
         return _idCounter++;
     }
 
-
+    public Libro? GetLibroByAutor(string autor) {
+        var libroFind = _listado.Find(l => l.Autor == autor);
+        return libroFind;
+    }
     public ILista<Libro> GetAll() {
         return _listado;
     }
 
     public Libro? GetById(int id) {
-        foreach (var libro in _listado) {
-            if (libro.Id == id) {
-                return libro;
-            }
-        }
-
-        return null;
+        var libroFind = _listado.Find(l => l.Id == id);
+        return libroFind;
     }
 
     public Libro? Create(Libro entity) {
@@ -84,14 +82,5 @@ public class LibroRepository : ILibrosRepository
 
         return true;
     }
-
-    private int IndexOf(int id) {
-        for (int i = 0; i < _listado.Contar(); i++) {
-            if (_listado.Obtener(i).Id == id) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
+    private int IndexOf(int id) => _listado.FindIndex(d => d.Id == id);
 }
