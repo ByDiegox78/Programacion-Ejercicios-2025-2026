@@ -47,19 +47,14 @@ public class FichaService(
     
     public Dvd UpdateDvd(Dvd dvd) {
         var dvdSaved = dvdValidate.Validate(dvd);
-
         return dvdRepository.Update(dvdSaved, dvdSaved.Id) ??
                throw new KeyNotFoundException($"Dvd con ID {dvdSaved.Id} no encontrado para actualización.");
-    }
-
-    
+    } 
     public Dvd DeleteDvd(int id) {
         return dvdRepository.Delete(id) ??
                throw new KeyNotFoundException($"Dvd con ID {id} no encontrado para eliminar.");
     }
-    
     //Libro Service
-    
     public Libro GetLibroByAutor(string autor) {
         return librosRepository.GetLibroByAutor(autor) ?? 
                throw new KeyNotFoundException($"No se encontró el libro con Autor: {autor}");
@@ -134,7 +129,6 @@ public class FichaService(
                throw new KeyNotFoundException(
                    $"Revista con ID {revistaSaved.Id} no encontrada para actualización.");
     }
-
     public Revista DeleteRevista(int id) {
         return revistaRepository.Delete(id) ??
                throw new KeyNotFoundException(

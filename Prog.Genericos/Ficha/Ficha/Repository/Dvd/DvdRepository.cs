@@ -23,11 +23,7 @@ public class DvdRepository : IDvdRepository {
     }
     public ILista<Dvd> GetAll() {
         return _listado;
-    }
-
-    
-
-    public Dvd? Create(Dvd entity) {
+    } public Dvd? Create(Dvd entity) {
         if (Existe(entity)) return null;
         var salvado = entity with {
             Id = GetNextId(),
@@ -37,9 +33,8 @@ public class DvdRepository : IDvdRepository {
         _listado.AgregarFinal(salvado);
         return salvado;
     }
-
     public Dvd? Update(Dvd entity, int id) {
-        var index = IndexOf(id);
+        var index = _listado.FindIndex(d => d.Id == id);
         if (index == -1) {
             return null;
         }
@@ -50,20 +45,17 @@ public class DvdRepository : IDvdRepository {
         _listado.AgregarEn(updated, index);
         return updated;
     }
-
     public Dvd? Delete(int id) {
-        var index = IndexOf(id);
+        var index = _listado.FindIndex(d => d.Id == id);
         if (index == -1) {
             return null;
         }
-
         var alumnoDeleted = _listado.Obtener(index) with {
             IsDeleted = true
         };
         _listado.EliminarEn(index);
         return alumnoDeleted;
     }
-
     private bool Existe(Dvd dvd) {
         foreach (var d in _listado) {
             if (d.Equals(dvd)) {
@@ -72,9 +64,4 @@ public class DvdRepository : IDvdRepository {
         }
         return true;
     }
-
-    private int IndexOf(int id) => _listado.FindIndex(d => d.Id == id);
-    
-
-    
 }

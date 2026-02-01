@@ -138,10 +138,8 @@ void MostrarPorIdDvd(IFichaService service) {
 }
 void MostrarPorIdLibro(IFichaService service) {
     const string regexId = @"^\d+$";
-
     Console.WriteLine("--- INFORMACIÓN DE LIBRO POR ID ---");
     var idS = LeerCadenaValidada("Dime el id del libro que quiere buscar: ", regexId, "Formato de id erroneo");
-
     var id = int.Parse(idS);
 
     try {
@@ -200,15 +198,9 @@ void AñadirNuevoLibro(IFichaService service) {
     Console.WriteLine("\n--- AÑADIR NUEVO LIBRO ---");
     Console.WriteLine("Introduzca los datos del nuevo DVD:");
     
-    var nombre = LeerCadenaValidada(
-        "Introduce el nombre del libro", LibroValidate.AutorEditorialRegexValidate, "Cadena invalida");
-    
-    var editorial = LeerCadenaValidada(
-        "Introduce la editorial del libro", LibroValidate.AutorEditorialRegexValidate, "Cadena invalida");
-    
-    var autor = LeerCadenaValidada(
-        "Introduce el autor del libro", LibroValidate.AutorEditorialRegexValidate, "Cadena invalida");
-
+    var nombre = LeerCadenaValidada("Introduce el nombre del libro", LibroValidate.AutorEditorialRegexValidate, "Cadena invalida");
+    var editorial = LeerCadenaValidada("Introduce la editorial del libro", LibroValidate.AutorEditorialRegexValidate, "Cadena invalida");
+    var autor = LeerCadenaValidada("Introduce el autor del libro", LibroValidate.AutorEditorialRegexValidate, "Cadena invalida");
     var newLibro = new Libro {
         Nombre = nombre,
         Editorial = editorial,
@@ -227,28 +219,10 @@ void AñadirNuevaRevista(IFichaService service)
 {
     Console.WriteLine("\n--- AÑADIR NUEVA REVISTA ---");
     Console.WriteLine("Introduzca los datos de la nueva revista:");
-
-    var nombre = LeerCadenaValidada(
-        "Introduce el nombre de la revista: ",
-        RevistaValidator.NombreRegexValidate,
-        "Cadena inválida");
-
-    var anioPublicacion = LeerAnioValidado(
-        "Introduce el año de publicación: ",
-        1975,
-        2027);
-
-    var numeroLista = LeerAnioValidado(
-        "Introduce el número de la revista: ",
-        1975,
-        2027);
-
-    var newRevista = new Revista {
-        Nombre = nombre,
-        AnioPublicacion = anioPublicacion,
-        NumeroLista = numeroLista
-    };
-
+    var nombre = LeerCadenaValidada("Introduce el nombre de la revista: ", RevistaValidator.NombreRegexValidate, "Cadena inválida");
+    var anioPublicacion = LeerAnioValidado("Introduce el año de publicación: ", 1975, 2027);
+    var numeroLista = LeerAnioValidado("Introduce el número de la revista: ", 1975, 2027);
+    var newRevista = new Revista { Nombre = nombre, AnioPublicacion = anioPublicacion, NumeroLista = numeroLista };
     try {
         service.SaveRevista(newRevista);
         Console.WriteLine($"✅ INFO: Revista (ID: {newRevista.Id}) añadida exitosamente.");
@@ -259,9 +233,34 @@ void AñadirNuevaRevista(IFichaService service)
     }
 }
 
+void ActualizarDvd(IFichaService service) {
+    var id = LeerIdValido();
+    try {
+        var d = service.GetByIdDvd(id);
+        var nombre = LeerCadenaValidada(
+            "Introduce el nombre del dvd", DvdValidator.NombreRegexValidate, "Cadena invalida");
+        var director = LeerCadenaValidada("Introduce el nombre del director", DvdValidator.DirectorRegexValidate,
+            "Cadena invalida");
+        var anio = LeerAnioValidado("Introduce un año valido", DvdValidator.MinAnio, DvdValidator.MaxAnio);
+    
+        var tipo = LeerTipoDvd();
+    }
+    catch (Exception e) {
+        
+    }
+
+
+}
+
 
 // ------------------------------------------------------------------------------------------------------------------------------
 
+int LeerIdValido() {
+    const string regexId = @"^\d+$";
+    Console.WriteLine("--- INFORMACIÓN DE DVD POR ID ---");
+    var idS = LeerCadenaValidada("Dime el id del DVD que quiere buscar: ", regexId, "Formato de id erroneo");
+    return int.Parse(idS);
+}
 string LeerCadenaValidada(string prompt, string regex, string error) {
     string input;
     var valido = false;
