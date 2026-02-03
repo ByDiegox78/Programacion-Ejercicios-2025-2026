@@ -11,7 +11,7 @@ public sealed record Libro : Ficha
     public bool IsDeleted { get; init; } = false;
 
     
-    public bool Equals(Libro? other) {
+    /*public bool Equals(Libro? other) {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
 
@@ -22,5 +22,5 @@ public sealed record Libro : Ficha
 
     public override int GetHashCode() {
         return HashCode.Combine(Editorial, Autor);
-    }
+    }*/
 }

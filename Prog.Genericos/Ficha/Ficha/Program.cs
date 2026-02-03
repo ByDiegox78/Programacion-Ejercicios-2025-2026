@@ -1,5 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
+using System.Text.RegularExpressions;
+using Ficha.Collections.Lista;
 using Ficha.Enums;
+using Ficha.Factories;
 using Ficha.Models;
 using Ficha.Repository.Dvd;
 using Ficha.Repository.Libro;
@@ -9,7 +12,7 @@ using Ficha.Utils;
 using Ficha.Validator.Dvd;
 using Ficha.Validator.LibroValidate;
 using Ficha.Validator.RevistasValidator;
-
+Console.OutputEncoding = Encoding.UTF8;
 Main();
 
 void Main() {
@@ -22,6 +25,34 @@ void Main() {
         new DvdValidator(),        
         new LibroValidate()         
     );
+    FichasFactory.SeedDvds().ForEach(dvd => {
+        try {
+            service.SaveDvd(dvd);
+        }
+        catch (Exception ex) {
+            Console.WriteLine($"⚠️ Semilla DVD ignorada ({dvd.Nombre}): {ex.Message}");
+        }
+    });
+
+// Cargar Libros
+    FichasFactory.SeedLibros().ForEach(libro => {
+        try {
+            service.SaveLibro(libro);
+        }
+        catch (Exception ex) {
+            Console.WriteLine($"⚠️ Semilla Libro ignorada ({libro.Nombre}): {ex.Message}");
+        }
+    });
+
+// Cargar Revistas
+    FichasFactory.SeedRevistas().ForEach(revista => {
+        try {
+            service.SaveRevista(revista);
+        }
+        catch (Exception ex) {
+            Console.WriteLine($"⚠️ Semilla Revista ignorada ({revista.Nombre}): {ex.Message}");
+        }
+    });
     OpcionMenu opcion;
     do {
         Utilities.ImrimirMenuPrincipal(); //
@@ -218,7 +249,7 @@ void AñadirNuevoLibro(IFichaService service) {
 void AñadirNuevaRevista(IFichaService service)
 {
     Console.WriteLine("\n--- AÑADIR NUEVA REVISTA ---");
-    Console.WriteLine("Introduzca los datos de la nueva revista:");
+    Console.WriteLine("Introduzca los datos de la nueva revista: ");
     var nombre = LeerCadenaValidada("Introduce el nombre de la revista: ", RevistaValidator.NombreRegexValidate, "Cadena inválida");
     var anioPublicacion = LeerAnioValidado("Introduce el año de publicación: ", 1975, 2027);
     var numeroLista = LeerAnioValidado("Introduce el número de la revista: ", 1975, 2027);
@@ -227,12 +258,10 @@ void AñadirNuevaRevista(IFichaService service)
         service.SaveRevista(newRevista);
         Console.WriteLine($"✅ INFO: Revista (ID: {newRevista.Id}) añadida exitosamente.");
     }
-    catch (Exception ex)
-    {
+    catch (Exception ex) {
         Console.WriteLine($"❌ ERROR: No se pudo añadir la revista. {ex.Message}");
     }
 }
-
 void ActualizarDvd(IFichaService service) {
     var id = LeerIdValido();
     try {
@@ -241,15 +270,154 @@ void ActualizarDvd(IFichaService service) {
             "Introduce el nombre del dvd", DvdValidator.NombreRegexValidate, "Cadena invalida");
         var director = LeerCadenaValidada("Introduce el nombre del director", DvdValidator.DirectorRegexValidate,
             "Cadena invalida");
-        var anio = LeerAnioValidado("Introduce un año valido", DvdValidator.MinAnio, DvdValidator.MaxAnio);
-    
-        var tipo = LeerTipoDvd();
-    }
-    catch (Exception e) {
+        var anio = PedirConfirmacion("¿Quieres cambiar el año?") ? LeerAnioValidado("Introduce un año valido", DvdValidator.MinAnio, DvdValidator.MaxAnio) : d.Anio;
+        var tipo = PedirConfirmacion("¿Quieres cambiar el tipo?") ? LeerTipoDvd() : d.Tipo;
+        var actualizado = d with
+        {
+            Nombre = string.IsNullOrWhiteSpace(nombre) ? d.Nombre : nombre,
+            Director = string.IsNullOrWhiteSpace(director) ? d.Director : director,
+            Tipo = tipo,
+            Anio = anio
+        };
         
+        Utilities.ImprimirInfoDvd(d);
+        if (PedirConfirmacion("Quiere realizar los cambios?"))
+        {
+            var nuevo = service.UpdateDvd(actualizado);
+        }
+
     }
+    catch (Exception ex) {
+        Console.WriteLine($"❌ ERROR: No se pudo actualizar el DVD. {ex.Message}");
+    }
+}
+void ActualizarLibro(IFichaService service) {
+    const string regexId = @"^\d+$";
+    var idS = LeerCadenaValidada("Introduce el ID del libro a actualizar: ", regexId, "ID no válido");
+    var id = int.Parse(idS);
+    try {
+        var l = service.GetByIdLibro(id);
+            
+        var nombre = PedirConfirmacion($"¿Quieres cambiar el nombre? (Actual: {l.Nombre})") 
+            ? LeerCadenaValidada("Nuevo nombre: ", LibroValidate.AutorEditorialRegexValidate, "Cadena inválida") 
+            : l.Nombre;
 
+        var autor = PedirConfirmacion($"¿Quieres cambiar el autor? (Actual: {l.Autor})") 
+            ? LeerCadenaValidada("Nuevo autor: ", LibroValidate.AutorEditorialRegexValidate, "Cadena inválida") 
+            : l.Autor;
 
+        var editorial = PedirConfirmacion($"¿Quieres cambiar la editorial? (Actual: {l.Editorial})") 
+            ? LeerCadenaValidada("Nueva editorial: ", LibroValidate.AutorEditorialRegexValidate, "Cadena inválida") 
+            : l.Editorial;
+        var actualizado = l with {
+            Nombre = nombre,
+            Autor = autor,
+            Editorial = editorial
+        };
+        Console.WriteLine("\n--- VISTA PREVIA DEL CAMBIO ---");
+        Utilities.ImprimirInfoLibro(actualizado);
+
+        if (!PedirConfirmacion("¿Deseas aplicar estos cambios?")) return;
+        service.UpdateLibro(actualizado);
+        Console.WriteLine("✅ Libro actualizado con éxito.");
+    }
+    catch (Exception ex) {
+        Console.WriteLine($"❌ ERROR: No se pudo actualizar el libro. {ex.Message}");
+    }
+}
+void ActualizarRevista(IFichaService service) {
+    const string regexId = @"^\d+$";
+    var idS = LeerCadenaValidada("Introduce el ID de la revista a actualizar: ", regexId, "ID no válido");
+    var id = int.Parse(idS);
+    try {
+        var r = service.GetByIdRevista(id);
+        var nombre = PedirConfirmacion($"¿Quieres cambiar el nombre? (Actual: {r.Nombre})") 
+            ? LeerCadenaValidada("Nuevo nombre: ", RevistaValidator.NombreRegexValidate, "Formato incorrecto") 
+            : r.Nombre;
+        var anio = PedirConfirmacion($"¿Quieres cambiar el año? (Actual: {r.AnioPublicacion})") 
+            ? LeerAnioValidado("Nuevo año (1975-2027): ", 1975, 2027) 
+            : r.AnioPublicacion;
+        var numero = PedirConfirmacion($"¿Quieres cambiar el número de lista? (Actual: {r.NumeroLista})") 
+            ? LeerAnioValidado("Nuevo número (mínimo 3): ", 3, 99999) 
+            : r.NumeroLista;
+        var actualizado = r with {
+            Nombre = nombre,
+            AnioPublicacion = anio,
+            NumeroLista = numero
+        };
+        Console.WriteLine("\n--- VISTA PREVIA DEL CAMBIO ---");
+        Utilities.ImprimirInfoRevista(actualizado);
+
+        if (PedirConfirmacion("¿Deseas aplicar estos cambios?")) {
+            service.UpdateRevista(actualizado);
+            Console.WriteLine("✅ Revista actualizada con éxito.");
+        }
+    }
+    catch (Exception ex) {
+        Console.WriteLine($"❌ ERROR: No se pudo actualizar la revista. {ex.Message}");
+    }
+}
+void EliminarDvd(IFichaService service) {
+    Console.WriteLine("\n🗑️ --- ELIMINACIÓN DE DVD ---");
+    const string regexId = @"^\d+$";
+    var idS = LeerCadenaValidada("Introduce el ID del DVD a eliminar: ", regexId, "Formato de ID erróneo");
+    var id = int.Parse(idS);
+    try {
+        var dvd = service.GetByIdDvd(id);
+        Utilities.ImprimirInfoDvd(dvd);
+        if (PedirConfirmacion($"¿Está seguro de que desea eliminar permanentemente '{dvd.Nombre}'?")) {
+            var eliminado = service.DeleteDvd(id);
+            Console.WriteLine("✅ Borrado físicamente del repositorio.");
+            Utilities.ImprimirInfoDvd(eliminado);
+        }
+    }
+    catch (KeyNotFoundException ex) {
+        Console.WriteLine($"❌ ERROR: {ex.Message}");
+    }
+    catch (Exception ex) {
+        Console.WriteLine($"☠️ ERROR DESCONOCIDO: {ex.Message}");
+    }
+}
+void EliminarLibro(IFichaService service) {
+    Console.WriteLine("\n🗑️ --- ELIMINACIÓN DE LIBRO ---");
+    const string regexId = @"^\d+$";
+    var idS = LeerCadenaValidada("Introduce el ID del Libro a eliminar: ", regexId, "Formato de ID erróneo");
+    var id = int.Parse(idS);
+    try {
+        var libro = service.GetByIdLibro(id);
+        Utilities.ImprimirInfoLibro(libro);
+        if (!PedirConfirmacion($"¿Eliminar permanentemente '{libro.Nombre}' de {libro.Autor}?")) return;
+        var eliminado = service.DeleteLibro(id);
+        Console.WriteLine("✅ Borrado físicamente.");
+        Utilities.ImprimirInfoLibro(eliminado);
+    }
+    catch (KeyNotFoundException ex) {
+        Console.WriteLine($"❌ ERROR: {ex.Message}");
+    }
+    catch (Exception ex) {
+        Console.WriteLine($"☠️ ERROR DESCONOCIDO: {ex.Message}");
+    }
+}
+void EliminarRevista(IFichaService service) {
+    Console.WriteLine("\n🗑️ --- ELIMINACIÓN DE REVISTA ---");
+    const string regexId = @"^\d+$";
+    var idS = LeerCadenaValidada("Introduce el ID de la Revista a eliminar: ", regexId, "Formato de ID erróneo");
+    var id = int.Parse(idS);
+    try {
+        var revista = service.GetByIdRevista(id);
+        Utilities.ImprimirInfoRevista(revista);
+        if (PedirConfirmacion($"¿Eliminar la revista '{revista.Nombre}' (Número {revista.NumeroLista})?")) {
+            var eliminado = service.DeleteRevista(id);
+            Console.WriteLine("✅ Borrado físicamente.");
+            Utilities.ImprimirInfoRevista(eliminado);
+        }
+    }
+    catch (KeyNotFoundException ex) {
+        Console.WriteLine($"❌ ERROR: {ex.Message}");
+    }
+    catch (Exception ex) {
+        Console.WriteLine($"☠️ ERROR DESCONOCIDO: {ex.Message}");
+    }
 }
 
 
@@ -294,17 +462,20 @@ bool ValidarEntrada(string patron, string input) {
 int LeerAnioValidado(string prompt, int min, int max) {
     int anio;
     bool valido;
-    do
-    {
+    do {
         Console.Write(prompt);
         var input = (Console.ReadLine() ?? "").Trim();
         valido = int.TryParse(input, out anio) && anio >= min && anio <= max;
-        if (!valido)
-            Console.WriteLine($"❌ ERROR: El año debe estar entre {min} y {max}");
+        if (!valido) Console.WriteLine($"❌ ERROR: El año debe estar entre {min} y {max}");
     }
     while (!valido);
-
     return anio;
+}
+bool PedirConfirmacion(string mensaje) {
+    Console.Write($"\n⚠️  {mensaje} (S para confirmar): ");
+    var res = char.ToUpper(Console.ReadKey(false).KeyChar) == 'S';
+    Console.WriteLine();
+    return res;
 }
       
 

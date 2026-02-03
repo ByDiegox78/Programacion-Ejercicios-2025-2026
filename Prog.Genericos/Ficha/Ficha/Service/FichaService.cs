@@ -22,7 +22,7 @@ public class FichaService(
 
 
     //Service de Dvd
-    public int TotalDvd { get; } = dvdRepository.TotalDvd;
+    public int TotalDvd => dvdRepository.TotalDvd;
 
     public Dvd GetDvdByDirector(string director) {
         return dvdRepository.GetDvdByDirector(director) ?? 
@@ -41,7 +41,7 @@ public class FichaService(
         var dvdSaved = dvdValidate.Validate(dvd);
         return dvdRepository.Create(dvdSaved) ??
                throw new ArgumentException(
-                   $"No se pudo guardar el alumno con DNI {dvdSaved.Id}, puede que ya exista");
+                   $"No se pudo guardar el Dvd con ID {dvdSaved.Id}, puede que ya exista");
     }
 
     
@@ -59,7 +59,7 @@ public class FichaService(
         return librosRepository.GetLibroByAutor(autor) ?? 
                throw new KeyNotFoundException($"No se encontró el libro con Autor: {autor}");
     }
-    public int TotalLibros { get; } = librosRepository.TotalLibro;
+    public int TotalLibros => librosRepository.TotalLibro;
     
     public ILista<Libro> GetAllLibro() {
         return librosRepository.GetAll();
@@ -98,7 +98,7 @@ public class FichaService(
     
     //Service Resvistas
     
-    public int TotalRevistas { get; } = revistaRepository.TotalRevista;
+    public int TotalRevistas => revistaRepository.TotalRevista;
     
     public ILista<Revista> GetAllRevista() {
         return revistaRepository.GetAll();

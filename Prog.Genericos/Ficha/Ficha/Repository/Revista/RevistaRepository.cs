@@ -31,10 +31,7 @@ public class RevistaRepository : IRevistasRepository
     }
 
     public Revista? Create(Revista entity) {
-        if (Existe(entity)) {
-            return null;
-        }
-
+        if (_listado.Existe(entity)) return null;
         var salvado = entity with {
             Id = GetNextId(),
             CreatedAt = DateTime.UtcNow,
@@ -51,12 +48,11 @@ public class RevistaRepository : IRevistasRepository
         if (index == -1) {
             return null;
         }
-
         var updated = entity with {
             Id = id,
             UpdatedAt = DateTime.Now
         };
-        
+        _listado.EliminarEn(index);
         _listado.AgregarEn(updated, index);
         return updated;
     }

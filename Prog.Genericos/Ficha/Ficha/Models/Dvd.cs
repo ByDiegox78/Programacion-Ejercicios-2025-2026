@@ -13,14 +13,13 @@ public sealed record Dvd : Ficha
     public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; init; } = DateTime.UtcNow;
 
-    public bool Equals(Dvd? other) {
+    /*public bool Equals(Dvd? other) {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
-
         return Anio == other.Anio && Director.Equals(other.Director, StringComparison.OrdinalIgnoreCase);
     }
 
     public override int GetHashCode() {
         return HashCode.Combine(Anio, Director);
-    }
+    }*/
 }

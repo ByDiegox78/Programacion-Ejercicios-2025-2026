@@ -31,10 +31,7 @@ public class LibroRepository : ILibrosRepository
     }
 
     public Libro? Create(Libro entity) {
-        if (Existe(entity)) {
-            return null;
-        }
-
+        if (_listado.Existe(entity)) return null;
         var salvado = entity with {
             Id = GetNextId(),
             CreatedAt = DateTime.UtcNow,
@@ -55,7 +52,7 @@ public class LibroRepository : ILibrosRepository
             Id = id,
             UpdatedAt = DateTime.Now
         };
-
+        _listado.EliminarEn(index);
         _listado.AgregarEn(updated, index);
         return updated;
     }
@@ -71,16 +68,6 @@ public class LibroRepository : ILibrosRepository
         };
         _listado.EliminarEn(index);
         return alumnoDeleted;
-    }
-
-    private bool Existe(Libro libro) {
-        foreach (var libro1 in _listado) {
-            if (libro1.Equals(libro)) {
-                return false;
-            }
-        }
-
-        return true;
     }
     private int IndexOf(int id) => _listado.FindIndex(d => d.Id == id);
 }

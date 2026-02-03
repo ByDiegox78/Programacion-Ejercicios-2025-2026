@@ -11,7 +11,7 @@ public sealed record Revista: Ficha
     public bool IsDeleted { get; init; } = false;
 
     
-    public bool Equals(Revista? other) {
+    /*public bool Equals(Revista? other) {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
 
@@ -20,5 +20,5 @@ public sealed record Revista: Ficha
 
     public override int GetHashCode() {
         return HashCode.Combine(AnioPublicacion, NumeroLista);
-    }
+    }*/
 }

@@ -24,7 +24,7 @@ public class DvdRepository : IDvdRepository {
     public ILista<Dvd> GetAll() {
         return _listado;
     } public Dvd? Create(Dvd entity) {
-        if (Existe(entity)) return null;
+        if (_listado.Existe(entity)) return null;
         var salvado = entity with {
             Id = GetNextId(),
             CreatedAt = DateTime.UtcNow,
@@ -42,6 +42,7 @@ public class DvdRepository : IDvdRepository {
             Id = id,
             UpdatedAt = DateTime.Now
         };
+        _listado.EliminarEn(index);
         _listado.AgregarEn(updated, index);
         return updated;
     }
@@ -55,13 +56,5 @@ public class DvdRepository : IDvdRepository {
         };
         _listado.EliminarEn(index);
         return alumnoDeleted;
-    }
-    private bool Existe(Dvd dvd) {
-        foreach (var d in _listado) {
-            if (d.Equals(dvd)) {
-                return false;
-            }
-        }
-        return true;
     }
 }
