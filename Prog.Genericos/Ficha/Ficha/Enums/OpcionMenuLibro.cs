@@ -7,4 +7,5 @@ public enum OpcionMenuLibro {
     Anadir = 3,
     Actualizar = 4,
     Eliminar = 5,
+    InfoAutor = 6,
 }

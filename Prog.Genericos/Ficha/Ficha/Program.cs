@@ -91,7 +91,7 @@ void MenuLibro(IFichaService service) {
     OpcionMenuLibro opcion;
     do {
         Utilities.ImprimirMenuLibro(); //
-        var opcStr = LeerCadenaValidada("Seleccione operación de Libro: ", "^[0-5]$", "Opción errónea.");
+        var opcStr = LeerCadenaValidada("Seleccione operación de Libro: ", "^[0-6]$", "Opción errónea.");
         opcion = (OpcionMenuLibro)int.Parse(opcStr); //
 
         switch (opcion) {
@@ -100,6 +100,7 @@ void MenuLibro(IFichaService service) {
             case OpcionMenuLibro.Anadir: AñadirNuevoLibro(service); break;
             case OpcionMenuLibro.Actualizar: ActualizarLibro(service); break;
             case OpcionMenuLibro.Eliminar: EliminarLibro(service); break;
+            case OpcionMenuLibro.InfoAutor : GetLibroByAutor(service); break;
         }
     } while (opcion != OpcionMenuLibro.Salir);
 }
@@ -417,6 +418,17 @@ void EliminarRevista(IFichaService service) {
     }
     catch (Exception ex) {
         Console.WriteLine($"☠️ ERROR DESCONOCIDO: {ex.Message}");
+    }
+}
+
+void GetLibroByAutor(IFichaService service) {
+    var autor = LeerCadenaValidada("Autor a Buscat: ", LibroValidate.AutorEditorialRegexValidate, "Cadena inválida");
+    try {
+        var libro = service.GetLibroByAutor(autor);
+        Utilities.ImprimirInfoLibro(libro);
+    }
+    catch (KeyNotFoundException e) {
+        Console.WriteLine($"❌ ERROR: {e.Message}");
     }
 }
 

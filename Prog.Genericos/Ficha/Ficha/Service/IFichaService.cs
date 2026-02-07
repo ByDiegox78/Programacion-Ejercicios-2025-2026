@@ -7,6 +7,7 @@ public interface IFichaService {
     int TotalDvd { get; }
     int TotalLibros { get; }
     int TotalRevistas { get; }
+    
 
     ILista<Dvd> GetAllDvd();
     
@@ -19,6 +20,7 @@ public interface IFichaService {
     Libro GetByIdLibro(int id);
     Revista GetByIdRevista(int id);
 
+    Libro GetLibroByAutor(string autor);
     Dvd SaveDvd(Dvd dvd);
     
     

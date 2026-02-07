@@ -5,9 +5,9 @@ public class Lista<T> : ILista<T> {
     private Nodo<T>? _cabeza;
     private int _contador;
 
-    public Lista() {
-        Console.WriteLine($"Lista del tipo: {typeof(T).Name}");
-    }
+    // public Lista() {
+    //     Console.WriteLine($"Lista del tipo: {typeof(T).Name}");
+    // }
 
 
     public void AgregarInicio(T valor) {
