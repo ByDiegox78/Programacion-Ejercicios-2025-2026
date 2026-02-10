@@ -2,14 +2,14 @@
 
 namespace TechCorp.Models;
 
-public class Reponedor : Trabajador, ILocalizar, IActualizarStock {
+public record Reponedor : Trabajador, ILocalizar, IActualizarStock {
     public char Sector { get; init; }
 
     public void Localizar() {
-        throw new NotImplementedException();
+        Console.WriteLine($"Localizando paquete en sector {Sector}");
     }
 
     public void ActualizarStock() {
-        throw new NotImplementedException();
+        Console.WriteLine("Actualizando stock");
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace TechCorp.Models;
 
-public class Equipo {
-    public List<Trabajador> ListaDeEquipo { get; set; }
-    public Trabajador Jefe { get; set; }
+public record Equipo {
+    public required List<Trabajador> ListaDeEquipo { get; set; }
+    public required Trabajador Jefe { get; set; }
 }

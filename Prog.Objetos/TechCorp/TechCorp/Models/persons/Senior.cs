@@ -2,21 +2,21 @@
 
 namespace TechCorp.Models;
 
-public class Senior : Trabajador, ITrazarRuta, IConfirmarEntrega, ILocalizar, IActualizarStock{
+public record Senior : Trabajador, ITrazarRuta, IConfirmarEntrega, ILocalizar, IActualizarStock{
     public int AñosDeServicio { get; init; }
     public void TrazarRuta() {
-        throw new NotImplementedException();
+        Console.WriteLine(" Trazando ruta");
     }
 
     public void ConfirmarEntrega() {
-        throw new NotImplementedException();
+        Console.WriteLine(" Confirmando entrega");
     }
 
     public void Localizar() {
-        throw new NotImplementedException();
+        Console.WriteLine(" Localizando entrega");
     }
 
     public void ActualizarStock() {
-        throw new NotImplementedException();
+        Console.WriteLine("  Actualizando stock");
     }
 }

@@ -2,13 +2,13 @@
 
 namespace TechCorp.Models;
 
-public class Repartidor: Trabajador, ITrazarRuta, IConfirmarEntrega {
-    public string Barrio { get; init; }
+public record Repartidor: Trabajador, ITrazarRuta, IConfirmarEntrega {
+    public required string Barrio { get; init; }
     public void TrazarRuta() {
-        throw new NotImplementedException();
+        Console.WriteLine($"Trazando ruta de {Barrio}");
     }
 
     public void ConfirmarEntrega() {
-        throw new NotImplementedException();
+        Console.WriteLine($"Confirmando entrega de {Barrio}");
     }
 }
