@@ -3,7 +3,7 @@
 namespace Lol.Errors;
 
 public abstract class CampeonExceptions(string message): DomainExceptions(message) {
-    public sealed class NotFound(int id)
+    public sealed class NotFound(string id)
         : CampeonExceptions("$\"No se ha encontrado ningun campeon con el identificador: {id}\"");
     
     public sealed class Validation(IEnumerable<string> errors)

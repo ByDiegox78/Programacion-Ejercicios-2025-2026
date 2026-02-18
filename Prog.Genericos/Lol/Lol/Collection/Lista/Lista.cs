@@ -185,7 +185,6 @@ public class Lista<T> : ILista<T> {
                 return true;
             actual = actual.Siguiente;
         }
-
         return false;
     }
 

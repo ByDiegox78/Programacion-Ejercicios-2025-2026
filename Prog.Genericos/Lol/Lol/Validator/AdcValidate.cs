@@ -1,14 +1,15 @@
-﻿using Ficha.Collections.Lista;
-using Lol.Models;
+﻿using Lol.Models;
 using Lol.Validator.Common;
 
 namespace Lol.Validator;
 
-public class AsesinoValidate : IValidador<Campeon> {
+public class AdcValidate : IValidador<Campeon> {
+    private static readonly decimal[] PreciosValidos = { 450, 1350, 3150, 4800, 6300, 7800, 4444, 3141 };
     public IEnumerable<string> Validar(Campeon campeon) {
         var errores = new List<string>();
-        if (campeon is not Asesino asesino) {
-            errores.Add("El campeon no es un asesino");
+
+        if (campeon is not Adc adc) {
+            errores.Add("El campeon no es un Adc");
             return errores;
         }
         if (string.IsNullOrWhiteSpace(campeon.Nombre) || campeon.Nombre.Length < 2)
@@ -19,8 +20,9 @@ public class AsesinoValidate : IValidador<Campeon> {
         if (campeon.PrecioEsencias is not (450 or 1350 or 3150 or 4800 or 6300 or 7800)) {
             errores.Add("El precio intricucido es valido; Precios validos: 450, 1350, 3150, 4800, 6300, 7800, 4444, 3141");
         }
-        if (asesino.Letalidad is < 0 or > 100) {
-            errores.Add("La letalidad introducida no puede ser negativa");
+
+        if (adc.VelocidadDeAtaque is < 0.0 or > 3.0) {
+            errores.Add("Velocidad de Ataque incorrecto.");
         }
         if (campeon.HabilidadCampeon.Count != 4) {
             errores.Add("El campeón debe tener exactamente 4 habilidades (Q, W, E, R)");
@@ -34,8 +36,7 @@ public class AsesinoValidate : IValidador<Campeon> {
             if (habilidad.Daño.Count < 1) {
                 errores.Add("Tiene que haber al menos un tipo de daño en la habilidad");
             }
-        }
+        } 
         return errores;
-
     }
 }

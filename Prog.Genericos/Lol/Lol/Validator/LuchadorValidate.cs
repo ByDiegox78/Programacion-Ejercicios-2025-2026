@@ -1,13 +1,12 @@
-﻿using Ficha.Collections.Lista;
-using Lol.Models;
+﻿using Lol.Models;
 using Lol.Validator.Common;
 
 namespace Lol.Validator;
 
-public class AsesinoValidate : IValidador<Campeon> {
+public class LuchadorValidate : IValidador<Campeon> {
     public IEnumerable<string> Validar(Campeon campeon) {
         var errores = new List<string>();
-        if (campeon is not Asesino asesino) {
+        if (campeon is not Luchador luchador) {
             errores.Add("El campeon no es un asesino");
             return errores;
         }
@@ -19,8 +18,8 @@ public class AsesinoValidate : IValidador<Campeon> {
         if (campeon.PrecioEsencias is not (450 or 1350 or 3150 or 4800 or 6300 or 7800)) {
             errores.Add("El precio intricucido es valido; Precios validos: 450, 1350, 3150, 4800, 6300, 7800, 4444, 3141");
         }
-        if (asesino.Letalidad is < 0 or > 100) {
-            errores.Add("La letalidad introducida no puede ser negativa");
+        if (luchador.Armadura is < 0) {
+            errores.Add("La armadura introducida no puede ser negativa");
         }
         if (campeon.HabilidadCampeon.Count != 4) {
             errores.Add("El campeón debe tener exactamente 4 habilidades (Q, W, E, R)");
