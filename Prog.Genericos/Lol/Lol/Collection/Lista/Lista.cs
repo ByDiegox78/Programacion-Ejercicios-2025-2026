@@ -14,11 +14,9 @@ public class Lista<T> : ILista<T> {
         // Creamos un nuevo nodo
         var nuevoNodo = new Nodo<T>(valor);
 
-        // Si la lista está vacía, el nuevo nodo será la cabeza
         if (_cabeza == null) {
             _cabeza = nuevoNodo;
         }
-        // Si no está vacía, el nuevo nodo apunta a la cabeza actual y luego se actualiza la cabeza
         else {
             nuevoNodo.Siguiente = _cabeza;
             _cabeza = nuevoNodo;
