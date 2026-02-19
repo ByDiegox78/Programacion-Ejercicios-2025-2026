@@ -4,6 +4,11 @@ Este repositorio tiene todos los ejercicios, prácticas y proyectos realizados d
 ## Estructura del repositorio
 
 - `Ejercicios/`
+  - `Prog.LINQ/`
+    - `Vehiculos/` → Proyrcto CRUD con LINQ
+  - `Prog.GenericoYFuncional`
+    - `Lol/` → Ejercicion CRUD de lol 
+    - `Ficha/` → Ejercicio CRUD de Libreria
   - `Prog.Modular/`
     - `Cine/` → Proyecto del cine
     - `FMM/` → Simulación de fuego en un bosque.
@@ -20,10 +25,6 @@ Este repositorio tiene todos los ejercicios, prácticas y proyectos realizados d
 - .NET10
 - Rider 
 
- 
-
-
 ## Notas
-
 - Solo se sube el código fuente. Las carpetas `bin/`, `obj/`, `.idea/` y archivos temporales están ignorados.
 

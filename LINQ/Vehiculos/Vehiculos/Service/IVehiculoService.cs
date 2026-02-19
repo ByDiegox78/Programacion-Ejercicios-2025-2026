@@ -14,4 +14,10 @@ public interface IVehiculoService  {
     Vehiculo Update(string matricula, Vehiculo vehiculo);
     
     Vehiculo Delete(string matricula);
+
+    InformeVehiculos GenerarInformaDeVehiculos();
+
+    List<Coche> GetAllCoches();
+    List<Moto> GetAllMotos();
+    List<Camion> GetAllCamiones();
 }
