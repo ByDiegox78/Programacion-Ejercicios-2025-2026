@@ -1,6 +1,6 @@
 ﻿namespace Vehiculos.Cache;
 
-public class CacheLru<TKey, TValue>
+public class CacheLru<TKey, TValue> : ICached<TKey, TValue>
     where TKey : notnull {
     private readonly int _capacity = 5;
     private readonly Dictionary<TKey, TValue> _dataVehiculo = new();

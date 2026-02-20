@@ -24,24 +24,14 @@ public class VehiculoService(ICached<string, Vehiculo> cache, IValidador<Vehicul
     }
 
     public Vehiculo Save(Vehiculo vehiculo) {
-        var errores = vehiculo switch {
-            Coche => cocheValidador.Validar(vehiculo),
-            Camion => camionValidador.Validar(vehiculo),
-            Moto => motoValidador.Validar(vehiculo),
-            _ => ["Tipo de entidad no soportada para validación."]
-        };
+        ValidarVehiculo(vehiculo);
         var nuevo =  repository.Create(vehiculo) ?? throw new VehiculosException.InvalidMatriculaException(vehiculo.Matricula);
         cache.Add(nuevo.Matricula, nuevo );
         return nuevo;
     }
 
     public Vehiculo Update(string matricula, Vehiculo vehiculo) {
-        var errores = vehiculo switch {
-            Coche => cocheValidador.Validar(vehiculo),
-            Camion => camionValidador.Validar(vehiculo),
-            Moto => motoValidador.Validar(vehiculo),
-            _ => ["Tipo de entidad no soportada para validación."]
-        };
+        ValidarVehiculo(vehiculo);
         var actualizada = repository.Update(matricula, vehiculo) ??
                           throw new VehiculosException.VehiculoNotFoundException(matricula);
         cache.Remove(matricula);
@@ -90,4 +80,17 @@ public class VehiculoService(ICached<string, Vehiculo> cache, IValidador<Vehicul
             Marca = g.Key,
             Camtidad = g.Count()
         }).First();
+
+    private void ValidarVehiculo(Vehiculo vehiculo) {
+        var errores = vehiculo switch {
+            Coche => cocheValidador.Validar(vehiculo),
+            Camion => camionValidador.Validar(vehiculo),
+            Moto => motoValidador.Validar(vehiculo),
+            _ => ["Tipo de entidad no soportada para validación."]
+        };
+
+        if (errores.Any()) {
+            throw new VehiculosException.Validation(errores.ToList());
+        }
+    }
 }
