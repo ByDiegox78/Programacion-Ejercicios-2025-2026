@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿
+using System.Text.RegularExpressions;
 using Vehiculos.Models;
 using Vehiculos.Service;
 using Vehiculos.Repository;
 using Vehiculos.Validator;
 using Vehiculos.Cache;
-using Vehiculos.Errors;
 using Vehiculos.Factory; 
 using static System.Console;
 
@@ -50,9 +48,9 @@ void Main()
         WriteLine("7. Generar informe de vehículos");
         WriteLine("8. Listar vehículos por tipo");
         WriteLine("0. Salir");
-        Write("\nSeleccione una opción: ");
         
-        string opcion = ReadLine() ?? string.Empty;
+        // Validación del menú con Regex
+        string opcion = LeerCadenaRegex("\nSeleccione una opción: ", "^[0-8]$", "Opción no válida. Debe ser un número del 0 al 8.");
         
         try 
         {
@@ -71,15 +69,12 @@ void Main()
                     salir = true; 
                     WriteLine("¡Hasta pronto!");
                     break;
-                default: 
-                    WriteLine("Opción no válida. Inténtelo de nuevo."); 
-                    break;
             }
         }
         catch (Exception ex)
         {
             ForegroundColor = ConsoleColor.Red;
-            WriteLine($"\n[ERROR]: {ex.Message}");
+            WriteLine($"\n❌ [ERROR]: {ex.Message}");
             ResetColor();
         }
 
@@ -99,28 +94,20 @@ void VerTotalVehiculos(IVehiculoService service)
     WriteLine($"Hay un total de {service.TotalVehiculos} vehículos registrados en el sistema.");
 }
 
-void ListarTodos(IVehiculoService service)
-{
+void ListarTodos(IVehiculoService service) {
     WriteLine("--- LISTADO DE TODOS LOS VEHÍCULOS ---");
     var vehiculos = service.GetAll().ToList();
     
-    if (!vehiculos.Any())
-    {
+    if (!vehiculos.Any()) {
         WriteLine("No hay vehículos registrados.");
         return;
     }
-
-    foreach (var v in vehiculos)
-    {
-        ImprimirVehiculo(v);
-    }
+    foreach (var v in vehiculos) ImprimirVehiculo(v);
 }
 
-void BuscarPorMatricula(IVehiculoService service)
-{
+void BuscarPorMatricula(IVehiculoService service) {
     WriteLine("--- BUSCAR POR MATRÍCULA ---");
-    Write("Introduzca la matrícula a buscar: ");
-    string matricula = ReadLine() ?? string.Empty;
+    string matricula = LeerCadenaRegex("Introduzca la matrícula a buscar (Ej: 1234ABC): ", "^[0-9]{4}[A-Z]{3}$", "Formato inválido. Deben ser 4 números y 3 letras mayúsculas.");
     
     var vehiculo = service.GetByMatricula(matricula);
     WriteLine("\nVehículo encontrado:");
@@ -136,7 +123,7 @@ void AnadirVehiculo(IVehiculoService service)
     {
         var guardado = service.Save(vehiculoValido);
         ForegroundColor = ConsoleColor.Green;
-        WriteLine($"\nVehículo con matrícula {guardado.Matricula} guardado correctamente.");
+        WriteLine($"\n✅ Vehículo con matrícula {guardado.Matricula} guardado correctamente.");
         ResetColor();
     }
 }
@@ -144,8 +131,7 @@ void AnadirVehiculo(IVehiculoService service)
 void ActualizarVehiculo(IVehiculoService service)
 {
     WriteLine("--- ACTUALIZAR VEHÍCULO ---");
-    Write("Introduzca la matrícula del vehículo a actualizar: ");
-    string matricula = ReadLine() ?? string.Empty;
+    string matricula = LeerCadenaRegex("Introduzca la matrícula del vehículo a actualizar: ", "^[0-9]{4}[A-Z]{3}$", "Formato inválido.");
     
     var existente = service.GetByMatricula(matricula);
     WriteLine($"Actualizando {existente.GetType().Name} - {existente.Marca} {existente.Modelo}...");
@@ -156,7 +142,7 @@ void ActualizarVehiculo(IVehiculoService service)
     {
         service.Update(matricula, vActualizado);
         ForegroundColor = ConsoleColor.Green;
-        WriteLine($"\nVehículo actualizado correctamente.");
+        WriteLine($"\n✅ Vehículo actualizado correctamente.");
         ResetColor();
     }
 }
@@ -164,25 +150,27 @@ void ActualizarVehiculo(IVehiculoService service)
 void EliminarVehiculo(IVehiculoService service)
 {
     WriteLine("--- ELIMINAR VEHÍCULO ---");
-    Write("Introduzca la matrícula del vehículo a eliminar: ");
-    string matricula = ReadLine() ?? string.Empty;
+    string matricula = LeerCadenaRegex("Introduzca la matrícula del vehículo a eliminar: ", "^[0-9]{4}[A-Z]{3}$", "Formato inválido.");
     
     var eliminado = service.Delete(matricula);
     ForegroundColor = ConsoleColor.Green;
-    WriteLine($"\nVehículo eliminado correctamente.");
+    WriteLine($"\n✅ Vehículo eliminado correctamente.");
     ResetColor();
 }
 
 void GenerarInforme(IVehiculoService service)
 {
     WriteLine("--- INFORME DE VEHÍCULOS ---");
-    var informe = service.GenerarInformaDeVehiculos();
-    
-    WriteLine($"Total Coches: {informe.TotalCoches}");
-    WriteLine($"Total Motos: {informe.TotalMotos}");
-    WriteLine($"Total Camiones: {informe.TotalCamiones}");
-    WriteLine($"Marca más famosa: {informe.MarcaMasFamosa}");
-    WriteLine($"Peso medio camiones (>2015): {informe.PesoMaximoCamion2015:F2} kg");
+    try {
+        var informe = service.GenerarInformaDeVehiculos();
+        WriteLine($"Total Coches: {informe.TotalCoches}");
+        WriteLine($"Total Motos: {informe.TotalMotos}");
+        WriteLine($"Total Camiones: {informe.TotalCamiones}");
+        WriteLine($"Marca más famosa: {informe.MarcaMasFamosa}");
+        WriteLine($"Peso medio camiones (>2015): {informe.PesoMaximoCamion2015:F2} kg");
+    } catch (Exception ex) {
+        WriteLine($"No se pudo generar el informe (probablemente no hay datos suficientes): {ex.Message}");
+    }
 }
 
 void ListarPorTipo(IVehiculoService service)
@@ -191,31 +179,20 @@ void ListarPorTipo(IVehiculoService service)
     WriteLine("1. Coches");
     WriteLine("2. Motos");
     WriteLine("3. Camiones");
-    Write("Seleccione el tipo: ");
-    
-    string tipo = ReadLine() ?? string.Empty;
+    string tipo = LeerCadenaRegex("Seleccione el tipo: ", "^[1-3]$", "Opción no válida.");
     WriteLine();
     
     switch (tipo)
     {
-        case "1":
-            service.GetAllCoches().ForEach(ImprimirVehiculo);
-            break;
-        case "2":
-            service.GetAllMotos().ForEach(ImprimirVehiculo);
-            break;
-        case "3":
-            service.GetAllCamiones().ForEach(ImprimirVehiculo);
-            break;
-        default:
-            WriteLine("Tipo no reconocido.");
-            break;
+        case "1": service.GetAllCoches().ForEach(ImprimirVehiculo); break;
+        case "2": service.GetAllMotos().ForEach(ImprimirVehiculo); break;
+        case "3": service.GetAllCamiones().ForEach(ImprimirVehiculo); break;
     }
 }
 
 #endregion
 
-#region Métodos Auxiliares
+#region Métodos Auxiliares de Validación y Creación
 
 Vehiculo? CrearVehiculoDesdeConsola(string? matriculaForzada)
 {
@@ -223,49 +200,118 @@ Vehiculo? CrearVehiculoDesdeConsola(string? matriculaForzada)
     WriteLine("1. Coche");
     WriteLine("2. Moto");
     WriteLine("3. Camión");
-    Write("Opción: ");
-    string tipo = ReadLine() ?? string.Empty;
+    string tipo = LeerCadenaRegex("Opción (1-3): ", "^[1-3]$", "Tipo inválido. Elija 1, 2 o 3.");
 
     string matricula = string.IsNullOrWhiteSpace(matriculaForzada) 
-        ? PedirDato("Matrícula: ") 
+        ? LeerCadenaRegex("Matrícula (Ej: 1234ABC): ", "^[0-9]{4}[A-Z]{3}$", "Debe tener 4 números seguidos de 3 letras mayúsculas.") 
         : matriculaForzada;
 
-    string marca = PedirDato("Marca: ");
-    string modelo = PedirDato("Modelo: ");
+    string marca = LeerCadenaNoVacia("Marca: ", "La marca no puede estar vacía.");
+    string modelo = LeerCadenaNoVacia("Modelo: ", "El modelo no puede estar vacío.");
     
-    Write("Año de Matriculación: ");
-    int.TryParse(ReadLine() ?? "0", out int anio);
+    int anio = LeerEnteroRango("Año de Matriculación (2000-2025): ", 2000, 2025, "El año debe estar entre 2000 y 2025.");
 
     DateTime ahora = DateTime.UtcNow;
 
     switch (tipo)
     {
         case "1":
-            Write("Número de puertas: ");
-            int.TryParse(ReadLine() ?? "0", out int puertas);
+            int puertas = LeerEnteroRango("Número de puertas (1-7): ", 1, 7, "El número de puertas debe ser entre 1 y 7.");
             return new Coche(matricula, marca, modelo, anio, puertas, ahora, ahora);
         
         case "2":
-            Write("Cilindrada (CC): ");
-            int.TryParse(ReadLine() ?? "0", out int cilindrada);
+            int cilindrada = LeerEnteroRango("Cilindrada (CC): ", 49, 2500, "Cilindrada inválida (49 - 2500).");
             return new Moto(matricula, marca, modelo, anio, cilindrada, ahora, ahora);
         
         case "3":
-            Write("Peso Máximo (kg): ");
-            double.TryParse(ReadLine() ?? "0", out double peso);
+            double peso = LeerDoublePositivo("Peso Máximo (kg): ", "El peso debe ser un número positivo (ej: 3500,5).");
             return new Camion(matricula, marca, modelo, anio, peso, ahora, ahora);
         
         default:
-            WriteLine("Tipo no válido. Operación cancelada.");
             return null;
     }
 }
 
-string PedirDato(string mensaje)
+// ---- MÉTODOS DE LECTURA ROBUSTA ----
+
+string LeerCadenaRegex(string mensaje, string patron, string mensajeError)
 {
-    Write(mensaje);
-    return ReadLine() ?? string.Empty;
+    string input;
+    var regex = new Regex(patron);
+    do
+    {
+        Write(mensaje);
+        input = ReadLine() ?? string.Empty;
+        if (!regex.IsMatch(input))
+        {
+            ForegroundColor = ConsoleColor.Red;
+            WriteLine($"❌ {mensajeError}");
+            ResetColor();
+        }
+    } while (!regex.IsMatch(input));
+    
+    return input;
 }
+
+string LeerCadenaNoVacia(string mensaje, string mensajeError)
+{
+    string input;
+    do
+    {
+        Write(mensaje);
+        input = ReadLine() ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            ForegroundColor = ConsoleColor.Red;
+            WriteLine($"❌ {mensajeError}");
+            ResetColor();
+        }
+    } while (string.IsNullOrWhiteSpace(input));
+    
+    return input;
+}
+
+int LeerEnteroRango(string mensaje, int min, int max, string mensajeError)
+{
+    int numero;
+    bool esValido;
+    do
+    {
+        Write(mensaje);
+        esValido = int.TryParse(ReadLine(), out numero) && numero >= min && numero <= max;
+        
+        if (!esValido)
+        {
+            ForegroundColor = ConsoleColor.Red;
+            WriteLine($"❌ {mensajeError}");
+            ResetColor();
+        }
+    } while (!esValido);
+    
+    return numero;
+}
+
+double LeerDoublePositivo(string mensaje, string mensajeError)
+{
+    double numero;
+    bool esValido;
+    do
+    {
+        Write(mensaje);
+        esValido = double.TryParse(ReadLine(), out numero) && numero > 0;
+        
+        if (!esValido)
+        {
+            ForegroundColor = ConsoleColor.Red;
+            WriteLine($"❌ {mensajeError}");
+            ResetColor();
+        }
+    } while (!esValido);
+    
+    return numero;
+}
+
+// ------------------------------------
 
 void ImprimirVehiculo(Vehiculo vehiculo)
 {
