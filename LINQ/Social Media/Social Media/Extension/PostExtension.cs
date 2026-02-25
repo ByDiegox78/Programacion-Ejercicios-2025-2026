@@ -21,13 +21,14 @@ public static class PostExtension {
             .OrderByDescending(n => n.Compartidos)
             .First();
 
-        /*public object RatioDeEngagement() => lista
+        public object RatioDeEngagement() => lista
             .Where(p => p.Visualizaciones > 0)
-            .ToDictionary(
-                p => p.Id,
-                p => new { p.Autor, Ratio = (double)(p.Likes + p.Compartidos) / p.Visualizaciones }
-            );
-        */
+            .Select(n => new {
+                n.Id,
+                n.Autor,
+                Ratio = (double)(n.Likes + n.Compartidos) / n.Visualizaciones
+            }).ToList();
+        
         
         public double MediaInteraccion() => lista
             .Where(p => p.Categoria.Contains("Imagen"))
@@ -37,13 +38,25 @@ public static class PostExtension {
             .GroupBy(c => c.Categoria)
             .ToDictionary(
                 p => p.Key, 
-                p => p.Sum(c => c.Visualizaciones)
-                );
+                p => p.Sum(c => c.Visualizaciones));
+
+        public Dictionary<string, int> ActividadPorAitor() => lista
+            .GroupBy(a => a.Autor)
+            .OrderByDescending(g => g.Count())
+            .ToDictionary (
+                t => t.Key,
+                t => t.Count()
+            );
+
+        public List<String> TopCreadores() => lista
+            .GroupBy(p => p.Autor)
+            .OrderByDescending(g => g.Sum(p => p.Likes))
+            .Take(3)
+            .Select(g => g.Key)
+            .ToList();
         
         
-
-
-
+        
 
 
 
