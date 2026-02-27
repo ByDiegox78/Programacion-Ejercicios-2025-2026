@@ -6,6 +6,7 @@ Este repositorio tiene todos los ejercicios, prácticas y proyectos realizados d
 - `Ejercicios/`
   - `Prog.LINQ/`
     - `Vehiculos/` → Proyrcto CRUD con LINQ
+    - `Social Media`/ → Proyecto Social Media Cached
   - `Prog.GenericoYFuncional`
     - `Lol/` → Ejercicion CRUD de lol 
     - `Ficha/` → Ejercicio CRUD de Libreria
