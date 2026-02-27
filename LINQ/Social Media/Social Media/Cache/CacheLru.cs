@@ -14,7 +14,6 @@ public class CacheLru<TKey, TValue> : ICached<TKey, TValue>
         }
         if (_dataVehiculo.Count >= _capacity) {
             var oldestKey = _set.First!.Value;
-            //var oldestValue = _dataVehiculo[oldestKey];
             _set.RemoveFirst();
             _dataVehiculo.Remove(oldestKey);
         }

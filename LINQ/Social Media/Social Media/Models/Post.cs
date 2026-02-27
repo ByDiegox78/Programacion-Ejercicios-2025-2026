@@ -9,4 +9,11 @@ public record Post(
     int Compartidos,
     DateTime FechaPublicacion,
     string Categoria // "Video", "Imagen", "Texto"
-);
+
+
+) {
+    public override string ToString()
+    {
+        return $"{Autor}: {Contenido} ({Likes} likes, {Compartidos} compartidos, {Visualizaciones} visualizaciones)";
+    }
+}
