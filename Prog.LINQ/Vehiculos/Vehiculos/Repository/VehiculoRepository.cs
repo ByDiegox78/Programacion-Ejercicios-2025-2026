@@ -14,6 +14,10 @@ public class VehiculoRepository : IVehiculosRepository {
         return _vehiculos.GetValueOrDefault(matricula);
     }
 
+    public Vehiculo? GetBy(string marca) {
+        return _vehiculos.GetValueOrDefault(marca);
+    }
+
     public Vehiculo? Create(Vehiculo entity) {
         if (_vehiculos.ContainsKey(entity.Matricula)) return null;
 
