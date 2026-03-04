@@ -34,7 +34,7 @@ public class ProductosCsStorage : IProductosCsv {
         }
     }
 
-    public IEnumerable<Producto> Carrgar(string path) {
+    public IEnumerable<Producto> Cargar(string path) {
         if (!Path.Exists(path)) {
             return [];
         }
@@ -44,12 +44,12 @@ public class ProductosCsStorage : IProductosCsv {
                 .Skip(1)
                 .Select(l => l.Split(','))
                 .Select(c => new ProductosDto(
-                    int.Parse(c[0]),
-                    c[1],
-                    int.Parse(c[2]),
-                    int.Parse(c[3]),
-                    double.Parse(c[5]),
-                    int.Parse(c[6], System.Globalization.CultureInfo.InvariantCulture)
+                    int.Parse(c[0]), 
+                    c[1],           
+                    int.Parse(c[2]), 
+                    int.Parse(c[3]), 
+                    double.Parse(c[5], System.Globalization.CultureInfo.InvariantCulture),
+                    int.Parse(c[6])
                 ).ToModels());
         }
         catch (Exception e) {
@@ -64,4 +64,5 @@ public class ProductosCsStorage : IProductosCsv {
         }
 
         Directory.CreateDirectory("data");
+    }
 }

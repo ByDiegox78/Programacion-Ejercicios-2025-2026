@@ -3,7 +3,7 @@
 namespace Productos.Models; 
 
 public record Producto {
-    public int Id { get; set; } = IdCounter.NextId(); 
+    public int Id { get; set; }
     public required string Name { get; set; }
     public required int Supplier { get; init; }
     public required int Categoria { get; init; }
