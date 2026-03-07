@@ -2,7 +2,7 @@
 
 namespace Productos.Models; 
 
-public record Producto {
+public record Productos {
     public int Id { get; set; }
     public required string Name { get; set; }
     public required int Supplier { get; init; }

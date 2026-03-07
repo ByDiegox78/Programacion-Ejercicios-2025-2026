@@ -6,8 +6,8 @@ using Productos.Storage.Common;
 
 namespace Productos.Service;
 
-public class ProductosService(IProductosRepository repository, IStorage<Producto> storage, ICached<int, Producto> cached) : IServiceProductos{
-    public Producto GetById(int id) {
+public class ProductosService(IProductosRepository repository, IStorage<Models.Productos> storage, ICached<int, Models.Productos> cached) : IServiceProductos{
+    public Models.Productos GetById(int id) {
         var cache = cached.Get(id);
         if (cache != null) {
             return cache;
@@ -17,12 +17,12 @@ public class ProductosService(IProductosRepository repository, IStorage<Producto
         return personas;
     }
 
-    public IEnumerable<Producto> GetAll() {
+    public IEnumerable<Models.Productos> GetAll() {
         return repository.GetAll();
     }
 
-    public Producto Save(Producto producto) {
-        var nueva = repository.Save(producto) ?? throw new InvalidOperationException("No se encontro el registro");
+    public Models.Productos Save(Models.Productos productos) {
+        var nueva = repository.Save(productos) ?? throw new InvalidOperationException("No se encontro el registro");
         return nueva;
     }
 

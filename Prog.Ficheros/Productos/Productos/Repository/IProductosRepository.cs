@@ -3,4 +3,4 @@ using Productos.Repository.Common;
 
 namespace Productos.Repository;
 
-public interface IProductosRepository : ICrudRepository<int, Producto>;
+public interface IProductosRepository : ICrudRepository<int, Models.Productos>;
