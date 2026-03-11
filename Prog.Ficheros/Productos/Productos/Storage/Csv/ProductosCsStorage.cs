@@ -10,7 +10,7 @@ public class ProductosCsStorage : IProductosCsv {
         InitStorage();
     }
     
-    public void Salvar(IEnumerable<Producto> items, string path) {
+    public void Salvar(IEnumerable<Models.Productos> items, string path) {
         try {
             using var writer = new StreamWriter(path, false, Encoding.UTF8);
             //Cabezera Csv
@@ -34,7 +34,7 @@ public class ProductosCsStorage : IProductosCsv {
         }
     }
 
-    public IEnumerable<Producto> Cargar(string path) {
+    public IEnumerable<Models.Productos> Cargar(string path) {
         if (!Path.Exists(path)) {
             return [];
         }
@@ -48,8 +48,8 @@ public class ProductosCsStorage : IProductosCsv {
                     c[1],           
                     int.Parse(c[2]), 
                     int.Parse(c[3]), 
-                    double.Parse(c[5], System.Globalization.CultureInfo.InvariantCulture),
-                    int.Parse(c[6])
+                    double.Parse(c[4], System.Globalization.CultureInfo.InvariantCulture),
+                    int.Parse(c[5])
                 ).ToModels());
         }
         catch (Exception e) {

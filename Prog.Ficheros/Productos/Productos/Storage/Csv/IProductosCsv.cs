@@ -3,4 +3,4 @@ using Productos.Storage.Common;
 
 namespace Productos.Storage.Csv;
 
-public interface IProductosCsv : IStorage<Producto>;
+public interface IProductosCsv : IStorage<Models.Productos>;

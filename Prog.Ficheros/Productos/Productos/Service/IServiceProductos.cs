@@ -3,11 +3,11 @@
 namespace Productos.Service;
 
 public interface IServiceProductos {
-    Producto GetById(int id);
+    Models.Productos GetById(int id);
     
-    IEnumerable<Producto> GetAll();
+    IEnumerable<Models.Productos> GetAll();
     
-    Producto Save(Producto producto);
+    Models.Productos Save(Models.Productos productos);
     
     int ImportarDatos();
     

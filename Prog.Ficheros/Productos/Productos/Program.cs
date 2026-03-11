@@ -1,128 +1,161 @@
-﻿using Productos.Cache;
+using System.Text;
+using Productos.Cache;
 using Productos.Models;
 using Productos.Repository;
 using Productos.Service;
 using Productos.Storage.Csv;
 using static System.Console;
 
-// 0. Configuración inicial de rutas y storage
-// Usamos Path.Combine para asegurar compatibilidad entre Windows/Linux
-string baseDir = AppContext.BaseDirectory; 
-string dataDir = Path.Combine(baseDir, "data");
-string inputPath = Path.Combine(dataDir, "products.csv");
-string outputPath = Path.Combine(dataDir, "productos_criticos.csv");
+Console.OutputEncoding = Encoding.UTF8;
 
-// Inicializamos el servicio de almacenamiento
+// 1. Configuración de dependencias
+// Usamos la instancia Singleton del repositorio que definiste
+var repository = RepositoryProductos.Instance;
+
+// Definimos un almacenamiento CSV para Productos
 var storage = new ProductosCsStorage();
-var service = new ProductosService(RepositoryProductos.Instance, new ProductosCsStorage(), new CacheLru<int, Producto>(5));
 
-Console.WriteLine("--- Iniciando Procesador de Productos ---");
-Console.WriteLine($"Buscando archivo en: {inputPath}");
+// Definimos una caché LRU con capacidad para 5 elementos
+var cache = new CacheLru<int, Productos.Models.Productos>(5);
 
-// 1. Cargar datos
-// El método Cargar devuelve IEnumerable<Producto>, lo convertimos a lista para trabajar en memoria
-var productos = service.GetAll().ToList();
+// Instanciamos el servicio inyectando las dependencias
+var service = new ProductosService(repository, storage, cache);
 
-if (productos.Count == 0)
+Console.WriteLine("=== Sistema de Gestión de Productos ===");
+
+try
 {
-    Console.WriteLine("No se cargaron productos. Verifica que el archivo 'products.csv' esté en la carpeta 'data'.");
-    return;
+    // 2. Simulación de Importación de Datos (si existe el archivo)
+    Console.WriteLine("\nIntentando importar datos desde CSV...");
+    int importados = service.ImportarDatos();
+    Console.WriteLine($"Se importaron {importados} productos correctamente.");
 }
-
-Console.WriteLine($"Total de productos cargados: {productos.Count}");
-
-var pocosProductos = productos.Where(p => p.UnitInStock < 5).ToList();
-Console.WriteLine($"Productos detectados con stock crítico (< 5): {pocosProductos.Count}");
-foreach (var p in pocosProductos) {
-    Console.WriteLine($"- ID: {p.Id} | {p.Name} (Stock: {p.UnitInStock})");
-}
-Console.WriteLine();
-var stockMenor10 = productos
-    .Where(p => p.UnitInStock < 10)
-    .ToList();
-Console.WriteLine($"Productos con stock < 10: {pocosProductos.Count}");
-foreach (var p in stockMenor10) {
-    Console.WriteLine($"- ID: {p.Id} | {p.Name} (Stock: {p.UnitInStock})");
-}
-WriteLine();
-var stockMenor5Ordenado = productos
-    .Where(s => s.UnitInStock < 5)
-    .OrderBy(s => s.UnitInStock)
-    .ToList();
-Console.WriteLine($"Productos con stock < 5: {pocosProductos.Count}");
-foreach (var p in stockMenor5Ordenado) {
-    Console.WriteLine($"- ID: {p.Id} | {p.Name} (Stock: {p.UnitInStock})");
-}
-
-WriteLine();
-var numeroDeProveedores = productos
-    .GroupBy(s => s.Supplier)
-    .Count();
-WriteLine($"Cantidad de proveedores: {numeroDeProveedores}");
-WriteLine();
-
-var existenciasPorProducto = productos
-    .Select(p => new { 
-        Nombre = p.Name, 
-        Existencias = p.UnitInStock 
-    })
-    .ToList();
-WriteLine("Lista de existencias por producto");
-foreach (var prod in existenciasPorProducto) {
-    WriteLine($"Producto: {prod.Nombre,-35} | Existencias: {prod.Existencias}");
-}
-WriteLine();
-var existenciasPorProveedor = productos
-    .GroupBy(p => p.Supplier)
-    .Select(s => new {
-        ProveedorId = s.Key,
-        Existencias = s.Count()
-    }).ToList();
+catch (Exception ex)
+{
+    Console.WriteLine($"Aviso: No se pudieron importar datos (es posible que el archivo no exista aún). {ex.Message}");
     
-WriteLine("\n--- CANTIDAD DE PRODUCTOS POR PROVEEDOR ---");
-foreach (var item in existenciasPorProveedor) {
-    WriteLine($"Proveedor ID: {item.ProveedorId,-5} | Total productos: {item.Existencias}");
+    // 3. Si no hay datos, creamos algunos de prueba para probar el sistema
+    Console.WriteLine("\nGenerando datos de prueba...");
+    var p1 = new Productos.Models.Productos { Id = 1, Name = "Laptop Gaming", Supplier = 10, Categoria = 1, UnitPrice = 1200.50, UnitInStock = 5 };
+    var p2 = new Productos.Models.Productos { Id = 2, Name = "Mouse Óptico", Supplier = 10, Categoria = 2, UnitPrice = 25.99, UnitInStock = 50 };
+    var p3 = new Productos.Models.Productos { Id = 3, Name = "Monitor 4K", Supplier = 11, Categoria = 1, UnitPrice = 350.00, UnitInStock = 12 };
+
+    service.Save(p1);
+    service.Save(p2);
+    service.Save(p3);
 }
 
+// 4. Probar la Caché y el Repositorio
+Console.WriteLine("\n--- Consultando Producto con ID: 1 ---");
+// La primera vez irá al repositorio y luego lo guardará en caché
+var producto = service.GetById(1);
+if (producto != null)
+{
+    Console.WriteLine($"Producto recuperado: {producto.Name} - Precio: {producto.UnitPrice:C}");
+}
+
+Console.WriteLine("\n--- Consultando Producto con ID: 1 (Desde Caché) ---");
+// Esta vez se recuperará directamente de CacheLru
+var productoCached = service.GetById(1);
+if (productoCached != null)
+{
+    Console.WriteLine($"Producto recuperado de caché: {productoCached.Name}");
+}
+
+// 5. Listar todos los productos
+Console.WriteLine("\n--- Listado Completo de Productos ---");
+var productos = service.GetAll().ToList();
+foreach (var p in productos)
+{
+    Console.WriteLine($"[{p.Id}] {p.Name} | Stock: {p.UnitInStock} | Cat: {p.Categoria}");
+}
+
+// 6. Exportar los datos a CSV
+Console.WriteLine("\nExportando datos a la carpeta 'data'...");
+int exportados = service.ExportarDatos();
+Console.WriteLine($"Proceso finalizado. Se exportaron {exportados} registros.");
+
 WriteLine();
-WriteLine("\n--- PRECIO MEDIO DE PRODUCTOS POR PROVEEDOR ---");
-var mediaProveedor = productos
-    .GroupBy(p => p.Supplier)
-    .Select(s => new {
-        ProveedorId = s.Key,
-        Media = s.Average(a => a.UnitPrice)
-    }).ToList();
-foreach (var item in mediaProveedor) {
-    WriteLine($"Proveedor ID: {item.ProveedorId,-5} | Media precio productos: {item.Media:F2}");
-}  
+Console.WriteLine("--- PULSE CUALQUIER TECLA PARA VER LAS CONSULTAS ---");
+Console.ReadKey();
+Console.Clear();
 
-var productoMasCaro = productos
-    .MaxBy(p => p.UnitPrice);
 
-WriteLine(productoMasCaro != null 
-    ? $"\n--- PRODUCTO MÁS CARO ---\nNombre: {productoMasCaro.Name} | Precio: {productoMasCaro.UnitPrice:F2}" 
-    : "No hay productos disponibles.");
+// --- CONSULTAS ADICIONALES (LINQ) ---
 
-var proveedorConMas5Productos = productos
-    .GroupBy(p => p.Supplier)
-    .Where(g => g.Count() > 4)
+// 1. Valor total del inventario
+var valorTotalInventario = productos.Sum(p => p.UnitPrice * p.UnitInStock);
+WriteLine($"\nVALOR TOTAL DEL INVENTARIO: {valorTotalInventario:C2}");
+
+// 2. Producto más barato del catálogo
+var productoMasBarato = productos.MinBy(p => p.UnitPrice);
+WriteLine(productoMasBarato != null 
+    ? $"\n--- PRODUCTO MÁS ECONÓMICO ---\nNombre: {productoMasBarato.Name} | Precio: {productoMasBarato.UnitPrice:C2}" 
+    : "\nNo hay productos para determinar el más barato.");
+
+// 3. Top 3 productos con mayor cantidad de existencias
+var topStock = productos
+    .OrderByDescending(p => p.UnitInStock)
+    .Take(3)
+    .ToList();
+
+WriteLine("\n--- TOP 3 PRODUCTOS CON MÁS STOCK ---");
+topStock.ForEach(p => WriteLine($"{p.Name,-35} | Unidades: {p.UnitInStock}"));
+
+// 4. Resumen por Categoría
+var resumenCategorias = productos
+    .GroupBy(p => p.Categoria)
     .Select(g => new {
-        Name = g.Key,
-        Proveedor = g.Count()
-    }).ToList();
-
-Console.WriteLine("\n--- PROVEEDORES CON MÁS DE 5 PRODUCTOS ---");
-Console.WriteLine(proveedorConMas5Productos.Any() 
-    ? string.Join("\n", proveedorConMas5Productos.Select(p => $"ID Proveedor: {p.Name} | Cantidad: {p.Proveedor}")) 
-    : "No hay proveedores con más de 5 productos.");
-//Puse 4 ya que n hay proveedores con mas de 5 productos
-
-var a = productos
-    .Where(p => p.UnitInStock > 0)
-    .GroupBy(s => s.Supplier)
-    .ToDictionary(k => k.Key, t => new {
-        UnitInStock = t.Sum(s => s.UnitInStock),
-        Averages = t.Sum(s => s.UnitInStock),
-        Valor  = t.Sum(s => s.UnitPrice),
-        Max = t.MaxBy(s => s.UnitPrice)
+        CategoriaId = g.Key,
+        Cantidad = g.Count(),
+        PrecioPromedio = g.Average(p => p.UnitPrice)
     })
+    .OrderBy(res => res.CategoriaId)
+    .ToList();
+
+WriteLine("\n--- RESUMEN POR CATEGORÍA ---");
+foreach (var cat in resumenCategorias) {
+    WriteLine($"Categoría ID: {cat.CategoriaId,-5} | Productos: {cat.Cantidad,-3} | Precio Medio: {cat.PrecioPromedio:C2}");
+}
+
+// 5. Productos cuyo precio es superior a la media general
+if (productos.Any())
+{
+    double precioMedioGeneral = productos.Average(p => p.UnitPrice);
+    var productosSobreMedia = productos
+        .Where(p => p.UnitPrice > precioMedioGeneral)
+        .OrderByDescending(p => p.UnitPrice)
+        .ToList();
+
+    WriteLine($"\n--- PRODUCTOS SOBRE EL PRECIO MEDIO ({precioMedioGeneral:C2}) ---");
+    foreach (var p in productosSobreMedia) {
+        WriteLine($"{p.Name,-35} | Precio: {p.UnitPrice:C2}");
+    }
+}
+
+// 6. Total de unidades físicas en todo el almacén
+int totalUnidades = productos.Sum(p => p.UnitInStock);
+WriteLine($"\nTOTAL DE UNIDADES FÍSICAS EN ALMACÉN: {totalUnidades}");
+
+// 7. Verificar si existe algún producto totalmente agotado (Stock = 0)
+bool hayAgotados = productos.Any(p => p.UnitInStock == 0);
+WriteLine($"\n¿Existen productos agotados actualmente?: {(hayAgotados ? "SÍ" : "NO")}");
+
+// 8. Producto con el nombre más largo
+var nombreMasLargo = productos.MaxBy(p => p.Name?.Length ?? 0);
+WriteLine($"\nPRODUCTO CON NOMBRE MÁS DETALLADO: {nombreMasLargo?.Name}");
+
+// 9. Agrupación por rango de precio
+var rangosPrecio = productos
+    .GroupBy(p => p.UnitPrice switch {
+        < 20 => "Económico ( < $20 )",
+        <= 100 => "Rango Medio ( $20 - $100 )",
+        _ => "Premium ( > $100 )"
+    })
+    .Select(g => new { Rango = g.Key, Cantidad = g.Count() })
+    .ToList();
+
+WriteLine("\n--- DISTRIBUCIÓN POR RANGOS DE PRECIO ---");
+foreach (var r in rangosPrecio) {
+    WriteLine($"{r.Rango,-25} : {r.Cantidad} productos");
+}
