@@ -1,4 +1,7 @@
-﻿using Productos.Models;
+﻿using Productos.Cache;
+using Productos.Models;
+using Productos.Repository;
+using Productos.Service;
 using Productos.Storage.Csv;
 using static System.Console;
 
@@ -11,14 +14,14 @@ string outputPath = Path.Combine(dataDir, "productos_criticos.csv");
 
 // Inicializamos el servicio de almacenamiento
 var storage = new ProductosCsStorage();
-
+var service = new ProductosService(RepositoryProductos.Instance, new ProductosCsStorage(), new CacheLru<int, Producto>(5));
 
 Console.WriteLine("--- Iniciando Procesador de Productos ---");
 Console.WriteLine($"Buscando archivo en: {inputPath}");
 
 // 1. Cargar datos
 // El método Cargar devuelve IEnumerable<Producto>, lo convertimos a lista para trabajar en memoria
-var productos = storage.Cargar(inputPath).ToList();
+var productos = service.GetAll().ToList();
 
 if (productos.Count == 0)
 {
@@ -113,3 +116,13 @@ Console.WriteLine(proveedorConMas5Productos.Any()
     ? string.Join("\n", proveedorConMas5Productos.Select(p => $"ID Proveedor: {p.Name} | Cantidad: {p.Proveedor}")) 
     : "No hay proveedores con más de 5 productos.");
 //Puse 4 ya que n hay proveedores con mas de 5 productos
+
+var a = productos
+    .Where(p => p.UnitInStock > 0)
+    .GroupBy(s => s.Supplier)
+    .ToDictionary(k => k.Key, t => new {
+        UnitInStock = t.Sum(s => s.UnitInStock),
+        Averages = t.Sum(s => s.UnitInStock),
+        Valor  = t.Sum(s => s.UnitPrice),
+        Max = t.MaxBy(s => s.UnitPrice)
+    })
