@@ -5,44 +5,25 @@ using CsvJsonXmlStorae.Enums;
 using CsvJsonXmlStorae.Models;
 using CsvJsonXmlStorae.Storage;
 using CsvJsonXmlStorae.Storage.Json;
+using CsvJsonXmlStorae.Storage.Xml;
 
 Console.WriteLine("Hello, World!");
 
 var storage = new CiudadanoStorageCsv();
 var storajeJson = new CiudadanoStorageJson();
+var storageXml = new CiudadanosStorageXml();
 
 var ciudadanos = storage.Cargar(Configuracion.CiudadanoFile).ToList();
-var ciudadanosJson = storage.Cargar(Configuracion.CiudadanoFileJson).ToList();
+var ciudadanosJson = storajeJson.Cargar(Configuracion.CiudadanoFileJson).ToList();
+var ciudadanosXml = storageXml.Cargar(Configuracion.CiudadanoFileXml).ToList();
 
-// Crear algunos ciudadanos
-var nuevo = new Ciudadano(
-    21,
-    "Diego",
-    "Manzanero",
-    21,
-    "diego@email.com",
-    612345678,
-    "Calle Ejemplo 5",
-    "Madrid",
-    "España",
-    28020,
-    "Estudiante",
-    "Universidad",
-    0,
-    new DateTime(2004, 1, 10),
-    Genero.Masculino,
-    Estado.Soltero,
-    0,
-    DateTime.Now,
-    true
-);
 
-// Guardar usando la ruta de Configuracion
-ciudadanos.Add(nuevo);
+//ciudadanos.Add(nuevo);
 storage.Salvar(ciudadanos, Configuracion.CiudadanoFile);
-
-ciudadanosJson.Add(nuevo);
+//ciudadanosJson.Add(nuevo);
 storajeJson.Salvar(ciudadanosJson, Configuracion.CiudadanoFileJson);
+//ciudadanosXml.Add(nuevo);
+storageXml.Salvar(ciudadanosXml, Configuracion.CiudadanoFileXml);
 
 Console.WriteLine("CSV guardado");
 
@@ -51,4 +32,14 @@ var cargados = storage.Cargar(Configuracion.CiudadanoFile);
 
 foreach (var c in cargados) {
     Console.WriteLine($"{c.Id} - {c.Nombre} {c.Apellido}");
+}
+
+var jsonCargado = storajeJson.Cargar(Configuracion.CiudadanoFileJson);
+foreach (var c in jsonCargado) {
+    Console.WriteLine($"{c.Id} - {c.Nombre} {c.Apellido} {c.FechaNacimiento}");
+}
+
+var xmlCargado = storageXml.Cargar(Configuracion.CiudadanoFileXml);
+foreach (var c in xmlCargado) {
+    Console.WriteLine($"{c.Id} - {c.Nombre} {c.Apellido} {c.FechaNacimiento}");
 }

@@ -59,6 +59,6 @@ public class CiudadanoStorageJson : ICiudadanoJson {
     {
         if (Directory.Exists(Configuracion.DataFolderJson))
             return;
-        Directory.CreateDirectory("data");
+        Directory.CreateDirectory(Configuracion.DataFolderJson);
     }
 }

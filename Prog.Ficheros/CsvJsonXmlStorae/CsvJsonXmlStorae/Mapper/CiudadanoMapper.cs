@@ -6,12 +6,12 @@ using CsvJsonXmlStorae.Models;
 namespace CsvJsonXmlStorae.Mapper;
 
 public static class CiudadanoMapper {
-    private const string IsoFormat = "s";
+    private const string IsoFormat = "t";
     private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 
     public static Ciudadano ToModel(this CiudadanoDto dto) {
-        var fechaNac = DateTime.Parse(dto.FechaNacimiento, InvariantCulture);
-        var fechRegistro= DateTime.Parse(dto.FechaNacimiento, InvariantCulture);
+        var fechaNac = DateTime.TryParse(dto.FechaNacimiento, out var f) ? f : DateTime.UtcNow;
+        var fechRegistro= DateTime.TryParse(dto.FechaNacimiento, out var fc) ? fc: DateTime.UtcNow;
         return new Ciudadano(
             Id: dto.Id,
             Nombre: dto.Nombre,
@@ -27,8 +27,8 @@ public static class CiudadanoMapper {
             Empresa: dto.Empresa,
             Salario: dto.Salario,
             FechaNacimiento: fechaNac,
-            Genero: Enum.Parse<Genero>(dto.Genero),
-            EstadoCivil: Enum.Parse<Estado>(dto.EstadoCivil),
+            Genero: Enum.TryParse(dto.Genero, out Genero gen) ? gen : Genero.Femenino,
+            EstadoCivil: Enum.TryParse(dto.Genero, out Estado es) ? es : Estado.Casada,
             NumHijos: dto.NumHijos,
             FechaRegistro: fechRegistro,
             Activo: dto.Activo

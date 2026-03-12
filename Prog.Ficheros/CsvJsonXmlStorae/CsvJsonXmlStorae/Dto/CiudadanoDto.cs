@@ -1,62 +1,80 @@
 ﻿using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace CsvJsonXmlStorae.Dto;
-
+[XmlRoot("Ciudadanos")]
+[XmlType("Ciudadano")]
 public record CiudadanoDto(
-    [property: JsonPropertyName("id")]
-    int Id,
-    
-    [property: JsonPropertyName("nombre")]
-    string Nombre,
-    
-    [property: JsonPropertyName("apellido")]
+    [property: XmlElement("id")] int Id,
+
+    [property: XmlElement("nombre")] string Nombre,
+
+    [property: XmlElement("apellido")]
     string Apellido,
-    
-    [property: JsonPropertyName("edad")]
-    int Edad,
-    
-    [property: JsonPropertyName("email")]
-    string Email,
-    
-    [property: JsonPropertyName("telefono")]
+
+    [property: XmlElement("edad")] int Edad,
+
+    [property: XmlElement("email")] string Email,
+
+    [property: XmlElement("telefono")]
     int Telefono,
-    
-    [property: JsonPropertyName("direccion")]
+
+    [property: XmlElement("direccion")]
     string Direccion,
-    
-    [property: JsonPropertyName("ciudad")]
-    string Ciudad,
-    
-    [property: JsonPropertyName("pais")]
-    string Pais,
-    
-    [property: JsonPropertyName("codigopostal")]
+
+    [property: XmlElement("ciudad")] string Ciudad,
+
+    [property: XmlElement("pais")] string Pais,
+
+    [property: XmlElement("codigopostal")]
     int CodigoPostal,
-    
-    [property: JsonPropertyName("profesion")]
+
+    [property: XmlElement("profesion")]
     string Profesion,
-    
-    [property: JsonPropertyName("empresa")]
+
+    [property: XmlElement("empresa")]
     string Empresa,
-    
-    [property: JsonPropertyName("salario")]
+
+    [property: XmlElement("salario")]
     int Salario,
-    
-    [property: JsonPropertyName("fechanacimiento")]
+
+    [property: XmlElement("fechanacimiento")]
     string FechaNacimiento,
-    
-    [property: JsonPropertyName("genero")]
-    string Genero,
-    
-    [property: JsonPropertyName("estadocivil")]
+
+    [property: XmlElement("genero")] string Genero,
+
+    [property: XmlElement("estadocivil")]
     string EstadoCivil,
-    
-    [property: JsonPropertyName("numhijos")]
+
+    [property: XmlElement("numhijos")]
     int NumHijos,
-    
-    [property: JsonPropertyName("fecharegistro")]
+
+    [property: XmlElement("fecharegistro")]
     string FechaRegistro,
-    
-    [property: JsonPropertyName("activo")]
-    bool Activo
-);
+
+    [property: XmlElement("activo")] bool Activo
+) {
+    public CiudadanoDto() 
+        : this(
+            0,          // Id
+            "",         // Nombre
+            "",         // Apellido
+            0,          // Edad
+            "",         // Email
+            0,          // Telefono
+            "",         // Direccion
+            "",         // Ciudad
+            "",         // Pais
+            0,          // CodigoPostal
+            "",         // Profesion
+            "",         // Empresa
+            0,          // Salario
+            "",    // FechaNacimiento
+            "",         // Genero
+            "",         // EstadoCivil
+            0,          // NumHijos
+            "",    // FechaRegistro
+            false       // Activo
+        )
+    { }
+}
