@@ -29,8 +29,7 @@ public class CiudadanoStorageJson : ICiudadanoJson {
     
     public void Salvar(IEnumerable<Ciudadano> items, string path) {
         try {
-            var dtos = items.Select(p => p.ToDto()).ToList();
-            var json = JsonSerializer.Serialize(dtos, _options);
+            var json = JsonSerializer.Serialize((items.Select(p => p.ToDto()).ToList()), _options);
             File.WriteAllText(path, json, Encoding.UTF8);
         }
         catch (Exception e) {
@@ -58,8 +57,8 @@ public class CiudadanoStorageJson : ICiudadanoJson {
     
     private void InitStorage()
     {
-        if (Directory.Exists(Configuracion.DataFolderJson))
+        if (Directory.Exists(Configuracion.DataFolder))
             return;
-        Directory.CreateDirectory(Configuracion.DataFolderJson);
+        Directory.CreateDirectory(Configuracion.DataFolder);
     }
 }

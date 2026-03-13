@@ -22,16 +22,14 @@ public class CiudadanosStorageXml : ICiudadanoStorageXml {
     }
 
     public void Salvar(IEnumerable<Ciudadano> items, string path) {
-        try
-        {
+        try {
             var dto = items.Select(p => p.ToDto()).ToList();
             var serializer = new XmlSerializer(typeof(List<CiudadanoDto>));
             using var streamWriter = new StreamWriter(path);
-            var xmlWriter = XmlWriter.Create(streamWriter, XmlWriterSettings);
+            var xmlWriter = XmlWriter.Create(new StreamWriter(path), XmlWriterSettings);
             serializer.Serialize(xmlWriter, dto, XmlSerializerNamespaces);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Console.WriteLine(e);
             throw;
         }
@@ -52,7 +50,6 @@ public class CiudadanosStorageXml : ICiudadanoStorageXml {
         }
         catch (Exception e) {
             if (e.InnerException != null) {
-                // ESTO ES LO IMPORTANTE. Te dirá si falla por un tipo de dato, un formato, etc.
                 Console.WriteLine($"Detalle del error: {e.InnerException.Message}"); 
             }
             throw;
@@ -60,8 +57,8 @@ public class CiudadanosStorageXml : ICiudadanoStorageXml {
     }
     
     private void InitStorage() {
-        if (Directory.Exists(Configuracion.DataFolderXml))
+        if (Directory.Exists(Configuracion.DataFolder))
             return;
-        Directory.CreateDirectory(Configuracion.DataFolderXml);
+        Directory.CreateDirectory(Configuracion.DataFolder);
     }
 }

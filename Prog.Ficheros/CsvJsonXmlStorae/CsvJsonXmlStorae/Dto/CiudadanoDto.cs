@@ -52,6 +52,7 @@ public record CiudadanoDto(
     string FechaRegistro,
 
     [property: XmlElement("Activo")] bool Activo
+    
 ) {
     public CiudadanoDto() 
         : this(
