@@ -3,63 +3,62 @@ using System.Xml.Serialization;
 
 namespace CsvJsonXmlStorae.Dto;
 [XmlRoot("Ciudadanos")]
-[XmlType("Ciudadano")]
+[XmlType("CiudadanoDto")]
 public record CiudadanoDto(
-    [property: XmlElement("id")] int Id,
+    [property: XmlElement("Id")] int Id,
 
-    [property: XmlElement("nombre")] string Nombre,
+    [property: XmlElement("Nombre")] string Nombre,
 
-    [property: XmlElement("apellido")]
-    string Apellido,
+    [property: XmlElement("Apellido")] string Apellido,
 
-    [property: XmlElement("edad")] int Edad,
+    [property: XmlElement("Edad")] int Edad,    
 
-    [property: XmlElement("email")] string Email,
+    [property: XmlElement("Email")] string Email,
 
-    [property: XmlElement("telefono")]
+    [property: XmlElement("Telefono")]
     int Telefono,
 
-    [property: XmlElement("direccion")]
+    [property: XmlElement("Direccion")]
     string Direccion,
 
-    [property: XmlElement("ciudad")] string Ciudad,
+    [property: XmlElement("Ciudad")] string Ciudad,
 
-    [property: XmlElement("pais")] string Pais,
+    [property: XmlElement("Pais")] string Pais,
 
-    [property: XmlElement("codigopostal")]
+    [property: XmlElement("CodigoPostal")]
     int CodigoPostal,
 
-    [property: XmlElement("profesion")]
+    [property: XmlElement("Profesion")]
     string Profesion,
 
-    [property: XmlElement("empresa")]
+    [property: XmlElement("Empresa")]
     string Empresa,
 
-    [property: XmlElement("salario")]
+    [property: XmlElement("Salario")]
     int Salario,
 
-    [property: XmlElement("fechanacimiento")]
+    [property: XmlElement("FechaNacimiento")]
     string FechaNacimiento,
 
-    [property: XmlElement("genero")] string Genero,
+    [property: XmlElement("Genero")] string Genero,
 
-    [property: XmlElement("estadocivil")]
+    [property: XmlElement("EstadoCivil")]
     string EstadoCivil,
 
-    [property: XmlElement("numhijos")]
+    [property: XmlElement("NumHijos")]
     int NumHijos,
 
-    [property: XmlElement("fecharegistro")]
+    [property: XmlElement("FechaRegistro")]
     string FechaRegistro,
 
-    [property: XmlElement("activo")] bool Activo
+    [property: XmlElement("Activo")] bool Activo
 ) {
     public CiudadanoDto() 
         : this(
-            0,          // Id
-            "",         // Nombre
+            0,         
+            "",         
             "",         // Apellido
-            0,          // Edad
+            0,          
             "",         // Email
             0,          // Telefono
             "",         // Direccion

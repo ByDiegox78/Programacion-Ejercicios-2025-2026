@@ -51,7 +51,10 @@ public class CiudadanosStorageXml : ICiudadanoStorageXml {
                    throw new InvalidOperationException("No se pudieron deserializar los DTOs.");
         }
         catch (Exception e) {
-            Console.WriteLine(e);
+            if (e.InnerException != null) {
+                // ESTO ES LO IMPORTANTE. Te dirá si falla por un tipo de dato, un formato, etc.
+                Console.WriteLine($"Detalle del error: {e.InnerException.Message}"); 
+            }
             throw;
         }
     }

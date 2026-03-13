@@ -27,7 +27,7 @@ public class CiudadanoStorageCsv : ICiudadanoStorageCsv {
             throw;
         }
     }
-
+    /// <inheritdoc cref="IStorage{T}.Cargar"/>
     public IEnumerable<Ciudadano> Cargar(string path) {
         if (!Path.Exists(path)) {
             return [];

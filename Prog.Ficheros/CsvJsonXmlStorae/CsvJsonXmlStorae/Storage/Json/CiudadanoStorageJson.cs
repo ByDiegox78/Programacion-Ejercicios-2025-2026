@@ -8,7 +8,9 @@ using CsvJsonXmlStorae.Mapper;
 using CsvJsonXmlStorae.Models;
 
 namespace CsvJsonXmlStorae.Storage.Json;
-
+/// <summary>
+/// Almacenamiento de aldeanos Json
+/// </summary>
 public class CiudadanoStorageJson : ICiudadanoJson {
 
     private readonly JsonSerializerOptions _options = new() {
@@ -24,8 +26,7 @@ public class CiudadanoStorageJson : ICiudadanoJson {
     public CiudadanoStorageJson() {
         InitStorage();
     }
-        
-        
+    
     public void Salvar(IEnumerable<Ciudadano> items, string path) {
         try {
             var dtos = items.Select(p => p.ToDto()).ToList();
