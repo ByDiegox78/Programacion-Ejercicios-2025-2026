@@ -23,11 +23,11 @@ public class CiudadanosStorageXml : ICiudadanoStorageXml {
 
     public void Salvar(IEnumerable<Ciudadano> items, string path) {
         try {
-            var dto = items.Select(p => p.ToDto()).ToList();
+            var dtos = items.Select(p => p.ToDto()).ToList();
             var serializer = new XmlSerializer(typeof(List<CiudadanoDto>));
             using var streamWriter = new StreamWriter(path);
-            var xmlWriter = XmlWriter.Create(new StreamWriter(path), XmlWriterSettings);
-            serializer.Serialize(xmlWriter, dto, XmlSerializerNamespaces);
+            var xmlWriter = XmlWriter.Create(streamWriter, XmlWriterSettings);
+            serializer.Serialize(xmlWriter, dtos, XmlSerializerNamespaces);
         }
         catch (Exception e) {
             Console.WriteLine(e);

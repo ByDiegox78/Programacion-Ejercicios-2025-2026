@@ -26,7 +26,6 @@ public class CiudadanoStorageJson : ICiudadanoJson {
     public CiudadanoStorageJson() {
         InitStorage();
     }
-    
     public void Salvar(IEnumerable<Ciudadano> items, string path) {
         try {
             var json = JsonSerializer.Serialize((items.Select(p => p.ToDto()).ToList()), _options);
