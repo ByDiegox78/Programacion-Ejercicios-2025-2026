@@ -11,15 +11,16 @@ using CsvJsonXmlStorae.Storage.Json;
 using CsvJsonXmlStorae.Storage.Xml;
 using System.Text;
 using System.Text.RegularExpressions;
+using CsvJsonXmlStorae.Storage.Bin;
 
 Console.OutputEncoding = Encoding.UTF8;
 
 Main();
 
 void Main() {
-    ICiudadanosService service = new CiudadanosSerivice(CiudadanosRepository.Instance, new CiudadanosStorageXml());
+    ICiudadanosService service = new CiudadanosSerivice(CiudadanosRepository.Instance, new CiudadanoStorageBin());
     CiudadanosFactory.Seed().ToList().ForEach(p => service.Save(p));
-
+    ExportarDatos(service);
     ImportarDatos(service);
 
     // Luego añadir nuevos

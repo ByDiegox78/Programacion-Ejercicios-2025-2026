@@ -18,7 +18,8 @@ public static class Configuracion
         { "csv", Path.Combine(DataFolder, "ciudadanos.csv") },
         { "json", Path.Combine(DataFolder, "ciudadanosJson.json") },
         { "xml", Path.Combine(DataFolder, "ciudadanosxml2.xml") },
+        { "bin", Path.Combine(DataFolder,"ciudadanosbin.bin") },
     };
     
-    public static string CiudadanosFile => Files["xml"];
+    public static string CiudadanosFile => Files["bin"];
 }
