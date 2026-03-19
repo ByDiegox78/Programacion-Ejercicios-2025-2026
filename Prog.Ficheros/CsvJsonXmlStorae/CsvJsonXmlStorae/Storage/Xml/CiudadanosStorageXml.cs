@@ -21,7 +21,7 @@ public class CiudadanosStorageXml : ICiudadanoStorageXml {
         InitStorage();
     }
 
-    public void Salvar(IEnumerable<Ciudadano> items, string path) {
+    public void WriteToFile(IEnumerable<Ciudadano> items, string path) {
         try {
             var dtos = items.Select(p => p.ToDto()).ToList();
             var serializer = new XmlSerializer(typeof(List<CiudadanoDto>));
@@ -36,7 +36,7 @@ public class CiudadanosStorageXml : ICiudadanoStorageXml {
 
     }
 
-    public IEnumerable<Ciudadano> Cargar(string path) {
+    public IEnumerable<Ciudadano> ReadFromFile(string path) {
         if (!Path.Exists(path)) {
             throw new FileNotFoundException($"El archivo '{path}' no existe.");
         }

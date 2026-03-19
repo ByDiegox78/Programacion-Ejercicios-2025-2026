@@ -10,7 +10,6 @@ public class CiudadanoStorageBin : ICiudadanoBinStorage{
         using var writer = new BinaryWriter(File.Create(path));
         var dtos = items.Select(p => p.ToDto()).ToList();
         foreach (var dto in dtos) {
-            {
                 writer.Write(dto.Id);
                 writer.Write(dto.Nombre);
                 writer.Write(dto.Apellido);
@@ -30,7 +29,6 @@ public class CiudadanoStorageBin : ICiudadanoBinStorage{
                 writer.Write(dto.NumHijos);
                 writer.Write(dto.FechaRegistro);
                 writer.Write(dto.Activo);
-            }
         }
     }
 

@@ -1,38 +1,99 @@
-﻿// See https://aka.ms/new-console-template for more information
-using static System.Console;
+﻿using static System.Console;
 using CsvJsonXmlStorae.Config;
 using CsvJsonXmlStorae.Enums;
 using CsvJsonXmlStorae.Factories;
 using CsvJsonXmlStorae.Models;
 using CsvJsonXmlStorae.Repository;
 using CsvJsonXmlStorae.Service;
-using CsvJsonXmlStorae.Storage;
-using CsvJsonXmlStorae.Storage.Json;
-using CsvJsonXmlStorae.Storage.Xml;
 using System.Text;
 using System.Text.RegularExpressions;
-using CsvJsonXmlStorae.Storage.Bin;
-
+using CsvJsonXmlStorae.Storage.bin;
 Console.OutputEncoding = Encoding.UTF8;
 
 Main();
 
 void Main() {
     ICiudadanosService service = new CiudadanosSerivice(CiudadanosRepository.Instance, new CiudadanoStorageBin());
+
     CiudadanosFactory.Seed().ToList().ForEach(p => service.Save(p));
-    ExportarDatos(service);
-    ImportarDatos(service);
+    bool salir = false;
 
-    // Luego añadir nuevos
-    AnadirNuevoCiudadano(service);
+    while (!salir) {
+        Clear(); // Limpia la consola en cada iteración para que sea más legible
+        WriteLine("\n========================================");
+        WriteLine("   🏛️ GESTIÓN DE CIUDADANOS 🏛️");
+        WriteLine("========================================");
+        WriteLine("1. 📋 Listar todos los ciudadanos");
+        WriteLine("2. ➕ Añadir nuevo ciudadano");
+        WriteLine("3. 🔍 Buscar ciudadano por Id");
+        WriteLine("4. 📝 Actualizar ciudadano");
+        WriteLine("5. 🗑️ Eliminar ciudadano");
+        WriteLine("6. 📊 Mostrar total de ciudadanos");
+        WriteLine("7. 📤 Exportar datos a fichero");
+        WriteLine("8. 📥 Importar datos desde fichero");
+        WriteLine("9. 🌱 Cargar datos de prueba (Seed)");
+        WriteLine("0. ❌ Salir");
+        WriteLine("========================================");
 
-    // Y después exportar
-    ExportarDatos(service);
+        int opcion = LeerEnteroConRango("\n👉 Seleccione una opción: ", 0, 9);
 
-    var lista = service.GetAll().ToList();
-    foreach (var l in lista)
-    {
-        WriteLine($"Id: {l.Id} - Nombre: {l.Nombre} - Estado: {l.EstadoCivil}");
+       // Clear(); // Limpiamos antes de mostrar el resultado de la acción
+
+        switch (opcion) {
+            case 1:
+                ListarCiudadanos(service);
+                break;
+            case 2:
+                AnadirNuevoCiudadano(service);
+                break;
+            case 3:
+                BuscarCiudadanoPorId(service);
+                break;
+            case 4:
+                ActualizarCiudadano(service);
+                break;
+            case 5:
+                EliminarCiudadano(service);
+                break;
+            case 6:
+                MostrarTotalCiudadanos(service);
+                break;
+            case 7:
+                ExportarDatos(service);
+                break;
+            case 8:
+                ImportarDatos(service);
+                break;
+            case 0:
+                salir = true;
+                WriteLine("👋 ¡Hasta la próxima!");
+                break;
+        }
+
+        if (!salir) {
+            WriteLine("\nPress any key to continue...");
+            ReadKey(true);
+        }
+    }
+}
+void ListarCiudadanos(ICiudadanosService service) {
+    WriteLine("\n📋 --- LISTA DE CIUDADANOS ---");
+    
+    try {
+        var lista = service.GetAll().ToList();
+
+        if (lista.Any()) {
+            foreach (var l in lista) {
+                WriteLine(
+                    $"🆔 Id: {l.Id} | 👤 Nombre: {l.Nombre} {l.Apellido} | 💍 Estado: {l.EstadoCivil} | 🎂 Edad: {l.Edad}");
+            }
+        }
+        else {
+            WriteLine("⚠️ No hay ciudadanos registrados actualmente.");
+        }
+    }
+    catch (Exception ex) {
+        WriteLine($"☠️ ERROR AL OBTENER LA LISTA: {ex.Message}");
     }
 }
 
@@ -65,8 +126,7 @@ bool PedirConfirmacion(string mensaje) {
         WriteLine();
         return res;
 }
-void AnadirNuevoCiudadano(ICiudadanosService service)
-{
+void AnadirNuevoCiudadano(ICiudadanosService service) {
     WriteLine("\n➕ --- ALTA DE NUEVO CIUDADANO ---");
 
     var id = LeerEntero("🆔 Id: ");
@@ -100,11 +160,107 @@ void AnadirNuevoCiudadano(ICiudadanosService service)
     ImprimirFichaCiudadano(temp);
 
     if (!PedirConfirmacion("¿Confirmar alta?")) return;
-    try
-    {
+    try {
         var creado = service.Save(temp);
         WriteLine("✅ Guardado con éxito.");
         ImprimirFichaCiudadano(creado);
+    }
+    catch (Exception ex) {
+        WriteLine($"☠️ ERROR: {ex.Message}");
+    }
+}
+void MostrarTotalCiudadanos(ICiudadanosService service)
+{
+    WriteLine("\n📊 --- TOTAL DE CIUDADANOS ---");
+    WriteLine($"Hay un total de {service.TotalPersonas} ciudadanos registrados en el sistema.");
+}
+
+void BuscarCiudadanoPorId(ICiudadanosService service)
+{
+    WriteLine("\n🔍 --- BUSCAR CIUDADANO ---");
+    var id = LeerEntero("🆔 Introduzca el Id del ciudadano a buscar: ");
+    
+    try
+    {
+        var ciudadano = service.GetById(id);
+        WriteLine("\n✅ Ciudadano encontrado:");
+        ImprimirFichaCiudadano(ciudadano);
+    }
+    catch (Exception ex)
+    {
+        WriteLine($"☠️ ERROR: {ex.Message}");
+    }
+}
+
+void ActualizarCiudadano(ICiudadanosService service)
+{
+    WriteLine("\n📝 --- ACTUALIZAR CIUDADANO ---");
+    var id = LeerEntero("🆔 Introduzca el Id del ciudadano a actualizar: ");
+    
+    try {
+        var existente = service.GetById(id);
+        WriteLine("\nDatos actuales del ciudadano:");
+        ImprimirFichaCiudadano(existente);
+
+        if (!PedirConfirmacion("¿Desea modificar este registro?")) return;
+
+        WriteLine("\nIntroduzca los nuevos datos (debe rellenar todo de nuevo):");
+        
+        // Reutilizamos las funciones de validación que ya creaste
+        var nombre = LeerCadenaValidada("👤 Nombre: ", @"^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]{2,30}$", "Mínimo 2 caracteres.");
+        var apellido = LeerCadenaValidada("👤 Apellidos: ", @"^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]{2,50}$", "Mínimo 2 caracteres.");
+        var edad = LeerEntero("🎂 Edad: ");
+        var email = LeerCadenaValidada("📧 Email: ", @"^[^@\s]+@[^@\s]+\.[^@\s]+$", "Formato de email inválido.");
+        var telefono = LeerEntero("📱 Teléfono: ");
+        var direccion = LeerCadena("🏠 Dirección: ");
+        var ciudad = LeerCadena("🌍 Ciudad: ");
+        var pais = LeerCadena("🌎 País: ");
+        var codigoPostal = LeerEntero("📮 Código Postal: ");
+        var profesion = LeerCadena("💼 Profesión: ");
+        var empresa = LeerCadena("🏢 Empresa: ");
+        var salario = LeerEntero("💰 Salario: ");
+        var fechaNacimiento = LeerFecha("🎂 Fecha nacimiento (yyyy-MM-dd): ");
+        var genero = LeerGenero();
+        var estadoCivil = LeerEstadoCivil();
+        var numHijos = LeerEntero("👶 Número de hijos: ");
+        var activo = LeerBooleano("✅ ¿Activo? (s/n): ");
+
+        var ciudadanoActualizado = new Ciudadano(
+            id, nombre, apellido, edad, email, telefono,
+            direccion, ciudad, pais, codigoPostal,
+            profesion, empresa, salario, fechaNacimiento,
+            genero, estadoCivil, numHijos, existente.FechaRegistro, activo 
+        );
+
+        var resultado = service.Update(ciudadanoActualizado, id);
+        WriteLine("\n✅ Ciudadano actualizado con éxito. Nuevos datos:");
+        ImprimirFichaCiudadano(resultado);
+    }
+    catch (Exception ex)
+    {
+         WriteLine($"☠️ ERROR: {ex.Message}");
+    }
+}
+
+void EliminarCiudadano(ICiudadanosService service)
+{
+    WriteLine("\n🗑️ --- ELIMINAR CIUDADANO ---");
+    var id = LeerEntero("🆔 Introduzca el Id del ciudadano a eliminar: ");
+    
+    try
+    {
+        var ciudadano = service.GetById(id);
+        ImprimirFichaCiudadano(ciudadano);
+        
+        if (PedirConfirmacion("⚠️ ¿Está completamente seguro de que desea eliminar este ciudadano? Esta acción es irreversible."))
+        {
+            service.Delete(id);
+            WriteLine("✅ Ciudadano eliminado correctamente.");
+        }
+        else
+        {
+            WriteLine("❌ Operación de eliminación cancelada.");
+        }
     }
     catch (Exception ex)
     {
@@ -167,12 +323,10 @@ int LeerEntero(string mensaje) {
     return valor;
 }
 DateTime LeerFecha(string mensaje) {
-    DateTime fecha;
-
     do {
         Write(mensaje);
 
-        if (DateTime.TryParse(ReadLine(), out fecha))
+        if (DateTime.TryParse(ReadLine(), out var fecha))
             return fecha;
 
         WriteLine("❌ Fecha inválida.");

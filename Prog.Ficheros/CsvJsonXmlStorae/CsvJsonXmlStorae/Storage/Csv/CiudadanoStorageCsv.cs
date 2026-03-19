@@ -12,7 +12,7 @@ public class CiudadanoStorageCsv : ICiudadanoStorageCsv {
         InitStorage(); 
     }
     
-    public void Salvar(IEnumerable<Ciudadano> items, string path) {
+    public void WriteToFile(IEnumerable<Ciudadano> items, string path) {
         try {
             using var writer = new StreamWriter(path, false, Encoding.UTF8);
             writer.WriteLine("Id;Nombre;Apellido;Edad;Email;Telefono;Direccion;Ciudad;Pais;CodigoPostal;Profesion;Empresa;Salario;FechaNacimiento;Genero;EstadoCivil;NumHijos;FechaRegistro;Activo");
@@ -27,8 +27,8 @@ public class CiudadanoStorageCsv : ICiudadanoStorageCsv {
             throw;
         }
     }
-    /// <inheritdoc cref="IStorage{T}.Cargar"/>
-    public IEnumerable<Ciudadano> Cargar(string path) {
+    /// <inheritdoc cref="IStorage{T}.ReadFromFile"/>
+    public IEnumerable<Ciudadano> ReadFromFile(string path) {
         if (!Path.Exists(path)) {
             return [];
         }

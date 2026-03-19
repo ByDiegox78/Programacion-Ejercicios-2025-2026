@@ -26,7 +26,7 @@ public class CiudadanoStorageJson : ICiudadanoJson {
     public CiudadanoStorageJson() {
         InitStorage();
     }
-    public void Salvar(IEnumerable<Ciudadano> items, string path) {
+    public void WriteToFile(IEnumerable<Ciudadano> items, string path) {
         try {
             var json = JsonSerializer.Serialize((items.Select(p => p.ToDto()).ToList()), _options);
             File.WriteAllText(path, json, Encoding.UTF8);
@@ -37,7 +37,7 @@ public class CiudadanoStorageJson : ICiudadanoJson {
         }
     }
 
-    public IEnumerable<Ciudadano> Cargar(string path) {
+    public IEnumerable<Ciudadano> ReadFromFile(string path) {
         if (!Path.Exists(path)) {
             throw new FileNotFoundException($"El archivo '{path}' no existe.");
         }

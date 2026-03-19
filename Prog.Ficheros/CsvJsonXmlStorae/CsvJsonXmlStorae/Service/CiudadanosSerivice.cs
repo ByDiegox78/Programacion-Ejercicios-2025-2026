@@ -41,7 +41,7 @@ public class CiudadanosSerivice(
 
     public int ImportarDatos() {
         try {
-            var personas = storage.Cargar(Configuracion.CiudadanosFile).ToList();
+            var personas = storage.ReadFromFile(Configuracion.CiudadanosFile).ToList();
             if (!personas.Any()) {
                 throw new Exception($"No se encontraron datos para importar en {Configuracion.CiudadanosFile}");
             }
@@ -57,7 +57,7 @@ public class CiudadanosSerivice(
     public int ExportarDatos() {
         try {
             var personas = repository.GetAll().ToList();
-            storage.Salvar(personas, Configuracion.CiudadanosFile);
+            storage.WriteToFile(personas, Configuracion.CiudadanosFile);
             return personas.Count;
         }
         catch (Exception e) {
