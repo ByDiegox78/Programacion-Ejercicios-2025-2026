@@ -21,5 +21,5 @@ public static class Configuracion
         { "bin", Path.Combine(DataFolder,"ciudadanosbin.bin") },
     };
     
-    public static string CiudadanosFile => Files["bin"];
+    public static string CiudadanosFile => Files["json"];
 }

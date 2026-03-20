@@ -8,12 +8,14 @@ using CsvJsonXmlStorae.Service;
 using System.Text;
 using System.Text.RegularExpressions;
 using CsvJsonXmlStorae.Storage.bin;
+using CsvJsonXmlStorae.Storage.Json;
+
 Console.OutputEncoding = Encoding.UTF8;
 
 Main();
 
 void Main() {
-    ICiudadanosService service = new CiudadanosSerivice(CiudadanosRepository.Instance, new CiudadanoStorageBin());
+    ICiudadanosService service = new CiudadanosSerivice(CiudadanosRepository.Instance, new CiudadanoStorageJson());
 
     CiudadanosFactory.Seed().ToList().ForEach(p => service.Save(p));
     bool salir = false;

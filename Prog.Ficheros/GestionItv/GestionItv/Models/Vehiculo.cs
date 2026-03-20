@@ -5,7 +5,7 @@ public record Vehiculo(
     string Marca,
     int cilindrada,
     Motor TipoMotor,
-    IEnumerable<string> DniPropietario,
+    string DniPropietario,
     bool IsDeleted,
     DateTime CreatedAt,
     DateTime UpdatedAt

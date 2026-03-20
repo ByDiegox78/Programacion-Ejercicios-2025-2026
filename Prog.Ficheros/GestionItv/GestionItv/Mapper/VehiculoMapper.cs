@@ -29,8 +29,11 @@ public static class VehiculoMapper {
             dto.Matricula,
             dto.Marca,
             dto.Cilindrada,
-            int.TryParse(dto.TipoMotor, out var tipo) ? tipo : Motor.Diese,
-            
+            Enum.TryParse(dto.TipoMotor, out Motor tipo) ? tipo : Motor.Diese,
+            dto.DniPropietario,
+            dto.IsDelete,
+            createdAt,
+            updatedAt
         );
     }
 }
