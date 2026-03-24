@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using GestionItv.Config;
 using GestionItv.Models;
+using GestionItv.Utils;
 
 namespace GestionItv.Validator;
 
@@ -21,8 +22,20 @@ public class VehiculoValidator : IVehiculoValidator<Vehiculo> {
 
         if (entidad.cilindrada < Configuracion.MinCilindrada && entidad.cilindrada > Configuracion.MaxCilindrada) {
             errores.Add($"La cilidrada no puede ser menor de {Configuracion.MaxCilindrada} y mayor de {Configuracion.MaxCilindrada}");
+            return errores;
         }
-            
+
+        if (!Enum.IsDefined(entidad.TipoMotor)) {
+            errores.Add("El tipo de motor no coindice con los disponibles");
+            return errores;
+        }
+
+        if (!Utilities.ValidarDni(entidad.DniPropietario)) {
+            errores.Add("El dni del propietario no es el correcto");
+            return errores;
+        }
+
+        return errores;
     }
     
 }
