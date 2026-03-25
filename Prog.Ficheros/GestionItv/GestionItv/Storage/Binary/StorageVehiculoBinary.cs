@@ -10,6 +10,7 @@ public class StorageVehiculoBinary : IStorageVehiculoBin {
         using var writer = new BinaryWriter(File.Create(path));
         var dtos = items.Select(p => p.ToDto()).ToList();
         foreach (var d in dtos) {
+            writer.Write(d.Id);
             writer.Write(d.Matricula);
             writer.Write(d.Marca);
             writer.Write(d.Cilindrada);
@@ -32,6 +33,7 @@ public class StorageVehiculoBinary : IStorageVehiculoBin {
         
         for (int i = 0; i < count; i++) {
             var dto = new VehiculoDto(
+                reader.ReadInt32(),
                 reader.ReadString(),
                 reader.ReadString(),
                 reader.ReadInt32(),

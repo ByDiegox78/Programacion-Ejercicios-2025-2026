@@ -38,13 +38,14 @@ public class StorageCsvVehiculo : IStorageCsvVehiculo {
                 .Skip(1)
                 .Select(linea => linea.Split(';'))
                 .Select(campos => new VehiculoDto(
-                    campos[0],
+                    int.Parse(campos[0]),
                     campos[1],
-                    int.Parse(campos[2]),
-                    campos[3],
+                    campos[2],
+                    int.Parse(campos[3]),
                     campos[4],
-                    bool.Parse(campos[5]),
-                    campos[6],
+                    campos[5],
+                    bool.Parse(campos[6]),
+                    campos[7],
                     campos[7]
 
                 ).ToModel()).ToList();

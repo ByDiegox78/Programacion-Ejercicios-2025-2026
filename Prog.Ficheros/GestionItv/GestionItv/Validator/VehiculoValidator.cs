@@ -20,7 +20,7 @@ public class VehiculoValidator : IVehiculoValidator<Vehiculo> {
             return errores;
         }
 
-        if (entidad.cilindrada < Configuracion.MinCilindrada && entidad.cilindrada > Configuracion.MaxCilindrada) {
+        if (entidad.Cilindrada < Configuracion.MinCilindrada && entidad.Cilindrada > Configuracion.MaxCilindrada) {
             errores.Add($"La cilidrada no puede ser menor de {Configuracion.MaxCilindrada} y mayor de {Configuracion.MaxCilindrada}");
             return errores;
         }

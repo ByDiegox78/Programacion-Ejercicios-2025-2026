@@ -2,8 +2,8 @@
 
 public interface ICrudRepository<in TKey, TEntity> where TEntity : class {
     IEnumerable<TEntity> GetAll();
-    TEntity? GetByMatricula(TKey matricula);
+    TEntity? GetById(TKey id);
     TEntity? Create(TEntity entity);
-    TEntity? Update(TKey matricula, TEntity entity);
-    TEntity? Delete(TKey matricula);
+    TEntity? Update(TKey id, TEntity entity);
+    TEntity? Delete(TKey id);
 }

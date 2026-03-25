@@ -6,6 +6,8 @@ namespace GestionItv.Dto;
 [XmlRoot("Vehiculo")]
 [XmlType("VehiculoDto")]
 public record VehiculoDto(
+    [property: XmlElement("Id")]
+    int Id,
     [property: XmlElement("Matricula")]
     string Matricula,
     [property: XmlElement("Marca")]

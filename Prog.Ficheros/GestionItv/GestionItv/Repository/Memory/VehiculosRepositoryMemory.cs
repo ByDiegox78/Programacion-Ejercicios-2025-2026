@@ -7,48 +7,69 @@ namespace GestionItv.Repository.Memory;
 public class VehiculosRepositoryMemory: IVehiculosRepository {
     private static readonly Lazy<VehiculosRepositoryMemory> Lazy = new(() => new VehiculosRepositoryMemory());
     private readonly ILogger _logger = Log.ForContext<VehiculosRepositoryMemory>();
-    private readonly Dictionary<string, Vehiculo> _matricula = new();
+    private readonly Dictionary<string, int> _matricula = new();
+    private readonly Dictionary<int, Vehiculo> _porId = new();
+    private int _idCounter;
+    private VehiculosRepositoryMemory() { }
+    public static VehiculosRepositoryMemory Instance => Lazy.Value;
     
     public IEnumerable<Vehiculo> GetAll() {
         _logger.Debug("Buscando todos los vehiculos de la ITV");
-        return _matricula.Values;
+        return _porId.Values;
     }
 
-    public Vehiculo? GetByMatricula(string matricuña) {
-        _logger.Debug($"Buscando vehiculo por su matricula: {matricuña}");
-        return _matricula.GetValueOrDefault(matricuña);
+    public Vehiculo? GetById(int id) {
+        _logger.Debug($"Buscando vehiculo por su matricula: {id}");
+        return _porId.GetValueOrDefault(id);
+    }
+
+    public Vehiculo? GetByMatricula(string matricula) {
+        return _matricula.TryGetValue(matricula, out var id) && _porId.TryGetValue(id, out var vehiculo)
+            ? vehiculo
+            : null;
     }
 
     public Vehiculo? Create(Vehiculo entity) {
         _logger.Debug($"Creando un vehiculo {entity}", entity);
-        if (_matricula.ContainsValue(entity)) return null;
+        if (_matricula.ContainsKey(entity.Matricula)) return null;
         var nuevo = entity with {
+            Id = ++_idCounter,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
             IsDeleted = false
         };
-        _matricula.Add(nuevo.Matricula, nuevo);
+        _porId[nuevo.Id] = nuevo;
+        _matricula[nuevo.Matricula] = nuevo.Id;
         return nuevo;
 
     }
 
-    public Vehiculo? Update(string matricula, Vehiculo entity) {
+    public Vehiculo? Update(int id, Vehiculo entity) {
         _logger.Debug($"Actualizando el vehiculo: {entity}", entity);
-        if (!_matricula.TryGetValue(matricula, out var actual)) return null;
+        if (!_porId.TryGetValue(id, out var actual)) return null;
+        
+        if (entity.Matricula != actual.Matricula && _matricula.TryGetValue(entity.Matricula, out var otroId) && otroId != id) {
+            _logger.Warning("No se puede actualizar persona con id {Id} porque el DNI {Dni} ya está en uso por otra persona", id, entity.Id);
+            return null;
+        }
 
         var actualizado = entity with {
+            Id = id,
             CreatedAt = actual.CreatedAt,
             UpdatedAt = DateTime.UtcNow,
             IsDeleted = false
         };
-
-        _matricula[matricula] = actualizado;
+        _porId[id] = actualizado;
+        if (actual.Matricula != actualizado.Matricula) {
+            _matricula.Remove(actual.Matricula);
+            _matricula[actualizado.Matricula] = id;
+        }
         return actualizado;
     }
 
-    public Vehiculo? Delete(string matricula) {
-        _logger.Debug($"Eliminando vehiculo con matricula {matricula}", matricula);
-        if (!_matricula.Remove(matricula, out var vehiculo)) return null;
+    public Vehiculo? Delete(int id) {
+        _logger.Debug($"Eliminando vehiculo con id {id}", id);
+        if (!_porId.Remove(id, out var vehiculo)) return null;
 
         _matricula.Remove(vehiculo.Matricula);
 

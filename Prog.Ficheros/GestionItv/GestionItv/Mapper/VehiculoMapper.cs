@@ -10,9 +10,10 @@ public static class VehiculoMapper {
     
     public static VehiculoDto ToDto(this Vehiculo vehiculo) {
         return new VehiculoDto(
+            vehiculo.Id,
             vehiculo.Matricula,
             vehiculo.Marca,
-            vehiculo.cilindrada,
+            vehiculo.Cilindrada,
             vehiculo.TipoMotor.ToString(),
             vehiculo.DniPropietario,
             vehiculo.IsDeleted,
@@ -26,6 +27,7 @@ public static class VehiculoMapper {
         var updatedAt = DateTime.Parse(dto.UpdatedAt, InvariantCulture);
         
         return new Vehiculo(
+            dto.Id,
             dto.Matricula,
             dto.Marca,
             dto.Cilindrada,
