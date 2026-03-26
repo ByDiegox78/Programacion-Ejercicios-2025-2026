@@ -55,21 +55,23 @@ public class VehiculosRepositoryMemory: IVehiculosRepository {
     public Vehiculo? Update(int id, Vehiculo entity) {
         _logger.Debug($"Actualizando el vehiculo: {entity}", entity);
         if (!_porId.TryGetValue(id, out var actual)) return null;
-        
         if (entity.Matricula != actual.Matricula && _matricula.TryGetValue(entity.Matricula, out var otroId) && otroId != id) {
-            _logger.Warning(
-                "No se puede actualizar el vehículo con id {Id} porque la matrícula {Matricula} ya está en uso por otro vehículo",
+            _logger.Warning("No se puede actualizar el vehículo con id {Id} porque la matrícula {Matricula} ya está en uso por otro vehículo",
                 id, entity.Matricula); 
             return null;
         }
-
         if (entity.DniPropietario != actual.DniPropietario) {
-            if (VerificarCochePropietario(entity.DniPropietario)) {
-                _porDni[actual.DniPropietario].Remove(actual.Id);
+            if (!VerificarCochePropietario(entity.DniPropietario)) {
+                _logger.Warning("El propietario con DNI {Dni} ya tiene 3 vehículos", entity.DniPropietario);
+                return null;
             }
+            _porDni[actual.DniPropietario].Remove(actual.Id);
+            if (_porDni[actual.DniPropietario].Count == 0) _porDni.Remove(actual.DniPropietario);
+            if (!_porDni.ContainsKey(entity.DniPropietario)) {
+                _porDni[entity.DniPropietario] = new HashSet<int>();
+            }
+            _porDni[entity.DniPropietario].Add(entity.Id);   
         }
-        
-
         var actualizado = entity with {
             Id = id,
             Matricula = actual.Matricula,
@@ -82,7 +84,6 @@ public class VehiculosRepositoryMemory: IVehiculosRepository {
             _matricula.Remove(actual.Matricula);
             _matricula[actualizado.Matricula] = id;
         }
-        _porDni[actualizado.DniPropietario].Add(actualizado.Id);
         return actualizado;
     }
 
