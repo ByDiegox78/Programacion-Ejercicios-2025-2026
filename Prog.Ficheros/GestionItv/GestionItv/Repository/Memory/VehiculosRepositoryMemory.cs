@@ -20,9 +20,11 @@ public class VehiculosRepositoryMemory: IVehiculosRepository {
     }
 
     public Vehiculo? GetById(int id) {
-        _logger.Debug($"Buscando vehiculo por su matricula: {id}");
+        _logger.Debug("Buscando vehiculo por su matricula: {Id}", id);
         return _porId.GetValueOrDefault(id);
     }
+
+    
 
     public Vehiculo? GetByMatricula(string matricula) {
         return _matricula.TryGetValue(matricula, out var id) && _porId.TryGetValue(id, out var vehiculo)
@@ -31,7 +33,7 @@ public class VehiculosRepositoryMemory: IVehiculosRepository {
     }
 
     public Vehiculo? Create(Vehiculo entity) {
-        _logger.Debug($"Creando un vehiculo {entity}", entity);
+        _logger.Debug("Creando un vehiculo {Entity}", entity);
         if (_matricula.ContainsKey(entity.Matricula) || !VerificarCochePropietario(entity.DniPropietario)) return null;
         
         
@@ -43,17 +45,12 @@ public class VehiculosRepositoryMemory: IVehiculosRepository {
         };
         _porId[nuevo.Id] = nuevo;
         _matricula[nuevo.Matricula] = nuevo.Id;
-        if (!_porDni.TryGetValue(nuevo.DniPropietario, out HashSet<int>? value)) {
-            value = new HashSet<int>();
-            _porDni[nuevo.DniPropietario] = value;
-        }
-        value.Add(nuevo.Id);
+        AgregarVehiculoDni(nuevo.DniPropietario, nuevo.Id);
         return nuevo;
-
     }
 
     public Vehiculo? Update(int id, Vehiculo entity) {
-        _logger.Debug($"Actualizando el vehiculo: {entity}", entity);
+        _logger.Debug("Actualizando el vehiculo: {Entity}", entity);
         if (!_porId.TryGetValue(id, out var actual)) return null;
         if (entity.Matricula != actual.Matricula && _matricula.TryGetValue(entity.Matricula, out var otroId) && otroId != id) {
             _logger.Warning("No se puede actualizar el vehículo con id {Id} porque la matrícula {Matricula} ya está en uso por otro vehículo",
@@ -65,16 +62,11 @@ public class VehiculosRepositoryMemory: IVehiculosRepository {
                 _logger.Warning("El propietario con DNI {Dni} ya tiene 3 vehículos", entity.DniPropietario);
                 return null;
             }
-            _porDni[actual.DniPropietario].Remove(actual.Id);
-            if (_porDni[actual.DniPropietario].Count == 0) _porDni.Remove(actual.DniPropietario);
-            if (!_porDni.ContainsKey(entity.DniPropietario)) {
-                _porDni[entity.DniPropietario] = new HashSet<int>();
-            }
-            _porDni[entity.DniPropietario].Add(entity.Id);   
+            QuitarVehiculoDni(actual.DniPropietario,actual.Id);
+            AgregarVehiculoDni(entity.DniPropietario, entity.Id);
         }
         var actualizado = entity with {
             Id = id,
-            Matricula = actual.Matricula,
             CreatedAt = actual.CreatedAt,
             UpdatedAt = DateTime.UtcNow,
             IsDeleted = false
@@ -88,27 +80,53 @@ public class VehiculosRepositoryMemory: IVehiculosRepository {
     }
 
     public Vehiculo? Delete(int id) {
-        _logger.Debug($"Eliminando vehiculo con id {id}", id);
-        if (!_porId.Remove(id, out var vehiculo)) return null;
-
-        _porDni[vehiculo.DniPropietario].Remove(vehiculo.Id);
-        _matricula.Remove(vehiculo.Matricula);
-        if (_porDni[vehiculo.DniPropietario].Count == 0)
-            _porDni.Remove(vehiculo.DniPropietario);
+        _logger.Debug("Eliminando vehiculo con id {Id}", id);
+        if (!_porId.TryGetValue(id, out var vehiculo)) return null;
         
-        return vehiculo with {
+        _matricula.Remove(vehiculo.Matricula);
+        
+        QuitarVehiculoDni(vehiculo.DniPropietario, vehiculo.Id);
+        var eliminado =  vehiculo with {
             IsDeleted = true,
             UpdatedAt = DateTime.UtcNow
         };
+        _porId[id] = eliminado;
+        return eliminado;
+    }
+    
+    public Vehiculo? HardDelete(int id) {
+        if (!_porId.Remove(id, out var vehiculo)) return null;
+
+        _matricula.Remove(vehiculo.Matricula);
+        QuitarVehiculoDni(vehiculo.DniPropietario, vehiculo.Id);
+    
+        return vehiculo;
     }
     
     public bool DeleteAll() {
         _logger.Warning("Eliminando permanentemente todos los vehiculos");
         _matricula.Clear();
+        _porId.Clear();
+        _porDni.Clear();
+        _idCounter = 0;
+
         return true;
     }
 
     private bool VerificarCochePropietario(string dni) { 
-        return _porDni.TryGetValue(dni, out var list) && list.Count < 4;
+        return !_porDni.TryGetValue(dni, out var list) || list.Count < 3;
+    }
+    private void AgregarVehiculoDni(string dni, int id) {
+        if (!_porDni.TryGetValue(dni, out var lista)) {
+            lista = new HashSet<int>();
+            _porDni[dni] = lista;
+        }
+        lista.Add(id);
+    }
+    private void QuitarVehiculoDni(string dni, int id) {
+        if (_porDni.TryGetValue(dni, out var lista)) {
+            lista.Remove(id);
+            if (lista.Count == 0) _porDni.Remove(dni);
+        }
     }
 }

@@ -13,12 +13,13 @@ namespace GestionItv.Storage.Json;
 public class VehiculoStorageJson : IStorage<Vehiculo> {
     
     private readonly JsonSerializerOptions _options = new() {
-        WriteIndented = true,
+        
+        WriteIndented = true, //Hace el json mas visible
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Convierte las propiedades a camelCase en el JSON
         DefaultIgnoreCondition =
-            JsonIgnoreCondition.WhenWritingNull,
-        Converters = { new JsonStringEnumConverter() },
-        Encoder = JavaScriptEncoder
+            JsonIgnoreCondition.WhenWritingNull, // Si un campo es nulo, no lo escribe en el json
+        Converters = { new JsonStringEnumConverter() }, //Convierte cualquier enum que encuentre a string
+        Encoder = JavaScriptEncoder //Permite caracteres especiales
             .UnsafeRelaxedJsonEscaping
     };
     
@@ -28,8 +29,10 @@ public class VehiculoStorageJson : IStorage<Vehiculo> {
     
     public void WriteToFile(IEnumerable<Vehiculo> items, string path) {
         try {
-            var json = JsonSerializer.Serialize((items.Select(p => p.ToDto()).ToList()), _options);
-            File.WriteAllText(path, json, Encoding.UTF8);
+            var dto = items.Select(p => p.ToDto()).ToList(); //Convierte cada vehiculo a vehiculoDto
+            // Convierte la lista de dto al formato json usando la configuracion que le proporcionamos
+            var json = JsonSerializer.Serialize(dto, _options);
+            File.WriteAllText(path, json, Encoding.UTF8); //Escribe el json en el archivo
         }
         catch (Exception e) {
             Console.WriteLine(e);
@@ -42,10 +45,10 @@ public class VehiculoStorageJson : IStorage<Vehiculo> {
             throw new FileNotFoundException($"El archivo '{path}' no existe.");
         }
         try {
-            var json = File.ReadAllText(path, Encoding.UTF8);
-            var dtos = JsonSerializer.Deserialize<List<VehiculoDto>>(json, _options);
-            return dtos?.Select(dto => dto.ToModel()).ToList() ??
-                   throw new InvalidOperationException("No se pudieron deserializar los DTOs.");
+            var json = File.ReadAllText(path, Encoding.UTF8); // Carga todo el archivo Json
+            var dtos = JsonSerializer.Deserialize<List<VehiculoDto>>(json, _options); // Convierte el json a una List<VehiculoDto>
+            return dtos?.Select(dto => dto.ToModel()).ToList() ?? // Convierte la lista de dto a una lista de model
+                   throw new InvalidOperationException("No se pudieron deserializar los DTOs."); // Si falla lanza error
         }
         catch (Exception e) {
             Console.WriteLine(e);

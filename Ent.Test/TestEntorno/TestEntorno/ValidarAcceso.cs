@@ -2,7 +2,6 @@
 
 public class Validar {
     public static string ValidarAcceso(string usuario, string password, int reintentos) {
-        // Nodo 1: Inicio de la función
         if (usuario == "admin") {
             if (password == "1234") {
                 return "Acceso concedido";          

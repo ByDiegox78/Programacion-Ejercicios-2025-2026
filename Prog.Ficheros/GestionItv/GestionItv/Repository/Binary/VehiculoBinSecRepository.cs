@@ -1,115 +1,54 @@
-﻿using System.Text.Json;
-using GestionItv.Config;
+﻿using System.Text;
 using GestionItv.Models;
 using GestionItv.Repository.Common;
 using Serilog;
 
-namespace GestionItv.Repository.Json;
+namespace GestionItv.Repository.Binary;
 
-public class VehiculoJsonRepository : IVehiculosRepository {
-    
-    private static readonly Lazy<VehiculoJsonRepository> Lazy = new(() => new VehiculoJsonRepository());
+public class VehiculoBinSecRepository : IVehiculosRepository {
 
-    private readonly ILogger _logger = Log.ForContext<VehiculoJsonRepository>();
+    private const string FilePath = "Data/vehiculos_sec.dat";
+    private readonly ILogger _logger = Log.ForContext<VehiculoBinSecRepository>();
+
+    private static int _nextId = 1;
     
     private readonly Dictionary<string, int> _matricula = new();
-    private readonly Dictionary<int, Vehiculo> _porId = new();
+    private readonly Dictionary<int, Vehiculo> _porId;
     private readonly Dictionary<string, HashSet<int>> _porDni = new();
 
-    private int _idCounter;
-    
-    public static VehiculoJsonRepository Instance => Lazy.Value;
-    
-    private readonly string _filePath;
-    
-    private readonly JsonSerializerOptions _jsonOptions = new() {
-        WriteIndented = true,
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-    };
-    
-    private VehiculoJsonRepository() {
-        _logger.Debug("Iniciado repositorio JSON.");
-        _filePath = Path.Combine(Configuracion.DataFolder, "vehiculo.json");
-        EnsureDirectory();
-        Load();
-    }
-
-    private void Load() {
-        try {
-            if (!File.Exists(_filePath)) {
-                _logger.Information("El archivo Json no existe.");
-                return;
-            }
-            var json = File.ReadAllText(_filePath);
-            var vehiculos = JsonSerializer.Deserialize<List<Vehiculo>>(json, _jsonOptions);
-            
-            if (vehiculos == null) return;
-            foreach (var v in vehiculos) {
-                _porId[v.Id] = v;
-                if (!v.IsDeleted) {
-                    _matricula[v.Matricula] = v.Id;
-                    AgregarVehiculoDni(v.DniPropietario, v.Id);
-                }
-
-                if (v.Id > _idCounter) _idCounter = v.Id;
-            }
-            
+    public VehiculoBinSecRepository() {
+        if (!Directory.Exists("Data")) {
+            Directory.CreateDirectory("Data");
         }
-        catch (Exception e) {
-            Console.WriteLine(e);
-            throw;
-        }
+
+        _porId = Load();
     }
     
-    private void EnsureDirectory() {
-        var dir = Path.GetDirectoryName(_filePath);
-        if (string.IsNullOrEmpty(dir) || Directory.Exists(dir)) return;
-        _logger.Debug("Creando directorio: {Dir}", dir);
-        Directory.CreateDirectory(dir);
+    public IEnumerable<Vehiculo> GetAll() {
+        return _porId.Values.ToList();
     }
-
-    private void Save() {
-        try {
-            var vehiculos = _porId.Values.ToList();
-            var json = JsonSerializer.Serialize(vehiculos, _jsonOptions);
-            File.WriteAllText(_filePath,json);
-            _logger.Debug("Datos en el json: ", vehiculos.Count);
-        }
-        catch (Exception e) {
-            _logger.Error(e, "Error de guardado");
-            throw;
-        }
-    }
-
-
-    public IEnumerable<Vehiculo> GetAll() =>  _porId.Values;
-    
 
     public Vehiculo? GetById(int id) {
-        _logger.Debug("Buscando vehiculo por id: {Id}");
         return _porId.GetValueOrDefault(id);
     }
 
     public Vehiculo? Create(Vehiculo entity) {
-        _logger.Debug("Creando un vehiculo {Entity}", entity);
         if (_matricula.ContainsKey(entity.Matricula) || !VerificarCochePropietario(entity.DniPropietario)) return null;
-      
+        var id = _nextId++;
         var nuevo = entity with {
-            Id = ++_idCounter,
+            Id = id,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
             IsDeleted = false
         };
-        _porId[nuevo.Id] = nuevo;
+        _porId[id] = nuevo;
         _matricula[nuevo.Matricula] = nuevo.Id;
         AgregarVehiculoDni(nuevo.DniPropietario, nuevo.Id);
         Save();
         return nuevo;
-
     }
 
     public Vehiculo? Update(int id, Vehiculo entity) {
-        _logger.Debug("Actualizando el vehiculo: {Entity}", entity);
         if (!_porId.TryGetValue(id, out var actual)) return null;
         if (entity.Matricula != actual.Matricula && _matricula.TryGetValue(entity.Matricula, out var otroId) && otroId != id) {
             _logger.Warning("No se puede actualizar el vehículo con id {Id} porque la matrícula {Matricula} ya está en uso por otro vehículo",
@@ -122,7 +61,7 @@ public class VehiculoJsonRepository : IVehiculosRepository {
                 return null;
             }
             QuitarVehiculoDni(actual.DniPropietario,actual.Id);
-            AgregarVehiculoDni(entity.DniPropietario, entity.Id);
+            AgregarVehiculoDni(entity.DniPropietario, id);
         }
         var actualizado = entity with {
             Id = id,
@@ -137,12 +76,13 @@ public class VehiculoJsonRepository : IVehiculosRepository {
         }
         Save();
         return actualizado;
+        
     }
 
     public Vehiculo? Delete(int id) {
         _logger.Debug("Eliminando vehiculo con id: {Id}", id);
         if (!_porId.TryGetValue(id, out var vehiculo)) return null;
-
+        
         _matricula.Remove(vehiculo.Matricula);
         QuitarVehiculoDni(vehiculo.DniPropietario, vehiculo.Id);
         var eliminado = vehiculo with {
@@ -152,8 +92,8 @@ public class VehiculoJsonRepository : IVehiculosRepository {
         _porId[id] = eliminado;
         Save();
         return eliminado;
+        
     }
-    
     public Vehiculo? HardDelete(int id) {
         if (!_porId.Remove(id, out var vehiculo)) return null;
 
@@ -167,20 +107,70 @@ public class VehiculoJsonRepository : IVehiculosRepository {
         _porId.Clear();
         _matricula.Clear(); 
         _porDni.Clear();
-        _idCounter = 0;
-        if (File.Exists(_filePath)) {
-            File.Delete(_filePath);
-        }
-        _logger.Information("Repositorio JSON limpiado.");
+        _nextId = 0;
+        if (File.Exists(FilePath)) File.Delete(FilePath);
+        _logger.Information("Repositorio BIN limpiado.");
         return true;
     }
 
     public Vehiculo? GetByMatricula(string matricula) {
-        _logger.Debug("Buscando vehiculo por matricula: {Matricula}", matricula);
         if (_matricula.TryGetValue(matricula, out var id)) {
             return _porId.GetValueOrDefault(id);
         }
-        return null;
+        return null;    
+    }
+
+    private Dictionary<int, Vehiculo> Load() {
+        if (!File.Exists(FilePath)) {
+            return new Dictionary<int, Vehiculo>();
+        }
+
+        using var stream = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
+        using var reader = new BinaryReader(stream, Encoding.UTF8);
+
+        var cantidad = reader.ReadInt32();
+        _nextId = reader.ReadInt32();
+
+        var vehiculos = new Dictionary<int, Vehiculo>();
+
+        for (int i = 0; i < cantidad; i++) {
+            var id = reader.ReadInt32();
+            var matricula = reader.ReadString();
+            var marca = reader.ReadString();
+            var cilindrada = reader.ReadInt32();
+            var motor = (Motor)reader.ReadInt32();
+            var dni = reader.ReadString();
+            var isDelete = reader.ReadBoolean();
+            var createAt = DateTime.Parse(reader.ReadString());
+            var updateAt = DateTime.Parse(reader.ReadString());
+            var vehiculo = new Vehiculo(id, matricula, marca, cilindrada, motor, dni, isDelete, createAt, updateAt);
+            vehiculos[id] = vehiculo;
+            _matricula[matricula] = id;
+            AgregarVehiculoDni(dni, id);
+        }
+
+        return vehiculos;
+    }
+
+    private void Save() {
+        using var stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write);
+        using var writer = new BinaryWriter(stream, Encoding.UTF8);
+        
+        writer.Write(_porId.Count);
+        writer.Write(_nextId);
+
+        foreach (var v in _porId.Values) {
+            writer.Write(v.Id);
+            writer.Write(v.Matricula);
+            writer.Write(v.Marca);
+            writer.Write(v.Cilindrada);
+            writer.Write((int)v.TipoMotor);
+            writer.Write(v.DniPropietario);
+            writer.Write(v.IsDeleted);
+            writer.Write(v.CreatedAt.ToString("O")); 
+            writer.Write(v.UpdatedAt.ToString("O"));
+            
+        }
     }
     
     private bool VerificarCochePropietario(string dni) { 

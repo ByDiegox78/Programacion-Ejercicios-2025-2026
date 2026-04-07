@@ -9,10 +9,10 @@ using GestionItv.Models;
 namespace GestionItv.Storage;
 
 public class StorageVhiculoXml : IStorageVehiculoXml {
-    private readonly XmlSerializerNamespaces XmlSerializerNamespaces = new();
+    private readonly XmlSerializerNamespaces XmlSerializerNamespaces = new(); //Gestiona el namespace del xml
     
-    private readonly XmlWriterSettings XmlWriterSettings = new() {
-        Indent = true, 
+    private readonly XmlWriterSettings XmlWriterSettings = new() { // Configura como se escribe el XML
+        Indent = true, // Mete tabulazos
         Encoding = Encoding.UTF8 
     };
     public StorageVhiculoXml() {
@@ -21,11 +21,11 @@ public class StorageVhiculoXml : IStorageVehiculoXml {
     
     public void WriteToFile(IEnumerable<Vehiculo> items, string path) {
         try {
-            var dtos = items.Select(p => p.ToDto()).ToList();
-            var serializer = new XmlSerializer(typeof(List<VehiculoDto>));
-            using var streamWriter = new StreamWriter(path);
-            var xmlWriter = XmlWriter.Create(streamWriter, XmlWriterSettings);
-            serializer.Serialize(xmlWriter, dtos, XmlSerializerNamespaces);
+            var dtos = items.Select(p => p.ToDto()).ToList(); // Convertir a Dto
+            var serializer = new XmlSerializer(typeof(List<VehiculoDto>)); // Convertir la lista a Xml 
+            using var streamWriter = new StreamWriter(path); // Abrir el archivo para escribir
+            var xmlWriter = XmlWriter.Create(streamWriter, XmlWriterSettings);  //Aplica la configuracion para el archivo
+            serializer.Serialize(xmlWriter, dtos, XmlSerializerNamespaces); // Convierte la lista en xml y escribe el archivo
         }
         catch (Exception e) {
             Console.WriteLine(e);
