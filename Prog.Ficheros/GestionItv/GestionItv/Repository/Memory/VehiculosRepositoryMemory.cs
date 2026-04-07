@@ -114,7 +114,7 @@ public class VehiculosRepositoryMemory: IVehiculosRepository {
     }
 
     private bool VerificarCochePropietario(string dni) { 
-        return !_porDni.TryGetValue(dni, out var list) || list.Count < 3;
+        return !_porDni.TryGetValue(dni, out var list) || list.Count < 4;
     }
     private void AgregarVehiculoDni(string dni, int id) {
         if (!_porDni.TryGetValue(dni, out var lista)) {

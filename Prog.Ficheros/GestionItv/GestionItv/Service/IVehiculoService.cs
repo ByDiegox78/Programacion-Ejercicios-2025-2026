@@ -20,7 +20,7 @@ public interface IVehiculoService {
 
     Vehiculo HardDelete(int id);
 
-    Vehiculo DeleteAll(int id);
+    bool DeleteAll();
 
     int ImportarDatos();
     /// <summary>

@@ -76,7 +76,6 @@ public class VehiculoBinSecRepository : IVehiculosRepository {
         }
         Save();
         return actualizado;
-        
     }
 
     public Vehiculo? Delete(int id) {
