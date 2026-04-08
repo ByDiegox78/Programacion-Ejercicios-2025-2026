@@ -3,14 +3,10 @@
 
 using static System.Console;
 using System.Text;
-
 using GestionItv.Config;
-
 using GestionItv.Enums;
-using GestionItv.Exceptions;
 using GestionItv.Exceptions.Vehiculos;
 using GestionItv.Factory.Repositories;
-using GestionItv.Factory;
 using GestionItv.Factory;
 using GestionItv.Factory.Vehiculos;
 using GestionItv.Models;
@@ -51,9 +47,9 @@ void Main() {
         repository,
         storage,
         new CacheLru<int, Vehiculo>(5),
-        new VehiculoValidator()
+        new VehiculoValidator(),
+        new BackupService(storage)
         
-        //backupService
     );
 
     if (Configuracion.RepositoryType.ToLower() != "binary") {
@@ -62,21 +58,20 @@ void Main() {
     }
 
     OpcionMenu opcion;
-    const string RegexOpcionMenu = @"^([0-3]|1[0-9])$";
+    const string RegexOpcionMenu = @"^([0-9]|1[0-3])$";
     WriteLine(new string('-', 80));
 
     do {
         MostrarMenu();
 
-        var opcionStr = Utilities.LeerCadenaValida("Seleccione una opcion: ", RegexOpcionMenu, "Opción no válida (0-8)");
+        var opcionStr = Utilities.LeerCadenaValida("Seleccione una opcion: ", RegexOpcionMenu, "Opción no válida (0-20)");
         var opcionValue = int.Parse(opcionStr);
         opcion = (OpcionMenu)opcionValue;
 
         switch (opcion) {
             case OpcionMenu.ListarTodos: ListarTodos(service); break;
-            case OpcionMenu.BuscarPoDniPropietario: BuscarPorDniPropietario(service); break;
+            //case OpcionMenu.BuscarPoDniPropietario: BuscarPorDniPropietario(service); break;
             case OpcionMenu.BuscarPorId: BuscarPorIdGeneral(service); break;
-            case OpcionMenu.ListarVehiculos: ListarVehiculos(service); break;
             case OpcionMenu.AnadirVehiculo: AnadirNuevoVehiculo(service); break;
             case OpcionMenu.ActualizarVehiculo: ActualizarVehiculo(service); break;
             case OpcionMenu.EliminarVehiculo: EliminarVehiculo(service); break;
@@ -106,7 +101,6 @@ void Main() {
         
         WriteLine("\n🚜 ---2. Gestión de los vehículos");
         WriteLine(new string('-', 80));
-        WriteLine($"    {(int)OpcionMenu.ListarVehiculos}. 📜 Listar Vehiculo");
         WriteLine($"    {(int)OpcionMenu.AnadirVehiculo}. ➕ Añadir Vehiculo");
         WriteLine($"    {(int)OpcionMenu.ActualizarVehiculo}. 📝 Actualizar Vehiculo");
         WriteLine($"    {(int)OpcionMenu.EliminarVehiculo}. 🗑️ Eliminar Vehiculo");
@@ -302,7 +296,7 @@ void Main() {
         WriteLine("\n📊 --- INFORME RESUMIDO DE VEHÍCULOS ---");
         WriteLine(new string('-', 80));
         foreach (var info in informes) {
-            WriteLine($"[{info.Id}] {info.MarcaModelo} - Matrícula: {info.Matricula}");
+            WriteLine($"[{info.Id}] {info.Marca} - Matrícula: {info.Matricula}");
             WriteLine($"    Motor: {info.DatosMotor} | Propietario: {info.PropietarioDni}");
             WriteLine(new string('.', 80));
         }
@@ -323,7 +317,7 @@ void Main() {
             WriteLine("\n" + new string('=', 40));
             WriteLine($"   INFORME DEL VEHÍCULO #{info.Id}");
             WriteLine(new string('-', 40));
-            WriteLine($" 🚗 MARCA/MODELO: {info.MarcaModelo}");
+            WriteLine($" 🚗 MARCA/MODELO: {info.Marca}");
             WriteLine($" 🎫 MATRÍCULA:    {info.Matricula}");
             WriteLine($" ⚙️  MOTORIZACIÓN: {info.DatosMotor}");
             WriteLine($" 🪪 PROPIETARIO:  {info.PropietarioDni}");

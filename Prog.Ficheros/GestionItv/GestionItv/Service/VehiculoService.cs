@@ -2,6 +2,7 @@
 using GestionItv.Exceptions.Vehiculos;
 using GestionItv.Models;
 using GestionItv.Repository.Common;
+using GestionItv.Service.Backup;
 using GestionItv.Storage.Common;
 using GestionItv.Validator;
 using Productos.Cache;
@@ -13,10 +14,12 @@ public class VehiculoService(
     IVehiculosRepository repository,
     IStorage<Vehiculo> storage,
     ICached<int, Vehiculo> cache,
-    IVehiculoValidator<Vehiculo> validator
+    IVehiculoValidator<Vehiculo> validator,
+    IBackupService backupService
     ) : IVehiculoService {
     private readonly ILogger _logger = Log.ForContext<VehiculoService>();
-    
+    private readonly IBackupService _backupService = backupService;
+
     public int TotalVehiculos => repository.GetAll().Count();
     public IEnumerable<Vehiculo> GetAll() {
         _logger.Information("Obteniendo todas los vehiculos.");
@@ -74,7 +77,7 @@ public class VehiculoService(
 
     public Vehiculo HardDelete(int id) {
         _logger.Information("Eliminando vehiculo con ID: {id}", id);
-        var eliminado = repository.Delete(id) ?? throw new VehiculoException.NotFound(id.ToString());
+        var eliminado = repository.HardDelete(id) ?? throw new VehiculoException.NotFound(id.ToString());
         cache.Remove(id);
         return eliminado;
     }
@@ -141,7 +144,29 @@ public class VehiculoService(
             throw new VehiculoException.StorageError(ex.Message);
         }
     }
-    
+
+    public string RealizarBackup() {
+        _logger.Information("Realizando backup del sistema.");
+        var vehiculos = repository.GetAll();
+        return _backupService.RealizarBackup(vehiculos);    }
+
+    public int RestaurarBackup(string archivoBackup) {
+        _logger.Information("Restaurando backup desde: {archivo}", archivoBackup);
+        var vehiculos = _backupService.RestaurarBackup(archivoBackup).ToList();
+        repository.DeleteAll();
+        var contador = 0;
+        foreach (var p in vehiculos) {
+            Save(p);
+            contador++;
+        }
+        _logger.Information("Restauración completada. Total registros: {count}", contador);
+        return contador;    }
+
+    public IEnumerable<string> ListarBackups() {
+        return _backupService.ListarBackups();
+        
+    }
+
     private void ValidarVehiculo(Vehiculo vehiculo) {
         var errores = validator.Validar(vehiculo);
         if (errores.Any()) {

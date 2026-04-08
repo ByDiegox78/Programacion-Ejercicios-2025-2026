@@ -15,6 +15,11 @@ public interface IVehiculoService {
     Vehiculo Save(Vehiculo vehiculo);
 
     Vehiculo Update(int id, Vehiculo vehiculo);
+    
+      
+    IEnumerable<Informe> GenerarTodosInformeVehiculo();
+
+    Informe GenerarInformeVehiculPorId(int id);
 
     Vehiculo Delete(int id);
 
@@ -23,10 +28,13 @@ public interface IVehiculoService {
     bool DeleteAll();
 
     int ImportarDatos();
-    /// <summary>
-    /// Exporta el listado de vehiculos al storage correspondiente
-    /// </summary>
-    /// <returns></returns>
+ 
     int ExportarDatos();
+    
+    string RealizarBackup();
+
+    int RestaurarBackup(string archivoBackup);
+
+    IEnumerable<string> ListarBackups();
     
 }

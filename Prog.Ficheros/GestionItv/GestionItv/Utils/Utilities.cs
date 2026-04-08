@@ -28,16 +28,9 @@
             while (true) {
                 Write("🚗 Matrícula (1234ABC): ");
                 var m = ReadLine()?.Trim().ToUpper() ?? "";
-                if (Regex.IsMatch(m, @"^\d{4}[B-DF-HJ-NP-TV-Z]{3}$")) return m;
-                WriteLine("❌ ERROR: Formato de matrícula inválido.");
-            }
-        }
-        public static string LeerMarca() {
-            while (true) {
-                Write("🏷️ Marca: ");
-                var marca = ReadLine()?.Trim() ?? "";
-                if (!string.IsNullOrWhiteSpace(marca)) return marca;
-                WriteLine("❌ ERROR: La marca no puede estar vacía.");
+                // Regex corregido: 4 números y 3 letras válidas
+                if (Regex.IsMatch(m, @"^[0-9]{4}[BCDFGHJKLMNPRSTVWXYZ]{3}$")) return m;
+                WriteLine("❌ ERROR: Formato de matrícula inválido (Ejemplo: 1234BCD).");
             }
         }
         public static int LeerCilindrada() {

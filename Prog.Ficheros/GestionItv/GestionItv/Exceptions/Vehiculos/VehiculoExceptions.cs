@@ -13,8 +13,9 @@ public abstract class VehiculoException(string message) : DomainException(messag
     /// Se lanza cuando fallan las reglas de validacion
     /// </summary>
     /// <param name="errors"></param>
+   
     public sealed class Validation(IEnumerable<string> errors)
-        : VehiculoException("No han detectado errores de validacion en la entidad") {
+        : VehiculoException($"Errores de validación: {string.Join(", ", errors)}") {
         public IEnumerable<string> Errores { get; init; } = errors;
     }
     

@@ -6,18 +6,16 @@ namespace GestionItv.Config;
 public static class Configuracion {
     
     private static readonly IConfiguration Config;
-    private static readonly string LetrasPermitidas = "BCDFGHJKLMNPRSTVWXYZ";
+    //private static readonly string LetrasPermitidas = "BCDFGHJKLMNPRSTVWXYZ";
     public static readonly string LetrasDniPermitidas = "TRWAGMYFPDXBNJZSQVHLCKE";
     public static readonly Regex RegexDni = new Regex($@"^[0-9]{{8}}[{LetrasDniPermitidas}]$");
     public static readonly int MinCilindrada = 800;
     public static readonly int MaxCilindrada = 3000;
-    public static readonly Regex RegexMatricula = new Regex($"[0-9]{4}[{LetrasPermitidas}]{3}");
-    
-    
+    public static readonly Regex RegexMatricula = new Regex(@"^[0-9]{4}[BCDFGHJKLMNPRSTVWXYZ]{3}$");    
     static Configuracion() {
         Config = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
             .Build();
     }
     
