@@ -52,12 +52,14 @@ public class VehiculoService(
 
     public Vehiculo Save(Vehiculo vehiculo) {
         _logger.Information("Guardando nuevo vehiculo: {vehiculo}", vehiculo);
+        ValidarVehiculo(vehiculo);
         var nuevoVehiculo = repository.Create(vehiculo) ?? throw new VehiculoException.AlreadyExists(vehiculo.DniPropietario);
         return nuevoVehiculo;
     }
 
     public Vehiculo Update(int id, Vehiculo vehiculo) {
         _logger.Information("Actualizando nuevo vehiculo: {vehiculo}", vehiculo);
+        ValidarVehiculo(vehiculo);
         var actualizado = repository.Update(id,vehiculo) ?? throw new VehiculoException.NotFound(id.ToString());
         cache.Remove(id);
         return actualizado;
@@ -116,6 +118,13 @@ public class VehiculoService(
         catch (Exception ex) {
             _logger.Error(ex, "Error al exportar datos: {message}", ex.Message);
             throw new VehiculoException.StorageError(ex.Message);
+        }
+    }
+    
+    private void ValidarVehiculo(Vehiculo vehiculo) {
+        var errores = validator.Validar(vehiculo);
+        if (errores.Any()) {
+            throw new VehiculoException.Validation(errores.ToList());
         }
     }
 }

@@ -50,7 +50,6 @@ public class VehiculoJsonRepository : IVehiculosRepository {
                     _matricula[v.Matricula] = v.Id;
                     AgregarVehiculoDni(v.DniPropietario, v.Id);
                 }
-
                 if (v.Id > _idCounter) _idCounter = v.Id;
             }
             
