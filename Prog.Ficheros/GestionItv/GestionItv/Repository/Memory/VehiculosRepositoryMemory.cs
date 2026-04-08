@@ -16,18 +16,17 @@ public class VehiculosRepositoryMemory: IVehiculosRepository {
     
     public IEnumerable<Vehiculo> GetAll() {
         _logger.Debug("Buscando todos los vehiculos de la ITV");
-        return _porId.Values;
+        return _porId.Values.Where(v => !v.IsDeleted);
     }
 
     public Vehiculo? GetById(int id) {
         _logger.Debug("Buscando vehiculo por su matricula: {Id}", id);
-        return _porId.GetValueOrDefault(id);
+        return _porId.TryGetValue(id, out var vehiculo) && !vehiculo.IsDeleted ? vehiculo : null;
     }
-
     
-
     public Vehiculo? GetByMatricula(string matricula) {
-        return _matricula.TryGetValue(matricula, out var id) && _porId.TryGetValue(id, out var vehiculo)
+        return _matricula.TryGetValue(matricula, out var id) &&
+               _porId.TryGetValue(id, out var vehiculo) && !vehiculo.IsDeleted
             ? vehiculo
             : null;
     }
@@ -63,7 +62,7 @@ public class VehiculosRepositoryMemory: IVehiculosRepository {
                 return null;
             }
             QuitarVehiculoDni(actual.DniPropietario,actual.Id);
-            AgregarVehiculoDni(entity.DniPropietario, entity.Id);
+            AgregarVehiculoDni(entity.DniPropietario, id);
         }
         var actualizado = entity with {
             Id = id,
@@ -83,9 +82,6 @@ public class VehiculosRepositoryMemory: IVehiculosRepository {
         _logger.Debug("Eliminando vehiculo con id {Id}", id);
         if (!_porId.TryGetValue(id, out var vehiculo)) return null;
         
-        _matricula.Remove(vehiculo.Matricula);
-        
-        QuitarVehiculoDni(vehiculo.DniPropietario, vehiculo.Id);
         var eliminado =  vehiculo with {
             IsDeleted = true,
             UpdatedAt = DateTime.UtcNow

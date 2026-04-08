@@ -84,6 +84,27 @@ public class VehiculoService(
         return repository.DeleteAll();
     }
 
+    public IEnumerable<Informe> GenerarTodosInformeVehiculo() {
+        var lista = repository.GetAll().Where(v => !v.IsDeleted).ToList();
+        return lista.Select(v => new Informe {
+            Id = v.Id,
+            Matricula = v.Matricula,
+            Marca = v.Marca,
+            DatosMotor = $"{v.Cilindrada}cc {v.TipoMotor}",
+            PropietarioDni = v.DniPropietario
+        });
+    }
+    
+    public Informe GenerarInformeVehiculPorId(int id) {
+        var v = repository.GetById(id) ?? throw new Exception();
+        return new Informe {
+            Id = v.Id,
+            Matricula = v.Matricula,
+            Marca = $"{v.Marca} {v.Marca}",
+            DatosMotor = $"{v.Cilindrada}L {v.TipoMotor}",
+            PropietarioDni = v.DniPropietario
+        };
+    }
     public int ImportarDatos() {
         _logger.Information("Importando datos desde almacenamiento externo");
         try {

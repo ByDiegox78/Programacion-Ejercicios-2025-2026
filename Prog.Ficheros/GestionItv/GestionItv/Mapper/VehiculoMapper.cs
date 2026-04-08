@@ -31,7 +31,7 @@ public static class VehiculoMapper {
             dto.Matricula,
             dto.Marca,
             dto.Cilindrada,
-            Enum.TryParse(dto.TipoMotor, out Motor tipo) ? tipo : Motor.Diese,
+            Enum.TryParse(dto.TipoMotor, out Motor tipo) ? tipo : Motor.Diesel,
             dto.DniPropietario,
             dto.IsDelete,
             createdAt,

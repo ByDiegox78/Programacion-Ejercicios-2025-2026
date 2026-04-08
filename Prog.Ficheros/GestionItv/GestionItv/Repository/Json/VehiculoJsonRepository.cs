@@ -81,12 +81,15 @@ public class VehiculoJsonRepository : IVehiculosRepository {
     }
 
 
-    public IEnumerable<Vehiculo> GetAll() =>  _porId.Values;
+    public IEnumerable<Vehiculo> GetAll() {
+        _logger.Debug("Buscando todos los vehiculos de la ITV");
+        return _porId.Values.Where(v => !v.IsDeleted);
+    }
     
 
     public Vehiculo? GetById(int id) {
-        _logger.Debug("Buscando vehiculo por id: {Id}");
-        return _porId.GetValueOrDefault(id);
+        _logger.Debug("Buscando vehiculo por su matricula: {Id}", id);
+        return _porId.TryGetValue(id, out var vehiculo) && !vehiculo.IsDeleted ? vehiculo : null;
     }
 
     public Vehiculo? Create(Vehiculo entity) {
@@ -176,10 +179,10 @@ public class VehiculoJsonRepository : IVehiculosRepository {
 
     public Vehiculo? GetByMatricula(string matricula) {
         _logger.Debug("Buscando vehiculo por matricula: {Matricula}", matricula);
-        if (_matricula.TryGetValue(matricula, out var id)) {
-            return _porId.GetValueOrDefault(id);
-        }
-        return null;
+        return _matricula.TryGetValue(matricula, out var id) &&
+               _porId.TryGetValue(id, out var vehiculo) && !vehiculo.IsDeleted
+            ? vehiculo
+            : null;
     }
     
     private bool VerificarCochePropietario(string dni) { 

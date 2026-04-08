@@ -6,7 +6,7 @@ using Serilog;
 namespace GestionItv.Repository.Binary;
 
 public class VehiculoBinSecRepository : IVehiculosRepository {
-
+    private static readonly Lazy<VehiculoBinSecRepository> Lazy = new(() => new VehiculoBinSecRepository());
     private const string FilePath = "Data/vehiculos_sec.dat";
     private readonly ILogger _logger = Log.ForContext<VehiculoBinSecRepository>();
 
@@ -15,7 +15,7 @@ public class VehiculoBinSecRepository : IVehiculosRepository {
     private readonly Dictionary<string, int> _matricula = new();
     private readonly Dictionary<int, Vehiculo> _porId;
     private readonly Dictionary<string, HashSet<int>> _porDni = new();
-
+    public static VehiculoBinSecRepository Instance => Lazy.Value;
     public VehiculoBinSecRepository() {
         if (!Directory.Exists("Data")) {
             Directory.CreateDirectory("Data");
@@ -25,11 +25,13 @@ public class VehiculoBinSecRepository : IVehiculosRepository {
     }
     
     public IEnumerable<Vehiculo> GetAll() {
-        return _porId.Values.ToList();
+        _logger.Debug("Buscando todos los vehiculos de la ITV");
+        return _porId.Values.Where(v => !v.IsDeleted);
     }
 
     public Vehiculo? GetById(int id) {
-        return _porId.GetValueOrDefault(id);
+        _logger.Debug("Buscando vehiculo por su matricula: {Id}", id);
+        return _porId.TryGetValue(id, out var vehiculo) && !vehiculo.IsDeleted ? vehiculo : null;
     }
 
     public Vehiculo? Create(Vehiculo entity) {
@@ -113,10 +115,10 @@ public class VehiculoBinSecRepository : IVehiculosRepository {
     }
 
     public Vehiculo? GetByMatricula(string matricula) {
-        if (_matricula.TryGetValue(matricula, out var id)) {
-            return _porId.GetValueOrDefault(id);
-        }
-        return null;    
+        return _matricula.TryGetValue(matricula, out var id) &&
+               _porId.TryGetValue(id, out var vehiculo) && !vehiculo.IsDeleted
+            ? vehiculo
+            : null;  
     }
 
     private Dictionary<int, Vehiculo> Load() {
