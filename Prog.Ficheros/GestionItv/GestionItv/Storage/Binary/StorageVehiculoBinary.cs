@@ -7,8 +7,10 @@ namespace GestionItv.Storage.Binary;
 
 public class StorageVehiculoBinary : IStorageVehiculoBin {
     public void WriteToFile(IEnumerable<Vehiculo> items, string path) {
-        using var writer = new BinaryWriter(File.Create(path));
+        using var stream = File.Create(path);
+        using var writer = new BinaryWriter(stream, Encoding.UTF8);
         var dtos = items.Select(p => p.ToDto()).ToList();
+        writer.Write(dtos.Count);
         foreach (var d in dtos) {
             writer.Write(d.Id);
             writer.Write(d.Matricula);
@@ -42,7 +44,6 @@ public class StorageVehiculoBinary : IStorageVehiculoBin {
                 reader.ReadBoolean(),
                 reader.ReadString(),
                 reader.ReadString()
-
             );
             list.Add(dto.ToModel());
         }

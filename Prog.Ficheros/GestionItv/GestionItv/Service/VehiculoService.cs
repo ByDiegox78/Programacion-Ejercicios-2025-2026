@@ -119,7 +119,7 @@ public class VehiculoService(
     public int ImportarDatos() {
         _logger.Information("Importando datos desde almacenamiento externo");
         try {
-            var vehiculos = storage.ReadFromFile(Configuracion.VehiculoFile);
+            var vehiculos = storage.ReadFromFile(Configuracion.VehiculoFile); 
             repository.DeleteAll();
             var contador = 0;
             foreach (var v in vehiculos) {

@@ -44,7 +44,7 @@ public static class Configuracion {
                 "bin" => "bin",
                 _ => "json" 
             };
-            return Path.Combine(DataFolder, $"academia.{extension}");
+            return Path.Combine(DataFolder, $"itv.{extension}");
         }
     }
     public static string BackupFormat {

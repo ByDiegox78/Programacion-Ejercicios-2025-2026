@@ -23,7 +23,7 @@ public class StorageCsvVehiculo : IStorageCsvVehiculo {
                 .ToList()
                 .ForEach(p => {
                     write.WriteLine(
-                        $"{p.Matricula};{p.Marca};{p.Cilindrada};{p.TipoMotor};{p.DniPropietario};{p.IsDelete};{p.CreatedAt};{p.UpdatedAt};");
+                        $"{p.Id};{p.Matricula};{p.Marca};{p.Cilindrada};{p.TipoMotor};{p.DniPropietario};{p.IsDelete};{p.CreatedAt};{p.UpdatedAt};");
                 });
         }
         catch (Exception e) {
