@@ -56,7 +56,15 @@ public class VehiculoService(
     public Vehiculo Save(Vehiculo vehiculo) {
         _logger.Information("Guardando nuevo vehiculo: {vehiculo}", vehiculo);
         ValidarVehiculo(vehiculo);
-        var nuevoVehiculo = repository.Create(vehiculo) ?? throw new VehiculoException.AlreadyExists(vehiculo.DniPropietario);
+        if (repository.GetByMatricula(vehiculo.Matricula) != null) {
+            throw new VehiculoException.AlreadyExists(vehiculo.Matricula);
+        }
+        var nuevoVehiculo = repository.Create(vehiculo);
+        if (nuevoVehiculo == null) {
+            throw new VehiculoException.Validation(new List<string> { 
+                $"El propietario {vehiculo.DniPropietario} ya tiene 3 vehículos registrados." 
+            });
+        }
         return nuevoVehiculo;
     }
 
@@ -135,7 +143,7 @@ public class VehiculoService(
             var count = vehiculo.Count();
             
             _logger.Information("Exportando datos a almacenamiento externo. Total de vehículos: {count}", count);
-            storage.WriteToFile(vehiculo, Configuracion.DataFolder);
+            storage.WriteToFile(vehiculo, Configuracion.VehiculoFile);
             _logger.Information("Datos exportados correctamente a {file}.", Configuracion.DataFolder);
             return count;
         }

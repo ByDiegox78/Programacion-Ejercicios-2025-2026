@@ -56,8 +56,7 @@ public class VehiculoStorageJson : IStorage<Vehiculo> {
         }
     }
     
-    private void InitStorage()
-    {
+    private void InitStorage() {
         if (Directory.Exists(Configuracion.DataFolder))
             return;
         Directory.CreateDirectory(Configuracion.DataFolder);

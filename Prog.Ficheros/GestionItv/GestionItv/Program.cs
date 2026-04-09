@@ -1,7 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-
-using static System.Console;
+﻿using static System.Console;
 using System.Text;
 using GestionItv.Config;
 using GestionItv.Enums;
@@ -16,7 +13,6 @@ using GestionItv.Utils;
 using GestionItv.Validator;
 using Productos.Cache;
 using Serilog;
-
 var loggerConfiguracion = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console(
@@ -38,8 +34,10 @@ return;
 
 void Main() {
     var storage = StorageFactory.GetDefaultStorage(Configuracion.StorageType);
+    
     var backupStorage = StorageFactory.GetDefaultStorage(Configuracion.BackupFormat);
     var repository = RepositoryFactory.GetDefaultRepository(Configuracion.RepositoryType);
+    WriteLine($"Repositorio {repository} cargado correctamente");
     IBackupService backupService = new BackupService(backupStorage);
 
 
@@ -51,12 +49,13 @@ void Main() {
         new BackupService(storage)
         
     );
-
-    if (Configuracion.RepositoryType.ToLower() != "binary") {
-        repository.DeleteAll();
-        VehiculosFactory.Seed().ToList().ForEach(v => service.Save(v));
-    }
-
+    repository.DeleteAll();
+    VehiculosFactory.Seed().ToList().ForEach(v => service.Save(v));
+    
+    //if (Configuracion.RepositoryType.ToLower() != "binary") {
+    //repository.DeleteAll();
+    //VehiculosFactory.Seed().ToList().ForEach(v => service.Save(v));
+    //}
     OpcionMenu opcion;
     const string RegexOpcionMenu = @"^([0-9]|1[0-3])$";
     WriteLine(new string('-', 80));
@@ -477,8 +476,4 @@ void RestaurarBackup(IVehiculoService service) {
             WriteLine($"   - {error}");
         }
     }
-
-
-
-
 }

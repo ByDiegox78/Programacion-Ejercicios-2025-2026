@@ -83,9 +83,7 @@ public class VehiculoBinSecRepository : IVehiculosRepository {
     public Vehiculo? Delete(int id) {
         _logger.Debug("Eliminando vehiculo con id: {Id}", id);
         if (!_porId.TryGetValue(id, out var vehiculo)) return null;
-        
-        _matricula.Remove(vehiculo.Matricula);
-        QuitarVehiculoDni(vehiculo.DniPropietario, vehiculo.Id);
+
         var eliminado = vehiculo with {
             IsDeleted = true,
             UpdatedAt = DateTime.UtcNow
@@ -93,7 +91,6 @@ public class VehiculoBinSecRepository : IVehiculosRepository {
         _porId[id] = eliminado;
         Save();
         return eliminado;
-        
     }
     public Vehiculo? HardDelete(int id) {
         if (!_porId.Remove(id, out var vehiculo)) return null;
