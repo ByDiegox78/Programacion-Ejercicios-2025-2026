@@ -27,7 +27,7 @@ public class VehiculoService(
     }
 
     public Vehiculo GetById(int id) {
-        _logger.Information("Obteniendo vehiculo con ID {id}", id);
+        _logger.Information("Obteniendo vehiculo con ID {Id}", id);
         
         var cached = cache.Get(id);
         if (cached != null) return cached;
@@ -54,7 +54,7 @@ public class VehiculoService(
     }
 
     public Vehiculo Save(Vehiculo vehiculo) {
-        _logger.Information("Guardando nuevo vehiculo: {vehiculo}", vehiculo);
+        _logger.Information("Guardando nuevo vehiculo: {Cehiculo}", vehiculo);
         ValidarVehiculo(vehiculo);
         if (repository.GetByMatricula(vehiculo.Matricula) != null) {
             throw new VehiculoException.AlreadyExists(vehiculo.Matricula);
@@ -69,7 +69,7 @@ public class VehiculoService(
     }
 
     public Vehiculo Update(int id, Vehiculo vehiculo) {
-        _logger.Information("Actualizando nuevo vehiculo: {vehiculo}", vehiculo);
+        _logger.Information("Actualizando nuevo vehiculo: {Vehiculo}", vehiculo);
         ValidarVehiculo(vehiculo);
         var actualizado = repository.Update(id,vehiculo) ?? throw new VehiculoException.NotFound(id.ToString());
         cache.Remove(id);
@@ -77,7 +77,7 @@ public class VehiculoService(
     }
 
     public Vehiculo Delete(int id) {
-        _logger.Information("Eliminando vehiculo con ID: {id}", id);
+        _logger.Information("Eliminando vehiculo con ID: {Id}", id);
         var eliminado = repository.Delete(id) ?? throw new VehiculoException.NotFound(id.ToString());
         cache.Remove(id);
         return eliminado;
@@ -159,7 +159,7 @@ public class VehiculoService(
         return _backupService.RealizarBackup(vehiculos);    }
 
     public int RestaurarBackup(string archivoBackup) {
-        _logger.Information("Restaurando backup desde: {archivo}", archivoBackup);
+        _logger.Information("Restaurando backup desde: {Archivo}", archivoBackup);
         var vehiculos = _backupService.RestaurarBackup(archivoBackup).ToList();
         repository.DeleteAll();
         var contador = 0;
@@ -167,7 +167,7 @@ public class VehiculoService(
             Save(p);
             contador++;
         }
-        _logger.Information("Restauración completada. Total registros: {count}", contador);
+        _logger.Information("Restauración completada. Total registros: {Count}", contador);
         return contador;    }
 
     public IEnumerable<string> ListarBackups() {

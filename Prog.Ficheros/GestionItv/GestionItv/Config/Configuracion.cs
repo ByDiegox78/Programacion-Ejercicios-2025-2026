@@ -6,7 +6,6 @@ namespace GestionItv.Config;
 public static class Configuracion {
     
     private static readonly IConfiguration Config;
-    //private static readonly string LetrasPermitidas = "BCDFGHJKLMNPRSTVWXYZ";
     public static readonly string LetrasDniPermitidas = "TRWAGMYFPDXBNJZSQVHLCKE";
     public static readonly Regex RegexDni = new Regex($@"^[0-9]{{8}}[{LetrasDniPermitidas}]$");
     public static readonly int MinCilindrada = 800;
@@ -62,4 +61,11 @@ public static class Configuracion {
     }
     
     public static string BackupDirectory => Path.Combine(AppContext.BaseDirectory, Config.GetValue<string>("Backup:Directory") ?? "back");
+    
+    public static string ConnectionString => Config.GetValue<string>("Repository:ConnectionString") ?? "Data Source=data/academia.db";
+
+    public static bool SeedData => Config.GetValue<bool>("Repository:SeedData", true);
+
+    public static bool DropData => Config.GetValue<bool>("Repository:DropData", false);
+
 }
