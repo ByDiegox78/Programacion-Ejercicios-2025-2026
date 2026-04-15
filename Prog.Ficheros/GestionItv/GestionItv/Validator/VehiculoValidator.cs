@@ -32,7 +32,6 @@ public class VehiculoValidator : IVehiculoValidator<Vehiculo> {
         }
 
         if (!Utilities.ValidarDni(entidad.DniPropietario)) {
-            // Cálculo rápido para el log de error
             int num = int.Parse(entidad.DniPropietario.Substring(0, 8));
             char letraEsperada = Configuracion.LetrasDniPermitidas[num % 23];
             errores.Add($"DNI {entidad.DniPropietario} inválido. Para el número {num} la letra debería ser {letraEsperada}");

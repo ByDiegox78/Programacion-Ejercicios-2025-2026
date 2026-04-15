@@ -11,7 +11,8 @@ using Serilog;
 namespace GestionItv.Repository.Ado;
 
 public class VehiculosAdoRepository : IVehiculosRepository {
-
+    private static readonly Lazy<VehiculosAdoRepository> Lazy = new(() => new VehiculosAdoRepository());
+    public static VehiculosAdoRepository Instance => Lazy.Value;
     private readonly ILogger _logger = Log.ForContext<VehiculosAdoRepository>();
     private readonly string _connectionString;
     
@@ -22,18 +23,18 @@ public class VehiculosAdoRepository : IVehiculosRepository {
         _connectionString = Configuracion.ConnectionString;
         EnsureDataFolder();
         EnsureTable();
-        if (dropData) {
-            _logger.Warning("Borrando todos los datos...");
-            DeleteAll();
-        }
-
-        if (dropData || seedData) {
-            _logger.Information("Cargando datos de semilla...");
-            foreach (var v in VehiculosFactory.Seed()) {
-                Create(v);
-            }
-            _logger.Information("Datos cargados exitosamente");
-        }
+        // if (dropData) {
+        //     _logger.Warning("Borrando todos los datos...");
+        //     DeleteAll();
+        // }
+        //
+        // // if (dropData || seedData) {
+        // //     _logger.Information("Cargando datos de semilla...");
+        // //     foreach (var v in VehiculosFactory.Seed()) {
+        // //         Create(v);
+        // //     }
+        // //     _logger.Information("Datos cargados exitosamente");
+        // // }
     }
 
     private SqliteConnection CreateConnection() => new(_connectionString);
@@ -69,7 +70,7 @@ public class VehiculosAdoRepository : IVehiculosRepository {
         using var connection = CreateConnection();
         connection.Open();
         using var command = connection.CreateCommand();
-        command.CommandText = "SELECT * FROM Vehiculos;";
+        command.CommandText = "SELECT * FROM Vehiculos WHERE IsDeleted = 0;";
         using var reader = command.ExecuteReader();
         while (reader.Read()) {
             entities.Add(ReadEntity(reader));
@@ -103,9 +104,9 @@ public class VehiculosAdoRepository : IVehiculosRepository {
         connection.Open();
         using var command = connection.CreateCommand();
         command.CommandText = @"INSERT INTO Vehiculos (
-            Id, Matricula, Marca, Cilindrada, Motor, Dni, IsDeleted, CreatedAt, UpdatedAt) 
+            Matricula, Marca, Cilindrada, Motor, Dni, IsDeleted, CreatedAt, UpdatedAt) 
             VALUES (
-            @Id, @Matricula, @Marca, @Cilindrada, @Motor, @Dni, @IsDeleted, @CreatedAt, @UpdatedAt);
+            @Matricula, @Marca, @Cilindrada, @Motor, @Dni, @IsDeleted, @CreatedAt, @UpdatedAt);
             SELECT last_insert_rowid();";
         AddParameters(command, vehiculoEntity);
         vehiculoEntity.Id = Convert.ToInt32(command.ExecuteScalar());
@@ -164,7 +165,7 @@ public class VehiculosAdoRepository : IVehiculosRepository {
         using var connection = CreateConnection();
         connection.Open();
         using var command = connection.CreateCommand();
-        command.CommandText = "DELETE * FROM Vehiculos;";
+        command.CommandText = "DELETE FROM Vehiculos;";
         return command.ExecuteNonQuery() >= 0;
     }
 
@@ -184,7 +185,7 @@ public class VehiculosAdoRepository : IVehiculosRepository {
         using var connection = CreateConnection();
         connection.Open();
         using var command = connection.CreateCommand();
-        command.CommandText = "SELECT * FROM Personas WHERE Matricula = @Matricula";
+        command.CommandText = "SELECT * FROM Vehiculos WHERE Matricula = @Matricula";
         command.Parameters.Add(new SqliteParameter("@Matricula", matricula));
         
         using var reader = command.ExecuteReader();
@@ -206,11 +207,11 @@ public class VehiculosAdoRepository : IVehiculosRepository {
             Matricula = reader.GetString(reader.GetOrdinal("matricula")),
             Marca = reader.GetString(reader.GetOrdinal("marca")),
             Cilindrada = reader.GetInt32(reader.GetOrdinal("cilindrada")),
-            Motor = reader.GetInt32(reader.GetOrdinal("tipo_motor")),
-            Dni = reader.GetString(reader.GetOrdinal("dni_propietario")),
-            IsDeleted = reader.GetInt32(reader.GetOrdinal("is_deleted")) == 1,
-            CreatedAt = DateTime.Parse(reader.GetString(reader.GetOrdinal("created_at"))),
-            UpdatedAt = DateTime.Parse(reader.GetString(reader.GetOrdinal("updated_at")))
+            Motor = reader.GetInt32(reader.GetOrdinal("motor")),
+            Dni = reader.GetString(reader.GetOrdinal("dni")),
+            IsDeleted = reader.GetInt32(reader.GetOrdinal("isdeleted")) == 1,
+            CreatedAt = DateTime.Parse(reader.GetString(reader.GetOrdinal("createdat"))),
+            UpdatedAt = DateTime.Parse(reader.GetString(reader.GetOrdinal("updatedat")))
         };
         
     }

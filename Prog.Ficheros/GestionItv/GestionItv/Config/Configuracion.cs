@@ -25,6 +25,7 @@ public static class Configuracion {
                 "memory" => "memory",
                 "binary" => "binary",
                 "json" => "json",
+                "ado" => "ado",
                 _ => "memory"
             };
         }

@@ -1,4 +1,5 @@
-﻿using GestionItv.Repository.Binary;
+﻿using GestionItv.Repository.Ado;
+using GestionItv.Repository.Binary;
 using GestionItv.Repository.Common;
 using GestionItv.Repository.Json;
 using GestionItv.Repository.Memory;
@@ -11,6 +12,7 @@ public static class RepositoryFactory {
             RepositoryType.Memory => VehiculosRepositoryMemory.Instance,
             RepositoryType.Binary =>  VehiculoBinSecRepository.Instance,
             RepositoryType.Json => VehiculoJsonRepository.Instance,
+            RepositoryType.Ado => VehiculosAdoRepository.Instance,
             _ => throw new ArgumentException($"Tipo de repositorio desconocido: {type}")
         };
     }
@@ -20,6 +22,7 @@ public static class RepositoryFactory {
             "memory" => RepositoryType.Memory,
             "binary" => RepositoryType.Binary,
             "json" => RepositoryType.Json,
+            "ado" => RepositoryType.Ado,
             _ => throw new ArgumentException($"Tipo configurado desconocido: {configType}")
         };
         return GetRepository(type);

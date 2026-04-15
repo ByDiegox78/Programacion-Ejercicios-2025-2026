@@ -50,6 +50,7 @@ void Main() {
         
     );
     repository.DeleteAll();
+    
     VehiculosFactory.Seed().ToList().ForEach(v => service.Save(v));
     
     //if (Configuracion.RepositoryType.ToLower() != "binary") {
@@ -152,21 +153,6 @@ void Main() {
             WriteLine($"❌ ERROR: {ex.Message}");
         }
     }
-/*
-    void BuscarPorDniPropietario(IVehiculoService service) {
-        WriteLine("\n🪪 --- Búsqueda por Dni ---");
-        var dni = Utilities.LeerDniValido();
-        try {
-            var v = service.GetByDniPropietario(dni);
-            ImprimirTablaVehículos(v);
-        }
-        catch (VehiculoException.NotFound ex) {
-            WriteLine($"❌ ERROR: {ex.Message}");
-            throw;
-        }
-    }
-*/
-
     void AnadirNuevoVehiculo(IVehiculoService service) {
         WriteLine("\n➕ --- Alta de nuevo Vehículo ---");
         WriteLine(" 0. ⬅️ Volver");
